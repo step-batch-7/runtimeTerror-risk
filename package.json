@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "nyc mocha",
     "start": "node server.js",
+    "lint": "npx eslint *.js",
     "dev": "nodemon -i public server.js"
   },
   "repository": {
