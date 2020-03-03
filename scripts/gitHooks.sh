@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 cat <<EOF > .git/hooks/pre-commit
 npm run test
@@ -13,7 +13,7 @@ if [ \$? == 0 ]; then
    exit 1
 fi
 EOF
-
+ 
 chmod +x .git/hooks/pre-commit
 
 echo "cat \$1 | head -1 | grep -E '^\|#[0-9]+\|[A-Za-z/]+\|.+$'
