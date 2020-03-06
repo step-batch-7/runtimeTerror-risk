@@ -86,6 +86,14 @@
         "no-magic-numbers": "off",
         "max-statements": "off"
       }
+    },
+    {
+      "files": ["server.js"],
+      "rules": {
+        "no-magic-numbers": "off",
+        "no-console": "off",
+        "no-process-env": "off"
+      }
     }
   ]
 }
