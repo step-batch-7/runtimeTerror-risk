@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const { Game } = require('../lib/game');
+const { Game } = require('../src/game');
 
 describe('Game', function() {
   it('should give instance of game class', function() {
