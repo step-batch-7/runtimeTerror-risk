@@ -3,11 +3,11 @@ class Game {
   #players;
   #currentState;
   #currentPlayer;
-  constructor(countries, players, currentState, currentPlayer) {
+  constructor(countries) {
     this.#countries = countries;
-    this.#players = players;
-    this.#currentState = currentState;
-    this.#currentPlayer = currentPlayer;
+    this.#players = [];
+    this.#currentState = {};
+    this.#currentPlayer = {};
   }
 }
 

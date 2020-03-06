@@ -3,7 +3,7 @@ const { Game } = require('../src/game');
 
 describe('Game', function() {
   it('should give instance of game class', function() {
-    const game = new Game(['india', 'china'], {}, {}, 'Player1');
+    const game = new Game(['india', 'china']);
     assert.instanceOf(game, Game);
   });
 });
