@@ -9,6 +9,34 @@ body {
   font-family: sans-serif;
   overflow-x: hidden;
 }
+/* Logo  */
+.logo-player-container {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  top: 0.2vw;
+  left: 0.3vw;
+  max-width: 320px;
+  overflow: hidden;
+}
+.logo {
+  background-image: url('../images/logo.png');
+  background-size: contain;
+  height: 4vw;
+  width: 5vw;
+}
+.player-name {
+  border-left: 2px solid #000;
+  font-size: 20px;
+  font-weight: 500;
+  color: #570909;
+  position: relative;
+  margin-top: 1vw;
+  margin-left: 0.2vw;
+  padding: 5px 0 0 4px;
+  height: 26px;
+}
+
 /* left military units count box */
 .soldier-details {
   background-color: rgb(200, 200, 200, 0.2);
