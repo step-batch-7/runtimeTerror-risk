@@ -29,18 +29,22 @@
 .area {
   fill: #ddd;
   stroke-width: 1px;
+  cursor: pointer;
 }
 .country-name {
+  cursor: pointer;
   font-size: 8px;
   font-family: sans-serif;
   font-weight: 100;
   letter-spacing: 0.8px;
 }
 .circle {
+  cursor: pointer;
   fill: rgba(0, 0, 0, 0.2);
   r: 10px;
 }
 .unit {
+  cursor: pointer;
   font-size: 12px;
   font-family: sans-serif;
   letter-spacing: 0;
