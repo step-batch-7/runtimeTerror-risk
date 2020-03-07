@@ -5,12 +5,12 @@ const updateRemainingMilitaryCount = function(remainingMilitaryCount) {
 
 const updateGameStage = function(currentStageNum) {
   const stages = {
-    1: 'Claim(1st)',
-    2: 'Reinforcement(2nd)',
-    3: 'Final(3rd)'
+    1: 'Claim (1st Stage)',
+    2: 'Reinforcement (2nd Stage)',
+    3: 'Final (3rd Stage)'
   };
   const currentStage = document.querySelector('#stages span');
-  currentStage.innerText = `${stages[currentStageNum]} Stage`;
+  currentStage.innerText = `${stages[currentStageNum]}`;
 };
 
 const updateGameView = function(gameStatus) {
