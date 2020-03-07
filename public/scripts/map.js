@@ -1031,9 +1031,8 @@ const mapCode = `
   </svg>`;
 
 const getElement = elementBy => document.querySelector(elementBy);
-const main = function() {
+
+const renderMap = function() {
   const $map = getElement('#map');
   $map.innerHTML = mapCode;
 };
-
-window.onload = main();

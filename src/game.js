@@ -7,6 +7,11 @@ class Game {
     this.#players = [];
     this.#currentPlayer;
   }
+
+  get status() {
+    const status = { remainingMilitaryCount: 20 };
+    return status;
+  }
 }
 
 module.exports = { Game };
