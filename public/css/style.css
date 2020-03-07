@@ -122,3 +122,16 @@ body {
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(117, 117, 121, 0.8);
 }
+/* for popup message */
+.mouse-pop-up {
+  border: 1px solid black;
+  font-size: calc(0.8vw + 0.5em);
+  position: absolute;
+  box-shadow: 0 0 8px gray;
+  pointer-events: none;
+  color: #fff;
+  background-color: rgb(255, 0, 0, 0.7);
+}
+.hidden {
+  display: none;
+}
