@@ -1,5 +1,9 @@
 const express = require('express');
-const { getGameStatus, claimTerritory, performReinforcement } = require('./handlers');
+const {
+  getGameStatus,
+  claimTerritory,
+  performReinforcement
+} = require('./handlers');
 const Game = require('./game');
 const generateterritories = require('./territories');
 const app = express();
@@ -23,7 +27,11 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '100kb' }));
 app.get('/gameStatus', getGameStatus);
-app.post('/reinforcement', performReinforcement);
-app.post('/claimTerritory', hasFields('territory'), claimTerritory);
+app.post(
+  '/reinforcement',
+  hasFields('country', 'militaryCount'),
+  performReinforcement
+);
+app.post('/claimTerritory', hasFields('playerId', 'territory'), claimTerritory);
 
 module.exports = { app };

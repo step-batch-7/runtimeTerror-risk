@@ -14,17 +14,12 @@ class Player {
     this.#cards = [];
   }
 
-  get status() {
-    const playerDetails = { leftMilitaryCount: this.#leftMilitaryCount };
+  status() {
+    const playerDetails = {
+      leftMilitaryCount: this.#leftMilitaryCount,
+      id: this.#id
+    };
     return playerDetails;
-  }
-
-  get name() {
-    return this.#name;
-  }
-
-  get leftMilitaryCount() {
-    return this.#leftMilitaryCount;
   }
 
   removeMilitary(count) {

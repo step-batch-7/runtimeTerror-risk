@@ -16,7 +16,7 @@ class Game {
 
   get status() {
     const status = {};
-    const playerStatus = this.#players.red.status;
+    const playerStatus = this.#players.red.status();
     status.remainingMilitaryCount = playerStatus.leftMilitaryCount;
     status.currentStage = this.#currentStage;
     status.activities = this.#activities.slice();
@@ -64,7 +64,8 @@ class Game {
       return { status: false };
     }
     const message = 'You can’t place military unit in others territories';
-    if (!this.#territories[territory].isOccupiedBy(this.#currentPlayer.name)) {
+    const playerId = this.#currentPlayer.status().id;
+    if (!this.#territories[territory].isOccupiedBy(playerId)) {
       return { status: false, message };
     }
     this.#territories[territory].deployMilitary(militaryCount);
@@ -72,7 +73,7 @@ class Game {
     const playerIds = Object.keys(this.#players);
     if (
       playerIds.every(
-        playerId => this.#players[playerId].leftMilitaryCount === 0
+        playerId => this.#players[playerId].status().leftMilitaryCount === 0
       )
     ) {
       this.updateStage();

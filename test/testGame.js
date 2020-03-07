@@ -42,7 +42,18 @@ describe('Game', function() {
         status: false
       });
     });
+
+    it('should give true status when reinforcement is done', () => {
+      const india = generateterritories().india;
+      const game = new Game({ india });
+      game.addPlayer('Player1');
+      game.claimTerritory('red', 'india');
+      assert.deepStrictEqual(game.reinforcement('india', 1), {
+        status: true
+      });
+    });
   });
+
   context('updateStage', () => {
     it('should update the stage of game', () => {
       const game = new Game(['india', 'china']);
@@ -54,7 +65,9 @@ describe('Game', function() {
     const game = new Game(generateterritories());
     game.addPlayer('Player1');
     it('should claim territory if it is unclaimed', () => {
-      assert.deepStrictEqual(game.claimTerritory('red', 'india'), { status: true });
+      assert.deepStrictEqual(game.claimTerritory('red', 'india'), {
+        status: true
+      });
     });
 
     it('should give error message if it is claimed', () => {
@@ -66,7 +79,10 @@ describe('Game', function() {
 
     it('should give error message if it is not in claim stage', () => {
       game.updateStage();
-      assert.deepStrictEqual(game.claimTerritory('red', 'india'), { status: false, error: 'wrong stage' });
+      assert.deepStrictEqual(game.claimTerritory('red', 'india'), {
+        status: false,
+        error: 'wrong stage'
+      });
     });
   });
 });
