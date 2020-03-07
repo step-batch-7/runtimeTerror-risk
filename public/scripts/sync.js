@@ -11,13 +11,13 @@ const updateGameStage = function(currentStageNum) {
   };
   const currentStage = getElement('#stages span');
   currentStage.innerText = `${stages[currentStageNum]}`;
-  localStorage.setItem('stage', 1);
+  localStorage.setItem('stage', currentStageNum);
 };
 
 const updateActivities = function(activities) {
   const $activityLog = getElement('#activity-log');
   let activityHTML = '';
-  activities.forEach(({msg}) => {
+  activities.forEach(({ msg }) => {
     activityHTML += `<div class="activity-details">
                       <span class="activity-message">${msg}</span>
                     </div>`;
@@ -32,7 +32,7 @@ const updateGameView = function(gameStatus) {
 };
 
 const sendSyncReq = function() {
-  const reqOptions = {method: 'GET'};
+  const reqOptions = { method: 'GET' };
   fetch('/gameStatus', reqOptions)
     .then(response => response.json())
     .then(updateGameView);

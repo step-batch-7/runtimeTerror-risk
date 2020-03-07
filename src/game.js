@@ -51,7 +51,9 @@ class Game {
     this.#players[playerId].addTerritory(territory);
     this.#territories[territory].deployMilitary(1);
     const territories = Object.keys(this.#territories);
-    if (territories.every(territory => this.#territories[territory].isOccupied())) {
+    if (
+      territories.every(territory => this.#territories[territory].isOccupied())
+    ) {
       this.updateStage();
     }
     return { status: true };
@@ -68,7 +70,11 @@ class Game {
     this.#territories[territory].deployMilitary(militaryCount);
     this.#currentPlayer.removeMilitary(militaryCount);
     const playerIds = Object.keys(this.#players);
-    if (playerIds.every(playerId => this.#players[playerId].leftMilitaryCount === 0)) {
+    if (
+      playerIds.every(
+        playerId => this.#players[playerId].leftMilitaryCount === 0
+      )
+    ) {
       this.updateStage();
     }
     return { status: true };
