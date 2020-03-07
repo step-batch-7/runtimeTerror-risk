@@ -54,11 +54,17 @@ body {
   font-size: calc(0.8vw + 0.5em);
 }
 
+/* stage showing box */
 #stages {
   position: absolute;
   top: 2vh;
-  left: 38vw;
-  font-size: calc(0.9vw + 0.7em);
-  border-bottom: 2px solid #515585;
+  left: 31vw;
+  font-size: calc(0.8vw + 0.7em);
+  width: 21vw;
+  text-align: center;
   color: #515585;
+}
+
+#stages > span {
+  border-bottom: 2px solid #515585;
 }

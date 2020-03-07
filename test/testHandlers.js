@@ -21,14 +21,20 @@ describe('Handlers', () => {
   });
 
   context('Requests for game status', () => {
-    it('Should give status of the game', done => {
+    it('Should give remainingMilitaryCount in game status', done => {
       request(app)
         .get('/gameStatus')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect(
-          JSON.stringify({ remainingMilitaryCount: 20, currentStage: 1 })
-        );
+        .expect(/remainingMilitaryCount/);
+    });
+
+    it('Should give currentStage in game status', done => {
+      request(app)
+        .get('/gameStatus')
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8', done)
+        .expect(/currentStage/);
     });
   });
 });
