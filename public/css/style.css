@@ -25,17 +25,6 @@ body {
   height: 4vw;
   width: 5vw;
 }
-.player-name {
-  border-left: 2px solid #000;
-  font-size: calc(0.8vw + 0.8em);
-  font-weight: 500;
-  color: #570909;
-  position: relative;
-  margin-top: 1vw;
-  margin-left: 0.2vw;
-  padding: 5px 0 0 4px;
-  height: 2.2vw;
-}
 
 /* left military units count box */
 .soldier-details {
