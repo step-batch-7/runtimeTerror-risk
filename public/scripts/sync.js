@@ -11,6 +11,7 @@ const updateGameStage = function(currentStageNum) {
   };
   const currentStage = document.querySelector('#stages span');
   currentStage.innerText = `${stages[currentStageNum]}`;
+  localStorage.setItem('stage', currentStageNum);
 };
 
 const updateGameView = function(gameStatus) {
