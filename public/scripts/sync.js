@@ -3,8 +3,15 @@ const updateRemainingMilitaryCount = function(remainingMilitaryCount) {
   soldierCount.innerText = remainingMilitaryCount;
 };
 
+const updateGameStage = function(currentStageNum) {
+  const stages = { 1: 'Claim', 2: 'Reinforcement', 3: 'Final Stage' };
+  const currentStage = document.querySelector('#stages');
+  currentStage.innerText = stages[currentStageNum];
+};
+
 const updateGameView = function(gameStatus) {
   updateRemainingMilitaryCount(gameStatus.remainingMilitaryCount);
+  updateGameStage(gameStatus.currentStage);
 };
 
 const sendSyncReq = function() {

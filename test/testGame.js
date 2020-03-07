@@ -6,4 +6,14 @@ describe('Game', function() {
     const game = new Game(['india', 'china']);
     assert.instanceOf(game, Game);
   });
+
+  context('status', () => {
+    it('should give current status of the game', () => {
+      const game = new Game(['india', 'china']);
+      assert.deepStrictEqual(game.status, {
+        currentStage: 1,
+        remainingMilitaryCount: 20
+      });
+    });
+  });
 });

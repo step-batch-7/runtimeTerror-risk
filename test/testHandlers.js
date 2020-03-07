@@ -10,6 +10,7 @@ describe('Handlers', () => {
         .expect('Content-Type', 'text/html; charset=UTF-8', done)
         .expect(/\.\/scripts\/map\.js/);
     });
+
     it('Should serve the index.html page for /', done => {
       request(app)
         .get('/')
@@ -18,13 +19,16 @@ describe('Handlers', () => {
         .expect(/\.\/scripts\/map\.js/);
     });
   });
+
   context('Requests for game status', () => {
     it('Should give status of the game', done => {
       request(app)
         .get('/gameStatus')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect(JSON.stringify({ remainingMilitaryCount: 20 }));
+        .expect(
+          JSON.stringify({ remainingMilitaryCount: 20, currentStage: 1 })
+        );
     });
   });
 });
