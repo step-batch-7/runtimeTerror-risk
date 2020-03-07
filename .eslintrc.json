@@ -94,6 +94,12 @@
         "no-console": "off",
         "no-process-env": "off"
       }
+    },
+    {
+      "files": ["public/scripts/map.js"],
+      "rules": {
+        "max-len": "off"
+      }
     }
   ]
 }

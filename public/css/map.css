@@ -34,7 +34,6 @@
 .country-name {
   cursor: pointer;
   font-size: 8px;
-  text-shadow: 0 0 2px #666;
   font-family: sans-serif;
   font-weight: 100;
   letter-spacing: 1px;
