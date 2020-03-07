@@ -49,6 +49,11 @@ class Game {
     }
     this.#territories[territory].changeRuler(playerId);
     this.#players[playerId].addTerritory(territory);
+    this.#territories[territory].deployMilitary(1);
+    const territories = Object.keys(this.#territories);
+    if (territories.every(territory => this.#territories[territory].isOccupied())) {
+      this.updateStage();
+    }
     return { status: true };
   }
 

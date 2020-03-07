@@ -10,8 +10,8 @@ const performReinforcement = function(req, res) {
 };
 
 const claimTerritory = function(req, res) {
-  const { player, territory } = req.body;
-  const response = req.app.locals.game.claimTerritory(player, territory);
+  const { playerId, territory } = req.body;
+  const response = req.app.locals.game.claimTerritory(playerId, territory);
   res.json(response);
 };
 
