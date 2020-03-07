@@ -6,4 +6,11 @@ describe('Player', function() {
     const player = new Player('india', ['china']);
     assert.instanceOf(player, Player);
   });
+
+  context('status', () => {
+    it('should give status of player', () => {
+      const player = new Player('Player1', 'red', 30);
+      assert.deepStrictEqual(player.status, { leftMilitaryCount: 30 });
+    });
+  });
 });

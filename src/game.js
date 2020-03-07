@@ -1,3 +1,5 @@
+const Player = require('./player');
+
 class Game {
   #countries;
   #players;
@@ -12,10 +14,17 @@ class Game {
 
   get status() {
     const status = {};
-    status.remainingMilitaryCount = 20;
+    const playerStatus = this.#players[0].status;
+    status.remainingMilitaryCount = playerStatus.leftMilitaryCount;
     status.currentStage = this.#currentStage;
     return status;
   }
+
+  addPlayer(name) {
+    const newPlayer = new Player(name, 'red', 25);
+    this.#players.push(newPlayer);
+    return this.#players.length;
+  }
 }
 
-module.exports = { Game };
+module.exports = Game;

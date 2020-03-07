@@ -5,13 +5,18 @@ class Player {
   #leftMilitaryCount;
   #cardEligibility;
   #cards;
-  constructor(name, color) {
+  constructor(name, color, intialMilitaryCount) {
     this.#name = name;
     this.#color = color;
     this.#countries = [];
-    this.#leftMilitaryCount;
+    this.#leftMilitaryCount = intialMilitaryCount;
     this.#cardEligibility = false;
     this.#cards = [];
+  }
+
+  get status() {
+    const playerDetails = { leftMilitaryCount: this.#leftMilitaryCount };
+    return playerDetails;
   }
 }
 
