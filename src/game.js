@@ -5,11 +5,13 @@ class Game {
   #players;
   #currentPlayer;
   #currentStage;
+  #activities;
   constructor(countries) {
     this.#countries = countries;
     this.#players = [];
     this.#currentPlayer;
     this.#currentStage = 1;
+    this.#activities = [];
   }
 
   get status() {
@@ -18,6 +20,10 @@ class Game {
     status.remainingMilitaryCount = playerStatus.leftMilitaryCount;
     status.currentStage = this.#currentStage;
     return status;
+  }
+
+  addActivity(msg) {
+    return this.#activities.unshift({msg});
   }
 
   addPlayer(name) {

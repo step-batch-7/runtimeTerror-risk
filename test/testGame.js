@@ -24,4 +24,11 @@ describe('Game', function() {
       assert.strictEqual(game.addPlayer('Player1'), 1);
     });
   });
+
+  context('addActivity', () => {
+    it('should add a new activity', () => {
+      const game = new Game(['india', 'china']);
+      assert.strictEqual(game.addActivity('New game started'), 1);
+    });
+  });
 });
