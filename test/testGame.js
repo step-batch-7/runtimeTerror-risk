@@ -13,7 +13,8 @@ describe('Game', function() {
       game.addPlayer('John');
       assert.deepStrictEqual(game.status, {
         currentStage: 1,
-        remainingMilitaryCount: 25
+        remainingMilitaryCount: 25,
+        activities: [{msg: 'John has joined.'}]
       });
     });
   });

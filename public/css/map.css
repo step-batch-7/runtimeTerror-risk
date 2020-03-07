@@ -32,19 +32,19 @@
   cursor: pointer;
 }
 .country-name {
-  cursor: pointer;
   font-size: 8px;
   font-family: sans-serif;
+  pointer-events: none;
   font-weight: 100;
   letter-spacing: 1px;
 }
 .circle {
-  cursor: pointer;
+  pointer-events: none;
   fill: rgba(0, 0, 0, 0.2);
   r: 10px;
 }
 .unit {
-  cursor: pointer;
+  pointer-events: none;
   font-size: 12px;
   font-family: sans-serif;
   letter-spacing: 0;

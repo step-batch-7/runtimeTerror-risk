@@ -19,6 +19,7 @@ class Game {
     const playerStatus = this.#players[0].status;
     status.remainingMilitaryCount = playerStatus.leftMilitaryCount;
     status.currentStage = this.#currentStage;
+    status.activities = this.#activities.slice();
     return status;
   }
 
@@ -28,6 +29,7 @@ class Game {
 
   addPlayer(name) {
     const newPlayer = new Player(name, 'red', 25);
+    this.addActivity(`${name} has joined.`);
     return this.#players.push(newPlayer);
   }
 }
