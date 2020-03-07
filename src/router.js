@@ -24,6 +24,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '100kb' }));
 app.get('/gameStatus', getGameStatus);
 app.post('/reinforcement', performReinforcement);
-app.post('/claimTerritory', hasFields('playerId', 'territory'), claimTerritory);
+app.post('/claimTerritory', hasFields('territory'), claimTerritory);
 
 module.exports = { app };

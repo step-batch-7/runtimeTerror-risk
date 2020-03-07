@@ -5,11 +5,11 @@ class Player {
   #leftMilitaryCount;
   #cardEligibility;
   #cards;
-  constructor(name, id, intialMilitaryCount) {
+  constructor(name, id, initialMilitaryCount) {
     this.#name = name;
     this.#id = id;
     this.#territories = [];
-    this.#leftMilitaryCount = intialMilitaryCount;
+    this.#leftMilitaryCount = initialMilitaryCount;
     this.#cardEligibility = false;
     this.#cards = [];
   }

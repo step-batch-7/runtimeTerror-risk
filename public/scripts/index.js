@@ -4,19 +4,36 @@ const showReinforcementStatus = function({ status, message }) {
   }
 };
 
-const sendReinforcementRequest = function(country, militaryCount = 1) {
+const sendReinforcementRequest = function(territory, militaryCount = 1) {
   fetch('/reinforcement', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ country, militaryCount })
+    body: JSON.stringify({ territory, militaryCount })
   })
     .then(response => response.json())
     .then(showReinforcementStatus);
 };
 
-const sendClaimRequest = function(country) {};
+const updateTerritory = function(response, territory) {
+  if (response.status) {
+    getElement(`#${territory}`).style.fill = 'red';
+    getElement(`#${territory} + .unit`).innerHTML = '&nbsp;1';
+  }
+};
+
+const sendClaimRequest = function(territory) {
+  fetch('/claimTerritory', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ territory })
+  })
+    .then(response => response.json())
+    .then(data => updateTerritory(data, territory));
+};
 
 const selectListener = function() {
   const listeners = { '1': sendClaimRequest, '2': sendReinforcementRequest };
@@ -24,16 +41,16 @@ const selectListener = function() {
   listeners[stage](event.target.id);
 };
 
-const addListenerOnCountry = () => {
+const addListenerOnterritory = () => {
   const countries = Array.from(document.querySelectorAll('.area'));
-  countries.forEach(country => {
-    country.addEventListener('click', selectListener);
+  countries.forEach(territory => {
+    territory.addEventListener('click', selectListener);
   });
 };
 
 const main = function() {
   renderMap();
-  addListenerOnCountry();
+  addListenerOnterritory();
   sendSyncReq();
   setInterval(sendSyncReq, 1000);
 };
