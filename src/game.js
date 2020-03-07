@@ -28,8 +28,8 @@ class Game {
 
   addPlayer(name) {
     const newPlayer = new Player(name, 'red', 25);
-    this.#players.push(newPlayer);
-    return this.#players.length;
+    return this.#players.push(newPlayer);
+    // return this.#players.length;
   }
 }
 
