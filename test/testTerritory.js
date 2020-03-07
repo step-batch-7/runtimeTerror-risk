@@ -1,27 +1,48 @@
-const Country = require('../src/country');
-const {assert} = require('chai');
+const { assert } = require('chai');
+const Territory = require('../src/territory');
 
-describe('Country', function() {
-  it('Should give the instance of country class', function() {
-    const country = new Country('india', ['china']);
-    assert.instanceOf(country, Country);
+describe('Territory', function() {
+  it('Should give the instance of Territory class', function() {
+    const territory = new Territory('india', ['china']);
+    assert.instanceOf(territory, Territory);
+  });
+
+  context('changeRuler', () => {
+    it('should change the ruler of the territory', () => {
+      const territory = new Territory('india', ['china']);
+      assert.strictEqual(territory.changeRuler('red'), 'red');
+    });
+  });
+
+  context('isOccupied', () => {
+    it('should give true for occupied territory', () => {
+      const territory = new Territory('india', ['china']);
+      territory.changeRuler('red');
+      assert.isTrue(territory.isOccupied());
+    });
+
+    it('should give false for unoccupied territory', () => {
+      const territory = new Territory('india', ['china']);
+      assert.isFalse(territory.isOccupied());
+    });
   });
 
   context('isOccupiedBy', function() {
-    it('Should give true when the given country is occupiedBy that player', function() {
-      const country = new Country('india', ['china']);
-      assert.isTrue(country.isOccupiedBy('Player1'));
+    it('Should give true when the given territory is occupiedBy that player', function() {
+      const territory = new Territory('india', ['china']);
+      territory.changeRuler('red');
+      assert.isTrue(territory.isOccupiedBy('red'));
     });
-    it('Should give false when the given country not occupiedBy that player', function() {
-      const country = new Country('india', ['china']);
-      assert.isFalse(country.isOccupiedBy('Player2'));
+    it('Should give false when the given territory not occupiedBy that player', function() {
+      const territory = new Territory('india', ['china']);
+      assert.isFalse(territory.isOccupiedBy('Player2'));
     });
   });
 
   context('deployMilitary', function() {
     it('Should give the incremented military unit', function() {
-      const country = new Country('india', ['china']);
-      assert.strictEqual(country.deployMilitary(1), 1);
+      const territory = new Territory('india', ['china']);
+      assert.strictEqual(territory.deployMilitary(1), 1);
     });
   });
 });

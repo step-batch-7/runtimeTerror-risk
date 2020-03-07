@@ -5,12 +5,14 @@ const getGameStatus = function(req, res) {
 
 const performReinforcement = function(req, res) {
   const { country, militaryCount } = req.body;
-  const reinforcementStatus = req.app.locals.game.reinforcement(
-    country,
-    militaryCount
-  );
-
+  const reinforcementStatus = req.app.locals.game.reinforcement(country, militaryCount);
   res.json(reinforcementStatus);
 };
 
-module.exports = { getGameStatus, performReinforcement };
+const claimTerritory = function(req, res) {
+  const { player, territory } = req.body;
+  const response = req.app.locals.game.claimTerritory(player, territory);
+  res.json(response);
+};
+
+module.exports = { getGameStatus, claimTerritory, performReinforcement };

@@ -1,29 +1,15 @@
-const Country = require('./country');
+const Territory = require('./territory');
 
-const countriesList = {
+const territoriesList = {
   easternAustralia: ['westernAustralia', 'newGuinea'],
   indonesia: ['westernAustralia', 'siam', 'newGuinea'],
   newGuinea: ['indonesia', 'westernAustralia', 'easternAustralia'],
   alaska: ['kamchatka', 'northwestTerritory', 'alberta'],
-  ontario: [
-    'northwestTerritory',
-    'alberta',
-    'westernUs',
-    'easternUs',
-    'quebec',
-    'greenland'
-  ],
+  ontario: ['northwestTerritory', 'alberta', 'westernUs', 'easternUs', 'quebec', 'greenland'],
   northwestTerritory: ['greenland', 'ontario', 'alberta', 'alaska'],
   venezuela: ['centralAmerica', 'brazil', 'peru'],
   madagascar: ['southAfrica', 'eastAfrica'],
-  northAfrica: [
-    'brazil',
-    'westernEurope',
-    'southernEurope',
-    'egypt',
-    'eastAfrica',
-    'congo'
-  ],
+  northAfrica: ['brazil', 'westernEurope', 'southernEurope', 'egypt', 'eastAfrica', 'congo'],
   greenland: ['northwestTerritory', 'ontario', 'quebec', 'iceland'],
   iceland: ['greenland', 'scandinavia', 'uk'],
   uk: ['iceland', 'scandinavia', 'northernEurope', 'westernEurope'],
@@ -34,52 +20,18 @@ const countriesList = {
   siberia: ['yakutsk', 'irkutsk', 'mongolia', 'china', 'ural'],
   ural: ['ukraine', 'afghanistan', 'china', 'siberia'],
   afghanistan: ['ukraine', 'ural', 'china', 'india', 'middleEast'],
-  middleEast: [
-    'southernEurope',
-    'ukraine',
-    'afghanistan',
-    'india',
-    'eastAfrica',
-    'egypt'
-  ],
+  middleEast: ['southernEurope', 'ukraine', 'afghanistan', 'india', 'eastAfrica', 'egypt'],
   india: ['siam', 'china', 'afghanistan', 'middleEast'],
   siam: ['india', 'china', 'indonesia'],
   china: ['siam', 'india', 'afghanistan', 'ural', 'siberia', 'mongolia'],
   mongolia: ['japan', 'kamchatka', 'irkutsk', 'siberia', 'china'],
   irkutsk: ['yakutsk', 'siberia', 'mongolia', 'kamchatka'],
-  ukraine: [
-    'ural',
-    'afghanistan',
-    'middleEast',
-    'southernEurope',
-    'northernEurope',
-    'scandinavia'
-  ],
-  southernEurope: [
-    'northernEurope',
-    'westernEurope',
-    'northAfrica',
-    'egypt',
-    'middleEast',
-    'ukraine'
-  ],
+  ukraine: ['ural', 'afghanistan', 'middleEast', 'southernEurope', 'northernEurope', 'scandinavia'],
+  southernEurope: ['northernEurope', 'westernEurope', 'northAfrica', 'egypt', 'middleEast', 'ukraine'],
   westernEurope: ['uk', 'northernEurope', 'southernEurope', 'northAfrica'],
-  northernEurope: [
-    'scandinavia',
-    'uk',
-    'westernEurope',
-    'southernEurope',
-    'ukraine'
-  ],
+  northernEurope: ['scandinavia', 'uk', 'westernEurope', 'southernEurope', 'ukraine'],
   egypt: ['southernEurope', 'northAfrica', 'eastAfrica', 'middleEast'],
-  eastAfrica: [
-    'madagascar',
-    'southAfrica',
-    'congo',
-    'northAfrica',
-    'egypt',
-    'middleEast'
-  ],
+  eastAfrica: ['madagascar', 'southAfrica', 'congo', 'northAfrica', 'egypt', 'middleEast'],
   congo: ['northAfrica', 'eastAfrica', 'southAfrica'],
   southAfrica: ['madagascar', 'eastAfrica', 'congo'],
   brazil: ['northAfrica', 'peru', 'argentina', 'venezuela'],
@@ -93,12 +45,12 @@ const countriesList = {
   alberta: ['alaska', 'northwestTerritory', 'ontario', 'westernUs']
 };
 
-const generateCountries = () => {
-  const countries = {};
-  for (const country in countriesList) {
-    countries[country] = new Country(country, countriesList[country]);
+const generateterritories = () => {
+  const territories = {};
+  for (const territory in territoriesList) {
+    territories[territory] = new Territory(territory, territoriesList[territory]);
   }
-  return countries;
+  return territories;
 };
 
-module.exports = generateCountries;
+module.exports = generateterritories;

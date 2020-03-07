@@ -34,4 +34,11 @@ describe('Player', function() {
       assert.strictEqual(player.removeMilitary(1), 29);
     });
   });
+
+  context('addTerritory', () => {
+    it('should add territory to territories list of player', () => {
+      const player = new Player('Player1', 'red', 30);
+      assert.strictEqual(player.addTerritory('india'), 1);
+    });
+  });
 });

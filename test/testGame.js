@@ -1,6 +1,7 @@
-const {assert} = require('chai');
+const { assert } = require('chai');
 const Game = require('../src/game');
-const Country = require('../src/country');
+const Player = require('../src/player');
+const generateterritories = require('../src/territories');
 
 describe('Game', function() {
   it('should give instance of game class', function() {
@@ -23,7 +24,7 @@ describe('Game', function() {
   context('addPlayer', () => {
     it('should add a new player in player list', () => {
       const game = new Game(['india', 'china']);
-      assert.strictEqual(game.addPlayer('Player1'), 1);
+      assert.instanceOf(game.addPlayer('Player1'), Player);
     });
   });
 
@@ -36,10 +37,36 @@ describe('Game', function() {
 
   context('reinforcement', () => {
     it('should give false status when the stage is not 2 ', () => {
-      const game = new Game(new Country('india', ['china']));
+      const game = new Game(generateterritories());
       assert.deepStrictEqual(game.reinforcement('india', 1), {
         status: false
       });
+    });
+  });
+  context('updateStage', () => {
+    it('should update the stage of game', () => {
+      const game = new Game(['india', 'china']);
+      assert.strictEqual(game.updateStage(), 2);
+    });
+  });
+
+  context('claimTerritory', () => {
+    const game = new Game(generateterritories());
+    game.addPlayer('Player1');
+    it('should claim territory if it is unclaimed', () => {
+      assert.deepStrictEqual(game.claimTerritory('red', 'india'), { status: true });
+    });
+
+    it('should give error message if it is claimed', () => {
+      assert.deepStrictEqual(game.claimTerritory('red', 'india'), {
+        status: false,
+        error: 'territory already occupied'
+      });
+    });
+
+    it('should give error message if it is not in claim stage', () => {
+      game.updateStage();
+      assert.deepStrictEqual(game.claimTerritory('red', 'india'), { status: false, error: 'wrong stage' });
     });
   });
 });

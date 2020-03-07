@@ -436,7 +436,7 @@ const mapCode = `
       inkscape:groupmode="layer"
       id="layer4"
       style="display: inline;"
-      inkscape:label="countries"
+      inkscape:label="territories"
       transform="translate(-167.99651,-118.55507)"
     >
       <g>
@@ -447,7 +447,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(873 560)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(880 555)"></circle>
-        <text class="country-name" x="835" y="540">
+        <text class="territory-name" x="835" y="540">
           Eastern Australia
         </text>
       </g>
@@ -459,7 +459,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(776 485)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(783 480)"></circle>
-        <text class="country-name" x="755" y="465">
+        <text class="territory-name" x="755" y="465">
           Indonesia
         </text>
       </g>
@@ -471,7 +471,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(840 470)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(847 465)"></circle>
-        <text class="country-name" x="820" y="440">
+        <text class="territory-name" x="820" y="440">
           New Guinea
         </text>
       </g>
@@ -483,7 +483,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(218 200)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(225 195)"></circle>
-        <text class="country-name" x="205" y="215">
+        <text class="territory-name" x="205" y="215">
           Alaska
         </text>
       </g>
@@ -495,7 +495,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(320 247)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(327 242)"></circle>
-        <text class="country-name" x="315" y="260">
+        <text class="territory-name" x="315" y="260">
           Ontario
         </text>
       </g>
@@ -507,7 +507,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(275 197)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(282 192)"></circle>
-        <text class="country-name" x="250" y="210">
+        <text class="territory-name" x="250" y="210">
           Northwest Territory
         </text>
       </g>
@@ -519,7 +519,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(329 416)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(336 411)"></circle>
-        <text class="country-name" x="330" y="398">
+        <text class="territory-name" x="330" y="398">
           Venezuela
         </text>
       </g>
@@ -531,7 +531,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(638 557)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(645 552)"></circle>
-        <text class="country-name" x="610" y="595">
+        <text class="territory-name" x="610" y="595">
           Madagascar
         </text>
       </g>
@@ -543,7 +543,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(503 430)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(510 425)"></circle>
-        <text class="country-name" x="490" y="450">
+        <text class="territory-name" x="490" y="450">
           North Africa
         </text>
       </g>
@@ -555,7 +555,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(423 170)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(430 165)"></circle>
-        <text class="country-name" x="410" y="185">
+        <text class="territory-name" x="410" y="185">
           Greenland
         </text>
       </g>
@@ -567,7 +567,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(480 230)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(487 225)"></circle>
-        <text class="country-name" x="468" y="209">
+        <text class="territory-name" x="468" y="209">
           Iceland
         </text>
       </g>
@@ -579,7 +579,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(478 297)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(485 292)"></circle>
-        <text class="country-name" x="450" y="273">
+        <text class="territory-name" x="450" y="273">
           Great Britain
         </text>
       </g>
@@ -591,7 +591,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(531 235)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(538 230)"></circle>
-        <text class="country-name" x="520" y="215">
+        <text class="territory-name" x="520" y="215">
           Scandinavia
         </text>
       </g>
@@ -603,7 +603,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(843 310)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(850 305)"></circle>
-        <text class="country-name" x="842" y="328">
+        <text class="territory-name" x="842" y="328">
           Japan
         </text>
       </g>
@@ -615,7 +615,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(778 183)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(785 178)"></circle>
-        <text class="country-name" x="755" y="198">
+        <text class="territory-name" x="755" y="198">
           Yakutsk
         </text>
       </g>
@@ -627,7 +627,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(835 203)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(842 198)"></circle>
-        <text class="country-name" x="810" y="185">
+        <text class="territory-name" x="810" y="185">
           Kamchatka
         </text>
       </g>
@@ -639,7 +639,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(715 205)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(722 200)"></circle>
-        <text class="country-name" x="710" y="220">
+        <text class="territory-name" x="710" y="220">
           Siberia
         </text>
       </g>
@@ -651,7 +651,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(675 245)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(682 240)"></circle>
-        <text class="country-name" x="675" y="260">
+        <text class="territory-name" x="675" y="260">
           Ural
         </text>
       </g>
@@ -663,7 +663,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(663 300)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(670 295)"></circle>
-        <text class="country-name" x="650" y="315">
+        <text class="territory-name" x="650" y="315">
           Afghanistan
         </text>
       </g>
@@ -675,7 +675,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(620 395)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(627 390)"></circle>
-        <text class="country-name" x="615" y="375">
+        <text class="territory-name" x="615" y="375">
           Middle East
         </text>
       </g>
@@ -687,7 +687,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(708 380)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(715 375)"></circle>
-        <text class="country-name" x="705" y="395">
+        <text class="territory-name" x="705" y="395">
           India
         </text>
       </g>
@@ -699,7 +699,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(760 405)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(767 400)"></circle>
-        <text class="country-name" x="772" y="418">
+        <text class="territory-name" x="772" y="418">
           Siam
         </text>
       </g>
@@ -711,7 +711,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(748 340)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(755 335)"></circle>
-        <text class="country-name" x="745" y="355">
+        <text class="territory-name" x="745" y="355">
           China
         </text>
       </g>
@@ -723,7 +723,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(763 295)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(770 290)"></circle>
-        <text class="country-name" x="755" y="308">
+        <text class="territory-name" x="755" y="308">
           Mongolia
         </text>
       </g>
@@ -735,7 +735,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(763 250)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(770 245)"></circle>
-        <text class="country-name" x="740" y="265">
+        <text class="territory-name" x="740" y="265">
           Irkutsk
         </text>
       </g>
@@ -747,7 +747,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(608 255)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(615 250)"></circle>
-        <text class="country-name" x="600" y="270">
+        <text class="territory-name" x="600" y="270">
           Ukraine
         </text>
       </g>
@@ -759,7 +759,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(555 345)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(562 340)"></circle>
-        <text class="country-name" x="520" y="327">
+        <text class="territory-name" x="520" y="327">
           Southern Europe
         </text>
       </g>
@@ -771,7 +771,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(496 333)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(503 328)"></circle>
-        <text class="country-name" x="460" y="360">
+        <text class="territory-name" x="460" y="360">
           Western Europe
         </text>
       </g>
@@ -783,7 +783,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(543 285)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(550 280)"></circle>
-        <text class="country-name" x="500" y="300">
+        <text class="territory-name" x="500" y="300">
           Northern Europe
         </text>
       </g>
@@ -795,7 +795,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(551 410)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(558 405)"></circle>
-        <text class="country-name" x="570" y="413">
+        <text class="territory-name" x="570" y="413">
           Egypt
         </text>
       </g>
@@ -807,7 +807,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(595 455)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(602 450)"></circle>
-        <text class="country-name" x="590" y="470">
+        <text class="territory-name" x="590" y="470">
           East Africa
         </text>
       </g>
@@ -819,7 +819,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(568 487)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(575 482)"></circle>
-        <text class="country-name" x="560" y="502">
+        <text class="territory-name" x="560" y="502">
           Congo
         </text>
       </g>
@@ -831,7 +831,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(573 570)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(580 565)"></circle>
-        <text class="country-name" x="550" y="545">
+        <text class="territory-name" x="550" y="545">
           South Africa
         </text>
       </g>
@@ -843,7 +843,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(393 445)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(400 440)"></circle>
-        <text class="country-name" x="390" y="460">
+        <text class="territory-name" x="390" y="460">
           Brazil
         </text>
       </g>
@@ -855,7 +855,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(350 545)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(357 540)"></circle>
-        <text class="country-name" x="348" y="520">
+        <text class="territory-name" x="348" y="520">
           Argentina
         </text>
       </g>
@@ -867,7 +867,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(333 305)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(340 300)"></circle>
-        <text class="country-name" x="310" y="320">
+        <text class="territory-name" x="310" y="320">
           Eastern US
         </text>
       </g>
@@ -879,7 +879,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(283 285)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(290 280)"></circle>
-        <text class="country-name" x="260" y="300">
+        <text class="territory-name" x="260" y="300">
           Western US
         </text>
       </g>
@@ -891,7 +891,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(376 246)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(383 241)"></circle>
-        <text class="country-name" x="365" y="259">
+        <text class="territory-name" x="365" y="259">
           Quebec
         </text>
       </g>
@@ -903,7 +903,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(280 345)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(287 340)"></circle>
-        <text class="country-name" x="270" y="365">
+        <text class="territory-name" x="270" y="365">
           Central America
         </text>
       </g>
@@ -915,7 +915,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(347 467)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(354 462)"></circle>
-        <text class="country-name" x="362" y="477">
+        <text class="territory-name" x="362" y="477">
           Peru
         </text>
       </g>
@@ -927,7 +927,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(808 543)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(815 538)"></circle>
-        <text class="country-name" x="785" y="559">
+        <text class="territory-name" x="785" y="559">
           Western Australia
         </text>
       </g>
@@ -939,7 +939,7 @@ const mapCode = `
         />
         <text class="unit" transform="translate(278 240)"> &nbsp;0 </text>
         <circle class="circle" transform="translate(285 235)"></circle>
-        <text class="country-name" x="270" y="255">
+        <text class="territory-name" x="270" y="255">
           Alberta
         </text>
       </g>

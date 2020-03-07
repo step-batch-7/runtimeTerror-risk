@@ -1,4 +1,4 @@
-class Country {
+class Territory {
   #name;
   #neighborsName;
   #occupiedBy;
@@ -6,7 +6,7 @@ class Country {
   constructor(name, neighborsName) {
     this.#name = name;
     this.#neighborsName = neighborsName;
-    this.#occupiedBy = 'Player1';
+    this.#occupiedBy;
     this.#militaryUnits = 0;
   }
 
@@ -18,6 +18,15 @@ class Country {
     this.#militaryUnits += militaryCount;
     return this.#militaryUnits;
   }
+
+  isOccupied() {
+    return this.#occupiedBy !== undefined;
+  }
+
+  changeRuler(playerId) {
+    this.#occupiedBy = playerId;
+    return this.#occupiedBy;
+  }
 }
 
-module.exports = Country;
+module.exports = Territory;

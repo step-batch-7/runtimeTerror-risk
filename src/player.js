@@ -1,14 +1,14 @@
 class Player {
   #name;
-  #color;
-  #countries;
+  #id;
+  #territories;
   #leftMilitaryCount;
   #cardEligibility;
   #cards;
-  constructor(name, color, intialMilitaryCount) {
+  constructor(name, id, intialMilitaryCount) {
     this.#name = name;
-    this.#color = color;
-    this.#countries = [];
+    this.#id = id;
+    this.#territories = [];
     this.#leftMilitaryCount = intialMilitaryCount;
     this.#cardEligibility = false;
     this.#cards = [];
@@ -30,6 +30,10 @@ class Player {
   removeMilitary(count) {
     this.#leftMilitaryCount -= count;
     return this.#leftMilitaryCount;
+  }
+
+  addTerritory(territory) {
+    return this.#territories.push(territory);
   }
 }
 
