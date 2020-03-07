@@ -1,11 +1,17 @@
 class Player {
+  #name;
+  #color;
+  #countries;
+  #leftMilitaryCount;
+  #cardEligibility;
+  #cards;
   constructor(name, color) {
-    this.name = name;
-    this.color = color;
-    this.countries = [];
-    this.leftMilitaryCount;
-    this.cardEligibility = false;
-    this.cards = [];
+    this.#name = name;
+    this.#color = color;
+    this.#countries = [];
+    this.#leftMilitaryCount;
+    this.#cardEligibility = false;
+    this.#cards = [];
   }
 }
 
