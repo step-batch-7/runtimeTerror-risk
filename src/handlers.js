@@ -1,9 +1,5 @@
-const Game = require('./game');
-const game = new Game([]);
-game.addPlayer('Player1');
-
 const getGameStatus = function(req, res) {
-  const gameStatus = game.status;
+  const gameStatus = req.app.locals.game.status;
   res.json(gameStatus);
 };
 
