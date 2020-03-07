@@ -18,6 +18,19 @@ class Player {
     const playerDetails = { leftMilitaryCount: this.#leftMilitaryCount };
     return playerDetails;
   }
+
+  get name() {
+    return this.#name;
+  }
+
+  get leftMilitaryCount() {
+    return this.#leftMilitaryCount;
+  }
+
+  removeMilitary(count) {
+    this.#leftMilitaryCount -= count;
+    return this.#leftMilitaryCount;
+  }
 }
 
 module.exports = Player;

@@ -24,13 +24,30 @@ class Game {
   }
 
   addActivity(msg) {
-    return this.#activities.unshift({msg});
+    return this.#activities.unshift({ msg });
   }
 
   addPlayer(name) {
     const newPlayer = new Player(name, 'red', 25);
+    this.#currentPlayer = newPlayer;
     this.addActivity(`${name} has joined.`);
     return this.#players.push(newPlayer);
+  }
+
+  reinforcement(country, militaryCount) {
+    if (this.#currentStage != 2) {
+      return { status: false };
+    }
+    const message = 'You can’t place military unit in others territories';
+    if (!this.#countries[country].isOccupiedBy(this.#currentPlayer.name)) {
+      return { status: false, message };
+    }
+    this.#countries[country].deployMilitary(militaryCount);
+    this.#currentPlayer.removeMilitary(militaryCount);
+    if (this.#players.every(player => player.leftMilitaryCount === 0)) {
+      this.#currentStage += 1;
+    }
+    return { status: true };
   }
 }
 

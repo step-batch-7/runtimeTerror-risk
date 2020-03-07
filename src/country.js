@@ -6,8 +6,17 @@ class Country {
   constructor(name, neighborsName) {
     this.#name = name;
     this.#neighborsName = neighborsName;
-    this.#occupiedBy;
-    this.#militaryUnits;
+    this.#occupiedBy = 'Player1';
+    this.#militaryUnits = 0;
+  }
+
+  isOccupiedBy(player) {
+    return this.#occupiedBy === player;
+  }
+
+  deployMilitary(militaryCount) {
+    this.#militaryUnits += militaryCount;
+    return this.#militaryUnits;
   }
 }
 

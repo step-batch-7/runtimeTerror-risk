@@ -3,4 +3,14 @@ const getGameStatus = function(req, res) {
   res.json(gameStatus);
 };
 
-module.exports = { getGameStatus };
+const performReinforcement = function(req, res) {
+  const { country, militaryCount } = req.body;
+  const reinforcementStatus = req.app.locals.game.reinforcement(
+    country,
+    militaryCount
+  );
+
+  res.json(reinforcementStatus);
+};
+
+module.exports = { getGameStatus, performReinforcement };

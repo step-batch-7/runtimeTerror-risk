@@ -13,4 +13,25 @@ describe('Player', function() {
       assert.deepStrictEqual(player.status, {leftMilitaryCount: 30});
     });
   });
+
+  context('name', () => {
+    it('should give name of the player', () => {
+      const player = new Player('Player1', 'red', 30);
+      assert.strictEqual(player.name, 'Player1');
+    });
+  });
+
+  context('leftMilitaryCount', () => {
+    it('should give leftMilitaryCount of the player', () => {
+      const player = new Player('Player1', 'red', 30);
+      assert.strictEqual(player.leftMilitaryCount, 30);
+    });
+  });
+
+  context('removeMilitary', () => {
+    it('should give removeMilitary of the player', () => {
+      const player = new Player('Player1', 'red', 30);
+      assert.strictEqual(player.removeMilitary(1), 29);
+    });
+  });
 });

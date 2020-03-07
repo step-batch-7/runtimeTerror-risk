@@ -11,7 +11,7 @@ const updateGameStage = function(currentStageNum) {
   };
   const currentStage = getElement('#stages span');
   currentStage.innerText = `${stages[currentStageNum]}`;
-  localStorage.setItem('stage', currentStageNum);
+  localStorage.setItem('stage', 1);
 };
 
 const updateActivities = function(activities) {
