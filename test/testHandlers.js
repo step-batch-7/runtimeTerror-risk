@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { app } = require('../src/router');
+const {app} = require('../src/router');
 
 describe('Handlers', () => {
   context('Requests for static files', () => {
@@ -35,6 +35,17 @@ describe('Handlers', () => {
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
         .expect(/currentStage/);
+    });
+  });
+
+  context('Request for claim territory', () => {
+    it('Should claim the given territory', done => {
+      request(app)
+        .post('/claimTerritory')
+        .send({territory: 'india'})
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8', done)
+        .expect(/status/);
     });
   });
 });
