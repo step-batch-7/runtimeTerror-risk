@@ -24,14 +24,14 @@ const hasFields = (...fields) => {
 
 app.locals.game = game;
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({extended: true}));
+app.use(express.json({limit: '100kb'}));
 app.get('/gameStatus', getGameStatus);
 app.post(
   '/reinforcement',
   hasFields('country', 'militaryCount'),
   performReinforcement
 );
-app.post('/claimTerritory', hasFields('playerId', 'territory'), claimTerritory);
+app.post('/claimTerritory', hasFields('territory'), claimTerritory);
 
-module.exports = { app };
+module.exports = {app};
