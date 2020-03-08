@@ -39,13 +39,20 @@ describe('Handlers', () => {
   });
 
   context('Request for claim territory', () => {
-    it('Should claim the given territory', done => {
+    it('Should claim the given territory if the fields are valid', done => {
       request(app)
         .post('/claimTerritory')
         .send({territory: 'india'})
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
         .expect(/status/);
+    });
+
+    it('Should respond with "Bad Request" if the fields are invalid', done => {
+      request(app)
+        .post('/claimTerritory')
+        .send({country: 'india'})
+        .expect(400, done);
     });
   });
 });
