@@ -24,7 +24,7 @@ class Game {
   }
 
   addActivity(msg) {
-    return this.#activities.unshift({ msg });
+    return this.#activities.unshift({msg});
   }
 
   addPlayer(name) {
@@ -42,10 +42,10 @@ class Game {
 
   claimTerritory(playerId, territory) {
     if (this.#currentStage != 1) {
-      return { status: false, error: 'wrong stage' };
+      return {status: false, error: 'wrong stage'};
     }
     if (this.#territories[territory].isOccupied()) {
-      return { status: false, error: 'territory already occupied' };
+      return {status: false, error: 'territory already occupied'};
     }
     this.#territories[territory].changeRuler(playerId);
     this.#players[playerId].addTerritory(territory);
@@ -56,17 +56,17 @@ class Game {
     ) {
       this.updateStage();
     }
-    return { status: true };
+    return {status: true, color: playerId};
   }
 
   reinforcement(territory, militaryCount) {
     if (this.#currentStage != 2) {
-      return { status: false };
+      return {status: false};
     }
     const message = 'You can’t place military unit in others territories';
     const playerId = this.#currentPlayer.status().id;
     if (!this.#territories[territory].isOccupiedBy(playerId)) {
-      return { status: false, message };
+      return {status: false, message};
     }
     this.#territories[territory].deployMilitary(militaryCount);
     this.#currentPlayer.removeMilitary(militaryCount);
@@ -78,7 +78,7 @@ class Game {
     ) {
       this.updateStage();
     }
-    return { status: true };
+    return {status: true};
   }
 }
 

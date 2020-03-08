@@ -1,4 +1,4 @@
-const { assert } = require('chai');
+const {assert} = require('chai');
 const Game = require('../src/game');
 const Player = require('../src/player');
 const generateterritories = require('../src/territories');
@@ -16,7 +16,7 @@ describe('Game', function() {
       assert.deepStrictEqual(game.status, {
         currentStage: 1,
         remainingMilitaryCount: 25,
-        activities: [{ msg: 'John has joined.' }]
+        activities: [{msg: 'John has joined.'}]
       });
     });
   });
@@ -45,7 +45,7 @@ describe('Game', function() {
 
     it('should give true status when reinforcement is done', () => {
       const india = generateterritories().india;
-      const game = new Game({ india });
+      const game = new Game({india});
       game.addPlayer('Player1');
       game.claimTerritory('red', 'india');
       assert.deepStrictEqual(game.reinforcement('india', 1), {
@@ -66,7 +66,8 @@ describe('Game', function() {
     game.addPlayer('Player1');
     it('should claim territory if it is unclaimed', () => {
       assert.deepStrictEqual(game.claimTerritory('red', 'india'), {
-        status: true
+        status: true,
+        color: 'red'
       });
     });
 
