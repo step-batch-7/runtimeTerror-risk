@@ -20,6 +20,11 @@ class Game {
     status.remainingMilitaryCount = playerStatus.leftMilitaryCount;
     status.currentStage = this.#currentStage;
     status.activities = this.#activities.slice();
+    const territories = {};
+    for (const territory in this.#territories) {
+      territories[territory] = this.#territories[territory].status;
+    }
+    status.territories = territories;
     return status;
   }
 

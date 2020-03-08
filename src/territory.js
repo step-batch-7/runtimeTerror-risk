@@ -27,6 +27,15 @@ class Territory {
     this.#occupiedBy = playerId;
     return this.#occupiedBy;
   }
+
+  get status() {
+    return {
+      name: this.#name,
+      occupiedBy: this.#occupiedBy,
+      neighborsName: this.#neighborsName,
+      militaryUnits: this.#militaryUnits
+    };
+  }
 }
 
 module.exports = Territory;

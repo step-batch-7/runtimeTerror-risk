@@ -1,4 +1,4 @@
-const { assert } = require('chai');
+const {assert} = require('chai');
 const Territory = require('../src/territory');
 
 describe('Territory', function() {
@@ -43,6 +43,18 @@ describe('Territory', function() {
     it('Should give the incremented military unit', function() {
       const territory = new Territory('india', ['china']);
       assert.strictEqual(territory.deployMilitary(1), 1);
+    });
+  });
+
+  context('status', function() {
+    it('Should give status of the territory', function() {
+      const territory = new Territory('india', ['china']);
+      assert.deepStrictEqual(territory.status, {
+        name: 'india',
+        occupiedBy: undefined,
+        militaryUnits: 0,
+        neighborsName: ['china']
+      });
     });
   });
 });
