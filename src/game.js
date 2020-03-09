@@ -123,7 +123,7 @@ class Game {
   }
 
   performReinforcement(territoryName, militaryCount) {
-    if (this.#currentStage === 1) {
+    if (this.#currentStage !== 2) {
       return { status: false, error: 'wrong stage or phase' };
     }
 
