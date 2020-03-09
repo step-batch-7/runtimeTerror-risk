@@ -12,6 +12,7 @@ class Player {
 
   get status() {
     const status = {};
+    status.name = this.#name;
     status.leftMilitaryCount = this.#leftMilitaryCount;
     status.id = this.#color;
     status.name = this.#name;

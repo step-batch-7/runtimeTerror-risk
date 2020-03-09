@@ -1,5 +1,5 @@
 const Player = require('../src/player');
-const { assert } = require('chai');
+const {assert} = require('chai');
 
 describe('Player', function() {
   it('Should give the instance of player class', function() {

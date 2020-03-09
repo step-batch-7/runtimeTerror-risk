@@ -102,9 +102,6 @@ body {
   background-color: rgb(128, 128, 128, 0.2);
   margin: 2px;
 }
-.activity-message {
-  text-align: justify;
-}
 
 ::-webkit-scrollbar {
   width: 4px;
