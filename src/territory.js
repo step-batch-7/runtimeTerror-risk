@@ -10,8 +10,8 @@ class Territory {
     this.#militaryUnits = 0;
   }
 
-  isOccupiedBy(player) {
-    return this.#occupiedBy === player;
+  isOccupiedBy(playerId) {
+    return this.#occupiedBy === playerId;
   }
 
   deployMilitary(militaryCount) {

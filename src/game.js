@@ -40,45 +40,45 @@ class Game {
   }
 
   updateStage() {
-    this.#currentStage = (this.#currentStage + 1) % 3;
+    this.#currentStage = this.#currentStage + 1;
     return this.#currentStage;
   }
 
-  claimTerritory(territory) {
+  claimTerritory(territoryName) {
     if (this.#currentStage != 1) {
       return { status: false, error: 'wrong stage' };
     }
-    if (this.#territories[territory].isOccupied()) {
+    if (this.#territories[territoryName].isOccupied()) {
       return { status: false, error: 'territory already occupied' };
     }
-    this.#territories[territory].changeRuler(this.#currentPlayerId);
-    this.#players[this.#currentPlayerId].addTerritory(territory);
-    this.#territories[territory].deployMilitary(1);
+    this.#territories[territoryName].changeRuler(this.#currentPlayerId);
+    this.#players[this.#currentPlayerId].addTerritory(territoryName);
+    this.#territories[territoryName].deployMilitary(1);
     this.#players[this.#currentPlayerId].removeMilitary(1);
     const { id, leftMilitaryCount } = this.#players[this.#currentPlayerId].status;
-    const territories = Object.keys(this.#territories);
-    if (territories.every(territory => this.#territories[territory].isOccupied())) {
+    const territories = Object.values(this.#territories);
+    if (territories.every(territory => territory.isOccupied())) {
       this.updateStage();
     }
     return { status: true, color: id, leftMilitaryCount };
   }
 
-  reinforcement(territory, militaryCount) {
+  reinforcement(territoryName, militaryCount) {
     if (this.#currentStage != 2) {
       return { status: false };
     }
     const error = 'You can’t place military unit in others territories';
-    if (!this.#territories[territory].isOccupiedBy(this.#currentPlayerId)) {
+    if (!this.#territories[territoryName].isOccupiedBy(this.#currentPlayerId)) {
       return { status: false, error };
     }
-    this.#territories[territory].deployMilitary(militaryCount);
+    this.#territories[territoryName].deployMilitary(militaryCount);
     this.#players[this.#currentPlayerId].removeMilitary(militaryCount);
-    const playerIds = Object.keys(this.#players);
-    if (playerIds.every(playerId => this.#players[playerId].status.leftMilitaryCount === 0)) {
+    const players = Object.values(this.#players);
+    if (players.every(player => player.status.leftMilitaryCount === 0)) {
       this.updateStage();
     }
     const leftMilitaryCount = this.#players[this.#currentPlayerId].status.leftMilitaryCount;
-    const territoryMilitaryCount = this.#territories[territory].status.militaryUnits;
+    const territoryMilitaryCount = this.#territories[territoryName].status.militaryUnits;
     return { status: true, leftMilitaryCount, territoryMilitaryCount };
   }
 }
