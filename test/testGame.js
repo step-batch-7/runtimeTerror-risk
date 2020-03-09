@@ -1,4 +1,4 @@
-const {assert} = require('chai');
+const { assert } = require('chai');
 const Game = require('../src/game');
 const Player = require('../src/player');
 const generateTerritories = require('../src/territories');
@@ -20,7 +20,7 @@ describe('Game', function() {
   context('addPlayer', () => {
     it('should add a new player in player list', () => {
       const game = new Game(['india', 'china']);
-      assert.instanceOf(game.addPlayer('Player1'), Player);
+      assert.strictEqual(game.addPlayer('Player1'), 'crimson');
     });
   });
 
@@ -41,7 +41,7 @@ describe('Game', function() {
     });
 
     it('should give false status when territory is not current player territory', () => {
-      const {india, china} = generateTerritories();
+      const { india, china } = generateTerritories();
       const game = new Game({
         india,
         china
@@ -58,7 +58,7 @@ describe('Game', function() {
 
     it('should give true status when performReinforcement is done', () => {
       const india = generateTerritories().india;
-      const game = new Game({india});
+      const game = new Game({ india });
       game.addPlayer('Player1');
       game.performClaim('india');
       assert.deepStrictEqual(game.performReinforcement('india', 1), {

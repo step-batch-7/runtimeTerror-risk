@@ -42,10 +42,9 @@ class Game {
 
   addPlayer(name) {
     const id = this.#idGenerator.next().value;
-    const newPlayer = new Player(name, id, 20);
     this.addActivity(`${name} has joined.`);
-    this.#players[id] = newPlayer;
-    return this.#players[id];
+    this.#players[id] = new Player(name, id, 20);
+    return id;
   }
 
   updateStage() {
