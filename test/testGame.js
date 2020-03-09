@@ -1,7 +1,7 @@
 const {assert} = require('chai');
 const Game = require('../src/game');
 const Player = require('../src/player');
-const generateterritories = require('../src/territories');
+const generateTerritories = require('../src/territories');
 
 describe('Game', function() {
   it('should give instance of game class', function() {
@@ -33,14 +33,14 @@ describe('Game', function() {
 
   context('reinforcement', () => {
     it('should give false status when the stage is not 2 ', () => {
-      const game = new Game(generateterritories());
+      const game = new Game(generateTerritories());
       assert.deepStrictEqual(game.reinforcement('india', 1), {
         status: false
       });
     });
 
     it('should give true status when reinforcement is done', () => {
-      const india = generateterritories().india;
+      const india = generateTerritories().india;
       const game = new Game({india});
       game.addPlayer('Player1');
       game.claimTerritory('red', 'india');
@@ -58,7 +58,7 @@ describe('Game', function() {
   });
 
   context('claimTerritory', () => {
-    const game = new Game(generateterritories());
+    const game = new Game(generateTerritories());
     game.addPlayer('Player1');
     it('should claim territory if it is unclaimed', () => {
       assert.deepStrictEqual(game.claimTerritory('red', 'india'), {

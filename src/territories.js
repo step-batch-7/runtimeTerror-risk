@@ -98,7 +98,7 @@ const territoriesList = {
   alberta: ['alaska', 'northwestTerritory', 'ontario', 'westernUS']
 };
 
-const generateterritories = () => {
+const generateTerritories = () => {
   const territories = {};
   for (const territory in territoriesList) {
     territories[territory] = new Territory(
@@ -109,4 +109,4 @@ const generateterritories = () => {
   return territories;
 };
 
-module.exports = generateterritories;
+module.exports = generateTerritories;
