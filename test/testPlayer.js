@@ -12,7 +12,8 @@ describe('Player', function() {
       const player = new Player('Player1', 'red', 30);
       assert.deepStrictEqual(player.status, {
         leftMilitaryCount: 30,
-        id: 'red'
+        id: 'red',
+        name: 'Player1'
       });
     });
   });
