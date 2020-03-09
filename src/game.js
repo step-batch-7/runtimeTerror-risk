@@ -1,17 +1,25 @@
 const Player = require('./player');
 
+const idGenerator = function*() {
+  const ids = ['red', 'yellow', 'blue', 'green', 'pink', 'cyan'];
+  while (ids.length) {
+    yield ids.shift();
+  }
+};
 class Game {
   #territories;
   #players;
   #currentPlayerId;
   #currentStage;
   #activities;
+  #getId;
   constructor(territories) {
     this.#territories = territories;
     this.#players = {};
     this.#currentPlayerId = 'red';
     this.#currentStage = 1;
     this.#activities = [];
+    this.#getId = idGenerator();
   }
 
   get status() {
@@ -33,15 +41,24 @@ class Game {
   }
 
   addPlayer(name) {
-    const newPlayer = new Player(name, 'red', 50);
+    const id = this.#getId.next().value;
+    const newPlayer = new Player(name, id, 50);
     this.addActivity(`${name} has joined.`);
-    this.#players.red = newPlayer;
-    return this.#players.red;
+    this.#players[id] = newPlayer;
+    return this.#players[id];
   }
 
   updateStage() {
     this.#currentStage = this.#currentStage + 1;
     return this.#currentStage;
+  }
+
+  updateCurrentPlayer() {
+    const ids = ['red', 'yellow', 'blue', 'green', 'pink', 'cyan'];
+    const index = ids.indexOf(this.#currentPlayerId);
+    const nextPlayerIndex = (index + 1) % Object.keys(this.#players).length;
+    this.#currentPlayerId = ids[nextPlayerIndex];
+    return this.#currentPlayerId;
   }
 
   claimTerritory(territoryName) {
@@ -55,9 +72,8 @@ class Game {
     this.#players[this.#currentPlayerId].addTerritory(territoryName);
     this.#territories[territoryName].deployMilitary(1);
     this.#players[this.#currentPlayerId].removeMilitary(1);
-    const { id, leftMilitaryCount } = this.#players[
-      this.#currentPlayerId
-    ].status;
+    this.updateCurrentPlayer();
+    const { id, leftMilitaryCount } = this.#players[this.#currentPlayerId].status;
     const territories = Object.values(this.#territories);
     if (territories.every(territory => territory.isOccupied())) {
       this.updateStage();

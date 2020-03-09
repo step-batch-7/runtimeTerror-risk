@@ -86,4 +86,13 @@ describe('Game', function() {
       });
     });
   });
+
+  context('updateCurrentPlayer', () => {
+    const game = new Game(generateTerritories());
+    game.addPlayer('Player1');
+    game.addPlayer('Player2');
+    it('should update currentPlayer from Player1 to Player2', () => {
+      assert.strictEqual(game.updateCurrentPlayer(), 'yellow');
+    });
+  });
 });
