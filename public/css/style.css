@@ -29,7 +29,7 @@ body {
 /* left military units count box */
 .soldier-details {
   background-color: rgb(200, 200, 200, 0.2);
-  border: 1px solid gray;
+  border: 1px solid rgb(83, 87, 133);
   position: absolute;
   left: 1.5vw;
   bottom: 14vh;
@@ -42,7 +42,7 @@ body {
 .soldier-icon {
   height: 2vw;
   width: 2vw;
-  background-image: url('../images/solider.png');
+  background-image: url('../images/soldier.png');
   background-size: contain;
   margin: 0.2vw;
 }
@@ -50,7 +50,8 @@ body {
 .soldier-count {
   padding: 0.5vw;
   padding-left: 2vw;
-  border-left: 1px solid gray;
+  color: rgb(83, 87, 133);
+  border-left: 1px solid rgb(83, 87, 133);
   font-size: calc(0.8vw + 0.5em);
 }
 
