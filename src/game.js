@@ -73,7 +73,9 @@ class Game {
     this.#territories[territoryName].deployMilitary(1);
     this.#players[this.#currentPlayerId].removeMilitary(1);
     this.updateCurrentPlayer();
-    const { id, leftMilitaryCount } = this.#players[this.#currentPlayerId].status;
+    const { id, leftMilitaryCount } = this.#players[
+      this.#currentPlayerId
+    ].status;
     const territories = Object.values(this.#territories);
     if (territories.every(territory => territory.isOccupied())) {
       this.updateStage();
@@ -96,6 +98,8 @@ class Game {
 
     territory.deployMilitary(militaryCount);
     player.removeMilitary(militaryCount);
+    const activityMsg = `${player.status.name} placed ${militaryCount} soldier in ${territoryName}`;
+    this.addActivity(activityMsg);
     const players = Object.values(this.#players);
     if (players.every(player => player.status.leftMilitaryCount === 0)) {
       this.updateStage();
