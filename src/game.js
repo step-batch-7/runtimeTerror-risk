@@ -1,7 +1,14 @@
 const Player = require('./player');
 
 const idGenerator = function*() {
-  const ids = ['crimson', 'yellow', 'blue', 'green', 'pink', 'cyan'];
+  const ids = [
+    'crimson',
+    'forestgreen',
+    'mediumslateblue',
+    'yellowgreen',
+    'plum',
+    'orange'
+  ];
   while (ids.length) {
     yield ids.shift();
   }
@@ -24,7 +31,7 @@ class Game {
 
   get status() {
     const status = {};
-    const playerStatus = this.#players.crimson.status;
+    const playerStatus = this.#players[this.#currentPlayerId].status;
     status.remainingMilitaryCount = playerStatus.leftMilitaryCount;
     status.currentStage = this.#currentStage;
     status.activities = this.#activities.slice();
@@ -55,7 +62,14 @@ class Game {
   }
 
   updateCurrentPlayer() {
-    const ids = ['crimson', 'yellow', 'blue', 'green', 'pink', 'cyan'];
+    const ids = [
+      'crimson',
+      'forestgreen',
+      'mediumslateblue',
+      'yellowgreen',
+      'plum',
+      'orange'
+    ];
     const index = ids.indexOf(this.#currentPlayerId);
     const nextPlayerIndex = (index + 1) % Object.keys(this.#players).length;
     this.#currentPlayerId = ids[nextPlayerIndex];

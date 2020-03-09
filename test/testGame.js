@@ -108,7 +108,7 @@ describe('Game', function() {
     game.addPlayer('Player1');
     game.addPlayer('Player2');
     it('should update currentPlayer from Player1 to Player2', () => {
-      assert.strictEqual(game.updateCurrentPlayer(), 'yellow');
+      assert.strictEqual(game.updateCurrentPlayer(), 'forestgreen');
     });
   });
 });

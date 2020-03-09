@@ -14,13 +14,11 @@ const game = new Game(territories);
 game.addPlayer('Player1');
 game.addPlayer('Player2');
 game.addPlayer('Player3');
-game.addPlayer('Player4');
-game.addPlayer('Player5');
 
 app.locals.game = game;
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({extended: true}));
+app.use(express.json({limit: '100kb'}));
 app.get('/gameStatus', getGameStatus);
 app.post(
   '/reinforcement',
@@ -29,4 +27,4 @@ app.post(
 );
 app.post('/performClaim', hasFields('territory'), performClaim);
 
-module.exports = { app };
+module.exports = {app};
