@@ -1,5 +1,7 @@
 const request = require('supertest');
-const {app} = require('../src/router');
+const { app } = require('../src/router');
+const Game = require('../src/game');
+const generateTerritories = require('../src/territories');
 
 describe('Handlers', () => {
   context('Requests for static files', () => {
@@ -42,7 +44,7 @@ describe('Handlers', () => {
     it('Should claim the given territory if the fields are valid', done => {
       request(app)
         .post('/claimTerritory')
-        .send({territory: 'india'})
+        .send({ territory: 'india' })
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
         .expect(/status/);
@@ -51,7 +53,35 @@ describe('Handlers', () => {
     it('Should respond with "Bad Request" if the fields are invalid', done => {
       request(app)
         .post('/claimTerritory')
-        .send({country: 'india'})
+        .send({ country: 'india' })
+        .expect(400, done);
+    });
+  });
+
+  context('performReinforcement', () => {
+    beforeEach(() => {
+      const territories = generateTerritories();
+      const { india, china } = territories;
+      const game = new Game({ india, china });
+      game.addPlayer('player1');
+      game.claimTerritory('india');
+      game.claimTerritory('china');
+      app.locals = { game };
+    });
+
+    it('Should reinforce the given territory if the reinforcement is valid', done => {
+      request(app)
+        .post('/reinforcement')
+        .send({ territory: 'india', militaryCount: 1 })
+        .expect(200, done)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect(/status/);
+    });
+
+    it('Should respond with "Bad Request" if the fields are invalid', done => {
+      request(app)
+        .post('/reinforcement')
+        .send({ country: 'india' })
         .expect(400, done);
     });
   });
