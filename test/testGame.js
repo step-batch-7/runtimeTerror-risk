@@ -1,4 +1,4 @@
-const {assert} = require('chai');
+const { assert } = require('chai');
 const Game = require('../src/game');
 const Player = require('../src/player');
 const generateTerritories = require('../src/territories');
@@ -45,7 +45,9 @@ describe('Game', function() {
       game.addPlayer('Player1');
       game.claimTerritory('red', 'india');
       assert.deepStrictEqual(game.reinforcement('india', 1), {
-        status: true
+        status: true,
+        leftMilitaryCount: 24,
+        territoryMilitaryCount: 2
       });
     });
   });
