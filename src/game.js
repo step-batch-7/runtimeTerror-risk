@@ -68,7 +68,7 @@ class Game {
     return this.#currentPlayerId;
   }
 
-  claimTerritory(territoryName) {
+  assignOwnerTo(territoryName) {
     const territory = this.#territories[territoryName];
     territory.changeRuler(this.#currentPlayerId);
     territory.deployMilitary(1);
@@ -81,14 +81,14 @@ class Game {
     return { id, leftMilitaryCount };
   }
 
-  performClaim(territoryName) {
+  claimTerritory(territoryName) {
     if (this.#currentStage != 1) {
       return { status: false, error: 'wrong stage' };
     }
     if (this.#territories[territoryName].isOccupied()) {
       return { status: false, error: 'Territory already claimed' };
     }
-    const { id, leftMilitaryCount } = this.claimTerritory(territoryName);
+    const { id, leftMilitaryCount } = this.assignOwnerTo(territoryName);
     const territories = Object.values(this.#territories);
     if (territories.every(territory => territory.isOccupied())) {
       this.updateStage();
@@ -96,19 +96,17 @@ class Game {
     return { status: true, color: id, leftMilitaryCount };
   }
 
+  changeTurnToNextDeployer() {
+    do {
+      this.updateCurrentPlayer();
+    } while (this.currentPlayer.status.leftMilitaryCount < 1);
+  }
+
   reinforceTerritory(territory, militaryCount) {
     territory.deployMilitary(militaryCount);
     this.currentPlayer.removeMilitary(militaryCount);
     const activityMsg = `${this.currentPlayer.status.name} placed ${militaryCount} soldier in ${territory.status.name}`;
     this.addActivity(activityMsg);
-  }
-
-  changeTurn() {
-    if (this.#currentStage === 2) {
-      do {
-        this.updateCurrentPlayer();
-      } while (this.currentPlayer.status.leftMilitaryCount < 1);
-    }
   }
 
   performReinforcement(territoryName, militaryCount) {
@@ -128,7 +126,7 @@ class Game {
       this.updateStage();
     }
 
-    this.changeTurn();
+    this.#currentStage === 2 && this.changeTurnToNextDeployer();
     const { leftMilitaryCount } = this.currentPlayer.status;
     const territoryMilitaryCount = territory.status.militaryUnits;
     return { status: true, leftMilitaryCount, territoryMilitaryCount };

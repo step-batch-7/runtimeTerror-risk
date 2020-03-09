@@ -64,8 +64,8 @@ describe('Handlers', () => {
       const { india, china } = territories;
       const game = new Game({ india, china });
       game.addPlayer('player1');
-      game.performClaim('india');
-      game.performClaim('china');
+      game.claimTerritory('india');
+      game.claimTerritory('china');
       app.locals = { game };
     });
 
