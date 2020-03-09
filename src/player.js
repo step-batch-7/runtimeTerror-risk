@@ -14,7 +14,7 @@ class Player {
     this.#cards = [];
   }
 
-  status() {
+  get status() {
     const playerDetails = {
       leftMilitaryCount: this.#leftMilitaryCount,
       id: this.#id

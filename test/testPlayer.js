@@ -10,7 +10,7 @@ describe('Player', function() {
   context('status', () => {
     it('should give status of player', () => {
       const player = new Player('Player1', 'red', 30);
-      assert.deepStrictEqual(player.status(), {
+      assert.deepStrictEqual(player.status, {
         leftMilitaryCount: 30,
         id: 'red'
       });
