@@ -1,4 +1,4 @@
-const {assert} = require('chai');
+const { assert } = require('chai');
 const Game = require('../src/game');
 const Player = require('../src/player');
 const generateTerritories = require('../src/territories');
@@ -31,17 +31,17 @@ describe('Game', function() {
     });
   });
 
-  context('reinforce', () => {
+  context('performReinforcement', () => {
     it('should give false status when the stage is not 2 ', () => {
       const game = new Game(generateTerritories());
-      assert.deepStrictEqual(game.reinforce('india', 1), {
+      assert.deepStrictEqual(game.performReinforcement('india', 1), {
         status: false,
         error: 'wrong stage or phase'
       });
     });
 
     it('should give false status when territory is not current player territory', () => {
-      const {india, china} = generateTerritories();
+      const { india, china } = generateTerritories();
       const game = new Game({
         india,
         china
@@ -50,18 +50,18 @@ describe('Game', function() {
       game.addPlayer('Player2');
       game.performClaim('india');
       game.performClaim('china');
-      assert.deepStrictEqual(game.reinforce('china', 1), {
+      assert.deepStrictEqual(game.performReinforcement('china', 1), {
         status: false,
         error: 'This is not your territory'
       });
     });
 
-    it('should give true status when reinforce is done', () => {
+    it('should give true status when performReinforcement is done', () => {
       const india = generateTerritories().india;
-      const game = new Game({india});
+      const game = new Game({ india });
       game.addPlayer('Player1');
       game.performClaim('india');
-      assert.deepStrictEqual(game.reinforce('india', 1), {
+      assert.deepStrictEqual(game.performReinforcement('india', 1), {
         status: true,
         leftMilitaryCount: 23,
         territoryMilitaryCount: 2

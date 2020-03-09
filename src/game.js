@@ -105,6 +105,13 @@ class Game {
     return { status: true, color: id, leftMilitaryCount };
   }
 
+  reinforceTerritory(territory, militaryCount, player) {
+    territory.deployMilitary(militaryCount);
+    player.removeMilitary(militaryCount);
+    const activityMsg = `${player.status.name} placed ${militaryCount} soldier in ${territory.status.name}`;
+    this.addActivity(activityMsg);
+  }
+
   changeTurn() {
     if (this.#currentStage === 2) {
       do {
@@ -115,7 +122,7 @@ class Game {
     }
   }
 
-  reinforce(territoryName, militaryCount) {
+  performReinforcement(territoryName, militaryCount) {
     if (this.#currentStage === 1) {
       return { status: false, error: 'wrong stage or phase' };
     }
@@ -126,16 +133,13 @@ class Game {
       return { status: false, error: 'This is not your territory' };
     }
 
-    territory.deployMilitary(militaryCount);
-    player.removeMilitary(militaryCount);
-    const activityMsg = `${player.status.name} placed ${militaryCount} soldier in ${territoryName}`;
-    this.addActivity(activityMsg);
+    this.reinforceTerritory(territory, militaryCount, player);
 
     const players = Object.values(this.#players);
     if (players.every(player => !player.status.leftMilitaryCount)) {
       this.updateStage();
-      this.#currentPlayerId = 'crimson';
     }
+
     this.changeTurn();
     const { leftMilitaryCount } = player.status;
     const territoryMilitaryCount = territory.status.militaryUnits;
