@@ -1,5 +1,5 @@
 const Player = require('../src/player');
-const {assert} = require('chai');
+const { assert } = require('chai');
 
 describe('Player', function() {
   it('Should give the instance of player class', function() {
@@ -12,7 +12,7 @@ describe('Player', function() {
       const player = new Player('Player1', 'red', 30);
       assert.deepStrictEqual(player.status, {
         leftMilitaryCount: 30,
-        id: 'red',
+        color: 'red',
         name: 'Player1'
       });
     });

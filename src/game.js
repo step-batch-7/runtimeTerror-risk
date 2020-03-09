@@ -75,11 +75,11 @@ class Game {
     territory.deployMilitary(1);
     this.currentPlayer.addTerritory(territoryName);
     this.currentPlayer.removeMilitary(1);
-    const { name, id, leftMilitaryCount } = this.currentPlayer.status;
+    const { name, color, leftMilitaryCount } = this.currentPlayer.status;
     const msg = `${name} is claimed ${territoryName}`;
     this.updateCurrentPlayer();
     this.addActivity(msg);
-    return { id, leftMilitaryCount };
+    return { color, leftMilitaryCount };
   }
 
   claimTerritory(territoryName) {
@@ -89,12 +89,12 @@ class Game {
     if (this.#territories[territoryName].isOccupied()) {
       return { status: false, error: 'Territory already claimed' };
     }
-    const { id, leftMilitaryCount } = this.assignOwnerTo(territoryName);
+    const { color, leftMilitaryCount } = this.assignOwnerTo(territoryName);
     const territories = Object.values(this.#territories);
     if (territories.every(territory => territory.isOccupied())) {
       this.updateStage();
     }
-    return { status: true, color: id, leftMilitaryCount };
+    return { status: true, color, leftMilitaryCount };
   }
 
   changeTurnToNextDeployer() {
