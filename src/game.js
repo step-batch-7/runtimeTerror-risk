@@ -86,7 +86,7 @@ class Game {
 
   reinforce(territoryName, militaryCount) {
     let error = 'This stage does not support reinforcement';
-    if (this.#currentStage != 2) {
+    if (this.#currentStage === 1) {
       return { status: false, error };
     }
 
@@ -104,9 +104,13 @@ class Game {
     const players = Object.values(this.#players);
     if (players.every(player => player.status.leftMilitaryCount === 0)) {
       this.updateStage();
+      this.#currentPlayerId = 'red';
     }
     const { leftMilitaryCount } = player.status;
     const territoryMilitaryCount = territory.status.militaryUnits;
+    if (this.#currentStage === 2) {
+      this.updateCurrentPlayer();
+    }
     return { status: true, leftMilitaryCount, territoryMilitaryCount };
   }
 }

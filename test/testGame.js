@@ -40,6 +40,22 @@ describe('Game', function() {
       });
     });
 
+    it('should give false status when territory is not current player territory', () => {
+      const { india, china } = generateTerritories();
+      const game = new Game({
+        india,
+        china
+      });
+      game.addPlayer('Player1');
+      game.addPlayer('Player2');
+      game.claimTerritory('india');
+      game.claimTerritory('china');
+      assert.deepStrictEqual(game.reinforce('china', 1), {
+        status: false,
+        error: 'You can’t place military unit in others territories'
+      });
+    });
+
     it('should give true status when reinforce is done', () => {
       const india = generateTerritories().india;
       const game = new Game({ india });
