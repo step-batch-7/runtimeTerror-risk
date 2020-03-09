@@ -32,7 +32,7 @@ class Territory {
     return {
       name: this.#name,
       occupiedBy: this.#occupiedBy,
-      neighborsName: this.#neighborsName,
+      neighborsName: this.#neighborsName.slice(),
       militaryUnits: this.#militaryUnits
     };
   }

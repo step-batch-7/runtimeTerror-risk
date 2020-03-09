@@ -5,25 +5,11 @@ const territoriesList = {
   indonesia: ['westernAustralia', 'siam', 'newGuinea'],
   newGuinea: ['indonesia', 'westernAustralia', 'easternAustralia'],
   alaska: ['kamchatka', 'northwestTerritory', 'alberta'],
-  ontario: [
-    'northwestTerritory',
-    'alberta',
-    'westernUS',
-    'easternUS',
-    'quebec',
-    'greenland'
-  ],
+  ontario: ['northwestTerritory', 'alberta', 'westernUS', 'easternUS', 'quebec', 'greenland'],
   northwestTerritory: ['greenland', 'ontario', 'alberta', 'alaska'],
   venezuela: ['centralAmerica', 'brazil', 'peru'],
   madagascar: ['southAfrica', 'eastAfrica'],
-  northAfrica: [
-    'brazil',
-    'westernEurope',
-    'southernEurope',
-    'egypt',
-    'eastAfrica',
-    'congo'
-  ],
+  northAfrica: ['brazil', 'westernEurope', 'southernEurope', 'egypt', 'eastAfrica', 'congo'],
   greenland: ['northwestTerritory', 'ontario', 'quebec', 'iceland'],
   iceland: ['greenland', 'scandinavia', 'greatBritain'],
   greatBritain: ['iceland', 'scandinavia', 'northernEurope', 'westernEurope'],
@@ -34,57 +20,18 @@ const territoriesList = {
   siberia: ['yakutsk', 'irkutsk', 'mongolia', 'china', 'ural'],
   ural: ['ukraine', 'afghanistan', 'china', 'siberia'],
   afghanistan: ['ukraine', 'ural', 'china', 'india', 'middleEast'],
-  middleEast: [
-    'southernEurope',
-    'ukraine',
-    'afghanistan',
-    'india',
-    'eastAfrica',
-    'egypt'
-  ],
+  middleEast: ['southernEurope', 'ukraine', 'afghanistan', 'india', 'eastAfrica', 'egypt'],
   india: ['siam', 'china', 'afghanistan', 'middleEast'],
   siam: ['india', 'china', 'indonesia'],
   china: ['siam', 'india', 'afghanistan', 'ural', 'siberia', 'mongolia'],
   mongolia: ['japan', 'kamchatka', 'irkutsk', 'siberia', 'china'],
   irkutsk: ['yakutsk', 'siberia', 'mongolia', 'kamchatka'],
-  ukraine: [
-    'ural',
-    'afghanistan',
-    'middleEast',
-    'southernEurope',
-    'northernEurope',
-    'scandinavia'
-  ],
-  southernEurope: [
-    'northernEurope',
-    'westernEurope',
-    'northAfrica',
-    'egypt',
-    'middleEast',
-    'ukraine'
-  ],
-  westernEurope: [
-    'greatBritain',
-    'northernEurope',
-    'southernEurope',
-    'northAfrica'
-  ],
-  northernEurope: [
-    'scandinavia',
-    'greatBritain',
-    'westernEurope',
-    'southernEurope',
-    'ukraine'
-  ],
+  ukraine: ['ural', 'afghanistan', 'middleEast', 'southernEurope', 'northernEurope', 'scandinavia'],
+  southernEurope: ['northernEurope', 'westernEurope', 'northAfrica', 'egypt', 'middleEast', 'ukraine'],
+  westernEurope: ['greatBritain', 'northernEurope', 'southernEurope', 'northAfrica'],
+  northernEurope: ['scandinavia', 'greatBritain', 'westernEurope', 'southernEurope', 'ukraine'],
   egypt: ['southernEurope', 'northAfrica', 'eastAfrica', 'middleEast'],
-  eastAfrica: [
-    'madagascar',
-    'southAfrica',
-    'congo',
-    'northAfrica',
-    'egypt',
-    'middleEast'
-  ],
+  eastAfrica: ['madagascar', 'southAfrica', 'congo', 'northAfrica', 'egypt', 'middleEast'],
   congo: ['northAfrica', 'eastAfrica', 'southAfrica'],
   southAfrica: ['madagascar', 'eastAfrica', 'congo'],
   brazil: ['northAfrica', 'peru', 'argentina', 'venezuela'],
@@ -100,12 +47,10 @@ const territoriesList = {
 
 const generateTerritories = () => {
   const territories = {};
-  for (const territory in territoriesList) {
-    territories[territory] = new Territory(
-      territory,
-      territoriesList[territory]
-    );
-  }
+  const allTerritoriesData = Object.entries(territoriesList);
+  allTerritoriesData.forEach(([territoryName, neighbors]) => {
+    territories[territoryName] = new Territory(territoryName, neighbors);
+  });
   return territories;
 };
 
