@@ -15,7 +15,10 @@ const getGameStatus = function(req, res) {
 
 const performReinforcement = function(req, res) {
   const { territory, militaryCount } = req.body;
-  const reinforcementStatus = req.app.locals.game.reinforcement(territory, militaryCount);
+  const reinforcementStatus = req.app.locals.game.reinforce(
+    territory,
+    militaryCount
+  );
   res.json(reinforcementStatus);
 };
 

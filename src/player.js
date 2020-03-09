@@ -1,25 +1,20 @@
 class Player {
   #name;
-  #id;
+  #color;
   #territories;
   #leftMilitaryCount;
-  #cardEligibility;
-  #cards;
-  constructor(name, id, initialMilitaryCount) {
+  constructor(name, color, initialMilitaryCount) {
     this.#name = name;
-    this.#id = id;
+    this.#color = color;
     this.#territories = [];
     this.#leftMilitaryCount = initialMilitaryCount;
-    this.#cardEligibility = false;
-    this.#cards = [];
   }
 
   get status() {
-    const playerDetails = {
-      leftMilitaryCount: this.#leftMilitaryCount,
-      id: this.#id
-    };
-    return playerDetails;
+    const status = {};
+    status.leftMilitaryCount = this.#leftMilitaryCount;
+    status.id = this.#color;
+    return status;
   }
 
   removeMilitary(count) {

@@ -31,22 +31,23 @@ describe('Game', function() {
     });
   });
 
-  context('reinforcement', () => {
+  context('reinforce', () => {
     it('should give false status when the stage is not 2 ', () => {
       const game = new Game(generateTerritories());
-      assert.deepStrictEqual(game.reinforcement('india', 1), {
-        status: false
+      assert.deepStrictEqual(game.reinforce('india', 1), {
+        status: false,
+        error: 'This stage does not support reinforcement'
       });
     });
 
-    it('should give true status when reinforcement is done', () => {
+    it('should give true status when reinforce is done', () => {
       const india = generateTerritories().india;
       const game = new Game({ india });
       game.addPlayer('Player1');
       game.claimTerritory('india');
-      assert.deepStrictEqual(game.reinforcement('india', 1), {
+      assert.deepStrictEqual(game.reinforce('india', 1), {
         status: true,
-        leftMilitaryCount: 23,
+        leftMilitaryCount: 48,
         territoryMilitaryCount: 2
       });
     });
@@ -66,7 +67,7 @@ describe('Game', function() {
       assert.deepStrictEqual(game.claimTerritory('india'), {
         status: true,
         color: 'red',
-        leftMilitaryCount: 24
+        leftMilitaryCount: 49
       });
     });
 
