@@ -9,10 +9,10 @@ const mousePointerPopUp = function(event, msg) {
   }, 1500);
 };
 
-const showReinforcementStatus = function(response, territoryId) {
+const showReinforcementStatus = function(response, event) {
   const { status, leftMilitaryCount, territoryMilitaryCount, error } = response;
   if (status) {
-    getElement(`#${territoryId} + .unit`).innerHTML = `&nbsp;${territoryMilitaryCount}`;
+    getElement(`#${event.target.id} + .unit`).innerHTML = `&nbsp;${territoryMilitaryCount}`;
     getElement('#soldier-count').innerText = leftMilitaryCount;
     return;
   }
@@ -28,7 +28,7 @@ const sendReinforcementRequest = function(event, militaryCount = 1) {
     body: JSON.stringify({ territory: event.target.id, militaryCount })
   })
     .then(response => response.json())
-    .then(response => showReinforcementStatus(response, event.target.id));
+    .then(response => showReinforcementStatus(response, event));
 };
 
 const updateTerritory = function(response, event) {

@@ -7,6 +7,9 @@ const app = express();
 const territories = generateTerritories();
 const game = new Game(territories);
 game.addPlayer('Player1');
+game.addPlayer('Player2');
+game.addPlayer('Player3');
+game.addPlayer('Player4');
 
 app.locals.game = game;
 app.use(express.static('public'));

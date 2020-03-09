@@ -66,7 +66,7 @@ describe('Game', function() {
     it('should claim territory if it is unclaimed', () => {
       assert.deepStrictEqual(game.claimTerritory('india'), {
         status: true,
-        color: 'red',
+        color: 'crimson',
         leftMilitaryCount: 49
       });
     });
