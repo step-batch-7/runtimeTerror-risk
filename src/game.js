@@ -37,7 +37,7 @@ class Game {
   }
 
   addActivity(msg) {
-    return this.#activities.unshift({ msg });
+    return this.#activities.unshift({msg});
   }
 
   addPlayer(name) {
@@ -49,6 +49,7 @@ class Game {
   }
 
   updateStage() {
+    this.#currentPlayerId = 'crimson';
     this.#currentStage = this.#currentStage + 1;
     return this.#currentStage;
   }
@@ -62,39 +63,45 @@ class Game {
   }
 
   claimTerritory(territoryName) {
+    const territory = this.#territories[territoryName];
+    const player = this.#players[this.#currentPlayerId];
+    territory.changeRuler(this.#currentPlayerId);
+    territory.deployMilitary(1);
+    player.addTerritory(territoryName);
+    player.removeMilitary(1);
+    const {name, id, leftMilitaryCount} = player.status;
+    const msg = `${name} is claimed ${territoryName}`;
+    this.updateCurrentPlayer();
+    this.addActivity(msg);
+    return {id, leftMilitaryCount};
+  }
+
+  performClaim(territoryName) {
     if (this.#currentStage != 1) {
-      return { status: false, error: 'wrong stage' };
+      return {status: false, error: 'wrong stage'};
     }
     if (this.#territories[territoryName].isOccupied()) {
-      return { status: false, error: 'territory already occupied' };
+      return {status: false, error: 'territory already occupied'};
     }
-    this.#territories[territoryName].changeRuler(this.#currentPlayerId);
-    this.#players[this.#currentPlayerId].addTerritory(territoryName);
-    this.#territories[territoryName].deployMilitary(1);
-    this.#players[this.#currentPlayerId].removeMilitary(1);
-    const { id, leftMilitaryCount, name } = this.#players[this.#currentPlayerId].status;
-    const msg = `${name} is claimed ${territoryName}`;
-    this.addActivity(msg);
-    this.updateCurrentPlayer();
+    const {id, leftMilitaryCount} = this.claimTerritory(territoryName);
     const territories = Object.values(this.#territories);
     if (territories.every(territory => territory.isOccupied())) {
       this.updateStage();
-      this.#currentPlayerId = 'crimson';
     }
-    return { status: true, color: id, leftMilitaryCount };
+    return {status: true, color: id, leftMilitaryCount};
   }
 
   reinforce(territoryName, militaryCount) {
     let error = 'This stage does not support reinforcement';
     if (this.#currentStage === 1) {
-      return { status: false, error };
+      return {status: false, error};
     }
 
     const player = this.#players[this.#currentPlayerId];
     const territory = this.#territories[territoryName];
     error = 'You can’t place military unit in others territories';
     if (!territory.isOccupiedBy(this.#currentPlayerId)) {
-      return { status: false, error };
+      return {status: false, error};
     }
 
     territory.deployMilitary(militaryCount);
@@ -104,14 +111,13 @@ class Game {
     const players = Object.values(this.#players);
     if (players.every(player => player.status.leftMilitaryCount === 0)) {
       this.updateStage();
-      this.#currentPlayerId = 'red';
     }
-    const { leftMilitaryCount } = player.status;
+    const {leftMilitaryCount} = player.status;
     const territoryMilitaryCount = territory.status.militaryUnits;
     if (this.#currentStage === 2) {
       this.updateCurrentPlayer();
     }
-    return { status: true, leftMilitaryCount, territoryMilitaryCount };
+    return {status: true, leftMilitaryCount, territoryMilitaryCount};
   }
 }
 

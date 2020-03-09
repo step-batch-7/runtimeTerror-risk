@@ -1,4 +1,4 @@
-const { assert } = require('chai');
+const {assert} = require('chai');
 const Game = require('../src/game');
 const Player = require('../src/player');
 const generateTerritories = require('../src/territories');
@@ -41,15 +41,15 @@ describe('Game', function() {
     });
 
     it('should give false status when territory is not current player territory', () => {
-      const { india, china } = generateTerritories();
+      const {india, china} = generateTerritories();
       const game = new Game({
         india,
         china
       });
       game.addPlayer('Player1');
       game.addPlayer('Player2');
-      game.claimTerritory('india');
-      game.claimTerritory('china');
+      game.performClaim('india');
+      game.performClaim('china');
       assert.deepStrictEqual(game.reinforce('china', 1), {
         status: false,
         error: 'You can’t place military unit in others territories'
@@ -58,9 +58,9 @@ describe('Game', function() {
 
     it('should give true status when reinforce is done', () => {
       const india = generateTerritories().india;
-      const game = new Game({ india });
+      const game = new Game({india});
       game.addPlayer('Player1');
-      game.claimTerritory('india');
+      game.performClaim('india');
       assert.deepStrictEqual(game.reinforce('india', 1), {
         status: true,
         leftMilitaryCount: 48,
@@ -76,11 +76,11 @@ describe('Game', function() {
     });
   });
 
-  context('claimTerritory', () => {
+  context('performClaim', () => {
     const game = new Game(generateTerritories());
     game.addPlayer('Player1');
     it('should claim territory if it is unclaimed', () => {
-      assert.deepStrictEqual(game.claimTerritory('india'), {
+      assert.deepStrictEqual(game.performClaim('india'), {
         status: true,
         color: 'crimson',
         leftMilitaryCount: 49
@@ -88,7 +88,7 @@ describe('Game', function() {
     });
 
     it('should give error message if it is claimed', () => {
-      assert.deepStrictEqual(game.claimTerritory('india'), {
+      assert.deepStrictEqual(game.performClaim('india'), {
         status: false,
         error: 'territory already occupied'
       });
@@ -96,7 +96,7 @@ describe('Game', function() {
 
     it('should give error message if it is not in claim stage', () => {
       game.updateStage();
-      assert.deepStrictEqual(game.claimTerritory('india'), {
+      assert.deepStrictEqual(game.performClaim('india'), {
         status: false,
         error: 'wrong stage'
       });

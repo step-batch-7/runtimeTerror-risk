@@ -14,7 +14,7 @@ const getGameStatus = function(req, res) {
 };
 
 const performReinforcement = function(req, res) {
-  const { territory, militaryCount } = req.body;
+  const {territory, militaryCount} = req.body;
   const reinforcementStatus = req.app.locals.game.reinforce(
     territory,
     militaryCount
@@ -22,15 +22,15 @@ const performReinforcement = function(req, res) {
   res.json(reinforcementStatus);
 };
 
-const claimTerritory = function(req, res) {
-  const { territory } = req.body;
-  const response = req.app.locals.game.claimTerritory(territory);
+const performClaim = function(req, res) {
+  const {territory} = req.body;
+  const response = req.app.locals.game.performClaim(territory);
   res.json(response);
 };
 
 module.exports = {
   getGameStatus,
-  claimTerritory,
+  performClaim,
   performReinforcement,
   hasFields
 };

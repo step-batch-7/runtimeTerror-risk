@@ -10,9 +10,11 @@ const mousePointerPopUp = function(event, msg) {
 };
 
 const showReinforcementStatus = function(response, event) {
-  const { status, leftMilitaryCount, territoryMilitaryCount, error } = response;
+  const {status, leftMilitaryCount, territoryMilitaryCount, error} = response;
   if (status) {
-    getElement(`#${event.target.id} + .unit`).innerHTML = `&nbsp;${territoryMilitaryCount}`;
+    getElement(
+      `#${event.target.id} + .unit`
+    ).innerHTML = `&nbsp;${territoryMilitaryCount}`;
     getElement('#soldier-count').innerText = leftMilitaryCount;
     return;
   }
@@ -25,7 +27,7 @@ const sendReinforcementRequest = function(event, militaryCount = 1) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ territory: event.target.id, militaryCount })
+    body: JSON.stringify({territory: event.target.id, militaryCount})
   })
     .then(response => response.json())
     .then(response => showReinforcementStatus(response, event));
@@ -42,19 +44,19 @@ const updateTerritory = function(response, event) {
 };
 
 const sendClaimRequest = function(event) {
-  fetch('/claimTerritory', {
+  fetch('/performClaim', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ territory: event.target.id })
+    body: JSON.stringify({territory: event.target.id})
   })
     .then(response => response.json())
     .then(data => updateTerritory(data, event));
 };
 
 const selectListener = function() {
-  const listeners = { '1': sendClaimRequest, '2': sendReinforcementRequest };
+  const listeners = {'1': sendClaimRequest, '2': sendReinforcementRequest};
   const stage = localStorage.getItem('stage');
   listeners[stage](event);
 };

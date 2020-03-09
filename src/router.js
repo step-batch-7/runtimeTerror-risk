@@ -1,5 +1,10 @@
 const express = require('express');
-const { getGameStatus, claimTerritory, performReinforcement, hasFields } = require('./handlers');
+const {
+  getGameStatus,
+  performClaim,
+  performReinforcement,
+  hasFields
+} = require('./handlers');
 const Game = require('./game');
 const generateTerritories = require('./territories');
 const app = express();
@@ -13,10 +18,14 @@ game.addPlayer('Player4');
 
 app.locals.game = game;
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({extended: true}));
+app.use(express.json({limit: '100kb'}));
 app.get('/gameStatus', getGameStatus);
-app.post('/reinforcement', hasFields('territory', 'militaryCount'), performReinforcement);
-app.post('/claimTerritory', hasFields('territory'), claimTerritory);
+app.post(
+  '/reinforcement',
+  hasFields('territory', 'militaryCount'),
+  performReinforcement
+);
+app.post('/performClaim', hasFields('territory'), performClaim);
 
-module.exports = { app };
+module.exports = {app};
