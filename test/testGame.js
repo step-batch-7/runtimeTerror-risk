@@ -31,10 +31,10 @@ describe('Game', function() {
     });
   });
 
-  context('performReinforcement', () => {
+  context('reinforceTerritory', () => {
     it('should give false status when the stage is not 2 ', () => {
       const game = new Game(generateTerritories());
-      assert.deepStrictEqual(game.performReinforcement('india', 1), {
+      assert.deepStrictEqual(game.reinforceTerritory('india', 1), {
         status: false,
         error: 'wrong stage or phase'
       });
@@ -50,18 +50,18 @@ describe('Game', function() {
       game.addPlayer('Player2');
       game.claimTerritory('india');
       game.claimTerritory('china');
-      assert.deepStrictEqual(game.performReinforcement('china', 1), {
+      assert.deepStrictEqual(game.reinforceTerritory('china', 1), {
         status: false,
         error: 'This is not your territory'
       });
     });
 
-    it('should give true status when performReinforcement is done', () => {
+    it('should give true status when reinforceTerritory is done', () => {
       const india = generateTerritories().india;
       const game = new Game({ india });
       game.addPlayer('Player1');
       game.claimTerritory('india');
-      assert.deepStrictEqual(game.performReinforcement('india', 1), {
+      assert.deepStrictEqual(game.reinforceTerritory('india', 1), {
         status: true,
         leftMilitaryCount: 18,
         territoryMilitaryCount: 2

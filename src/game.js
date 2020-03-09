@@ -1,6 +1,7 @@
 const Player = require('./player');
 
 const stages = { 1: 'Claim', 2: 'Reinforcement', 3: 'Final' };
+const hasDeployedAllMilitary = player => !player.status.leftMilitaryCount;
 
 const createIdGenerator = function*() {
   const ids = ['crimson', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
@@ -102,33 +103,29 @@ class Game {
     } while (this.currentPlayer.status.leftMilitaryCount < 1);
   }
 
-  reinforceTerritory(territory, militaryCount) {
+  deployMilitaryTo(territory, militaryCount) {
     territory.deployMilitary(militaryCount);
     this.currentPlayer.removeMilitary(militaryCount);
     const activityMsg = `${this.currentPlayer.status.name} placed ${militaryCount} soldier in ${territory.status.name}`;
     this.addActivity(activityMsg);
   }
 
-  performReinforcement(territoryName, militaryCount) {
+  reinforceTerritory(territoryName, militaryCount) {
     if (this.#currentStage !== 2) {
       return { status: false, error: 'wrong stage or phase' };
     }
 
-    const territory = this.#territories[territoryName];
-    if (!territory.isOccupiedBy(this.#currentPlayerId)) {
+    const selectedTerritory = this.#territories[territoryName];
+    if (!selectedTerritory.isOccupiedBy(this.#currentPlayerId)) {
       return { status: false, error: 'This is not your territory' };
     }
 
-    this.reinforceTerritory(territory, militaryCount);
-
+    this.deployMilitaryTo(selectedTerritory, militaryCount);
     const players = Object.values(this.#players);
-    if (players.every(player => !player.status.leftMilitaryCount)) {
-      this.updateStage();
-    }
-
+    players.every(hasDeployedAllMilitary) && this.updateStage();
     this.#currentStage === 2 && this.changeTurnToNextDeployer();
     const { leftMilitaryCount } = this.currentPlayer.status;
-    const territoryMilitaryCount = territory.status.militaryUnits;
+    const territoryMilitaryCount = selectedTerritory.status.militaryUnits;
     return { status: true, leftMilitaryCount, territoryMilitaryCount };
   }
 }
