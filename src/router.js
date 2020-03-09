@@ -1,11 +1,7 @@
 const express = require('express');
 const {
   getGameStatus,
-<<<<<<< HEAD
   performClaim,
-=======
-  claimTerritory,
->>>>>>> |#13|Noora/Drishya| Added changeTurn method in game class
   performReinforcement,
   hasFields
 } = require('./handlers');
@@ -23,18 +19,14 @@ game.addPlayer('Player5');
 
 app.locals.game = game;
 app.use(express.static('public'));
-app.use(express.urlencoded({extended: true}));
-app.use(express.json({limit: '100kb'}));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '100kb' }));
 app.get('/gameStatus', getGameStatus);
 app.post(
   '/reinforcement',
   hasFields('territory', 'militaryCount'),
   performReinforcement
 );
-<<<<<<< HEAD
 app.post('/performClaim', hasFields('territory'), performClaim);
-=======
-app.post('/claimTerritory', hasFields('territory'), claimTerritory);
->>>>>>> |#13|Noora/Drishya| Added changeTurn method in game class
 
-module.exports = {app};
+module.exports = { app };

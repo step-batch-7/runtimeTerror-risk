@@ -37,7 +37,7 @@ class Game {
   }
 
   addActivity(msg) {
-    return this.#activities.unshift({msg});
+    return this.#activities.unshift({ msg });
   }
 
   addPlayer(name) {
@@ -69,26 +69,26 @@ class Game {
     territory.deployMilitary(1);
     player.addTerritory(territoryName);
     player.removeMilitary(1);
-    const {name, id, leftMilitaryCount} = player.status;
+    const { name, id, leftMilitaryCount } = player.status;
     const msg = `${name} is claimed ${territoryName}`;
     this.updateCurrentPlayer();
     this.addActivity(msg);
-    return {id, leftMilitaryCount};
+    return { id, leftMilitaryCount };
   }
 
   performClaim(territoryName) {
     if (this.#currentStage != 1) {
-      return {status: false, error: 'wrong stage'};
+      return { status: false, error: 'wrong stage' };
     }
     if (this.#territories[territoryName].isOccupied()) {
-      return {status: false, error: 'territory already occupied'};
+      return { status: false, error: 'territory already occupied' };
     }
-    const {id, leftMilitaryCount} = this.claimTerritory(territoryName);
+    const { id, leftMilitaryCount } = this.claimTerritory(territoryName);
     const territories = Object.values(this.#territories);
     if (territories.every(territory => territory.isOccupied())) {
       this.updateStage();
     }
-    return {status: true, color: id, leftMilitaryCount};
+    return { status: true, color: id, leftMilitaryCount };
   }
 
   changeTurn() {
