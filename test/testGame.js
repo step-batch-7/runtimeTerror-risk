@@ -36,7 +36,7 @@ describe('Game', function() {
       const game = new Game(generateTerritories());
       assert.deepStrictEqual(game.reinforce('india', 1), {
         status: false,
-        error: 'This stage does not support reinforcement'
+        error: 'wrong stage or phase'
       });
     });
 
@@ -52,7 +52,7 @@ describe('Game', function() {
       game.performClaim('china');
       assert.deepStrictEqual(game.reinforce('china', 1), {
         status: false,
-        error: 'You can’t place military unit in others territories'
+        error: 'This is not your territory'
       });
     });
 
@@ -63,7 +63,7 @@ describe('Game', function() {
       game.performClaim('india');
       assert.deepStrictEqual(game.reinforce('india', 1), {
         status: true,
-        leftMilitaryCount: 48,
+        leftMilitaryCount: 23,
         territoryMilitaryCount: 2
       });
     });
@@ -83,7 +83,7 @@ describe('Game', function() {
       assert.deepStrictEqual(game.performClaim('india'), {
         status: true,
         color: 'crimson',
-        leftMilitaryCount: 49
+        leftMilitaryCount: 24
       });
     });
 

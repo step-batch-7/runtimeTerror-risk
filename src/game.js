@@ -42,7 +42,7 @@ class Game {
 
   addPlayer(name) {
     const id = this.#getId.next().value;
-    const newPlayer = new Player(name, id, 50);
+    const newPlayer = new Player(name, id, 25);
     this.addActivity(`${name} has joined.`);
     this.#players[id] = newPlayer;
     return this.#players[id];
@@ -91,33 +91,41 @@ class Game {
     return {status: true, color: id, leftMilitaryCount};
   }
 
+  changeTurn() {
+    if (this.#currentStage === 2) {
+      do {
+        this.updateCurrentPlayer();
+      } while (
+        this.#players[this.#currentPlayerId].status.leftMilitaryCount < 1
+      );
+    }
+  }
+
   reinforce(territoryName, militaryCount) {
-    let error = 'This stage does not support reinforcement';
     if (this.#currentStage === 1) {
-      return {status: false, error};
+      return { status: false, error: 'wrong stage or phase' };
     }
 
     const player = this.#players[this.#currentPlayerId];
     const territory = this.#territories[territoryName];
-    error = 'You can’t place military unit in others territories';
     if (!territory.isOccupiedBy(this.#currentPlayerId)) {
-      return {status: false, error};
+      return { status: false, error: 'This is not your territory' };
     }
 
     territory.deployMilitary(militaryCount);
     player.removeMilitary(militaryCount);
     const activityMsg = `${player.status.name} placed ${militaryCount} soldier in ${territoryName}`;
     this.addActivity(activityMsg);
+
     const players = Object.values(this.#players);
-    if (players.every(player => player.status.leftMilitaryCount === 0)) {
+    if (players.every(player => !player.status.leftMilitaryCount)) {
       this.updateStage();
+      this.#currentPlayerId = 'crimson';
     }
-    const {leftMilitaryCount} = player.status;
+    this.changeTurn();
+    const { leftMilitaryCount } = player.status;
     const territoryMilitaryCount = territory.status.militaryUnits;
-    if (this.#currentStage === 2) {
-      this.updateCurrentPlayer();
-    }
-    return {status: true, leftMilitaryCount, territoryMilitaryCount};
+    return { status: true, leftMilitaryCount, territoryMilitaryCount };
   }
 }
 
