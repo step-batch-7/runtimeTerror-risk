@@ -150,4 +150,20 @@ describe('Handlers', () => {
         .expect({gameId: '1000', numOfPlayers: 2});
     });
   });
+
+  context('Request for waiting status', () => {
+    beforeEach(() => {
+      const controller = new Controller();
+      controller.addGame('player1', 2);
+      app.locals = {controller};
+    });
+    it('Should give the number of joined players and status about starting of a perticular game', done => {
+      request(app)
+        .get('/waitingStatus')
+        .set('Cookie', '_gameId=1000;')
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8', done)
+        .expect({numOfJoinedPlayers: 1, isAllPlayersJoined: false});
+    });
+  });
 });

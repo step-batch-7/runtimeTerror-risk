@@ -60,6 +60,10 @@ class Game {
     return this.#players[this.#currentPlayerId];
   }
 
+  get numOfJoinedPlayers() {
+    return Object.keys(this.#players).length;
+  }
+
   addActivity(msg) {
     return this.#activities.unshift({msg});
   }
@@ -68,8 +72,9 @@ class Game {
     const playerId = this.#idGenerator.next().value;
     this.addActivity(`${name} has joined.`);
     this.#players[playerId] = new Player(name, playerId, 20);
-    if (this.#numOfPlayers === Object.keys(this.#players).length)
+    if (this.#numOfPlayers === this.numOfJoinedPlayers) {
       this.#isStarted = true;
+    }
     return playerId;
   }
 

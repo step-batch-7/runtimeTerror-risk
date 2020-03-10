@@ -1,3 +1,9 @@
+const getWaitingStatus = function(req, res) {
+  const numOfJoinedPlayers = req.game.numOfJoinedPlayers;
+  const isAllPlayersJoined = req.game.hasStarted;
+  res.json({numOfJoinedPlayers, isAllPlayersJoined});
+};
+
 const getGameDetails = function(req, res) {
   const {_gameId} = req.cookies;
   const numOfPlayers = req.game.numOfPlayers;
@@ -73,5 +79,6 @@ module.exports = {
   findGame,
   hostGame,
   joinGame,
-  getGameDetails
+  getGameDetails,
+  getWaitingStatus
 };

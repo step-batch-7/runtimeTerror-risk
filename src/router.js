@@ -5,12 +5,14 @@ const Controller = require('./controller');
 const {
   getGameStatus,
   getGameDetails,
+
   performClaim,
   performReinforcement,
   hasFields,
   findGame,
   hostGame,
-  joinGame
+  joinGame,
+  getWaitingStatus
 } = require('./handlers');
 const app = express();
 
@@ -24,6 +26,7 @@ app.post('/hostGame', hasFields('playerName', 'numOfPlayers'), hostGame);
 app.post('/joinGame', hasFields('gameId', 'playerName'), joinGame);
 app.use(findGame);
 app.get('/gameDetails', getGameDetails);
+app.get('/waitingStatus', getWaitingStatus);
 app.get('/gameStatus', getGameStatus);
 app.post(
   '/reinforcement',
