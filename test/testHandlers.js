@@ -45,10 +45,19 @@ describe('Handlers', () => {
         .expect(/currentStage/);
     });
 
-    it('Should redirect to /home.html if cookie is not present', done => {
+    it('Should tell bad request if cookie is not present', done => {
       request(app)
         .get('/gameStatus')
-        .expect(302, done);
+        .expect(400, done)
+        .expect('Bad Request');
+    });
+
+    it('Should tell bad request if invalid game id in cookie', done => {
+      request(app)
+        .get('/gameStatus')
+        .set('Cookie', '_gameId=123')
+        .expect(400, done)
+        .expect('Bad Request');
     });
   });
 

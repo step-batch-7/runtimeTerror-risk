@@ -64,11 +64,13 @@ const joinGame = function(req, res) {
 
 const findGame = function(req, res, next) {
   const {_gameId} = req.cookies;
-  if (_gameId) {
-    req.game = req.app.locals.controller.getGame(_gameId);
+  const game = req.app.locals.controller.getGame(_gameId);
+  if (_gameId && game) {
+    req.game = game;
     return next();
   }
-  res.redirect('/home.html');
+  res.status(400);
+  res.send('Bad Request');
 };
 
 module.exports = {
