@@ -1,11 +1,13 @@
 class Territory {
+  #id;
   #name;
-  #neighborsName;
+  #neighbors;
   #occupiedBy;
   #militaryUnits;
-  constructor(name, neighborsName) {
+  constructor(id, neighbors, name) {
+    this.#id = id;
     this.#name = name;
-    this.#neighborsName = neighborsName;
+    this.#neighbors = neighbors;
     this.#occupiedBy;
     this.#militaryUnits = 0;
   }
@@ -30,9 +32,10 @@ class Territory {
 
   get status() {
     return {
+      id: this.#id,
       name: this.#name,
       occupiedBy: this.#occupiedBy,
-      neighborsName: this.#neighborsName.slice(),
+      neighborsName: this.#neighbors.slice(),
       militaryUnits: this.#militaryUnits
     };
   }

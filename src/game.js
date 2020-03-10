@@ -97,14 +97,15 @@ class Game {
     return this.#currentPlayerId;
   }
 
-  assignOwnerTo(territoryName) {
-    const territory = this.#territories[territoryName];
+  assignOwnerTo(territoryId) {
+    const territory = this.#territories[territoryId];
     territory.changeRuler(this.#currentPlayerId);
     territory.deployMilitary(1);
-    this.currentPlayer.addTerritory(territoryName);
+    this.currentPlayer.addTerritory(territoryId);
     this.currentPlayer.removeMilitary(1);
+    const territoryName = territory.status.name;
     const {name, color, leftMilitaryCount} = this.currentPlayer.status;
-    const msg = `${name} is claimed ${territoryName}`;
+    const msg = `${name} has claimed ${territoryName}`;
     this.updateCurrentPlayer();
     this.addActivity(msg);
     return {color, leftMilitaryCount};

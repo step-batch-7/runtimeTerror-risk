@@ -48,9 +48,10 @@ describe('Territory', function() {
 
   context('status', function() {
     it('Should give status of the territory', function() {
-      const territory = new Territory('india', ['china']);
+      const territory = new Territory('india', ['china'], 'India');
       assert.deepStrictEqual(territory.status, {
-        name: 'india',
+        id: 'india',
+        name: 'India',
         occupiedBy: undefined,
         militaryUnits: 0,
         neighborsName: ['china']
