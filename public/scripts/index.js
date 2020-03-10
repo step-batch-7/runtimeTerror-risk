@@ -10,12 +10,10 @@ const mousePointerPopUp = function(event, msg) {
 };
 
 const showReinforcementStatus = function(response, event) {
-  const {status, leftMilitaryCount, territoryMilitaryCount, error} = response;
+  const { status, leftMilitaryCount, territoryMilitaryCount, error } = response;
   if (status) {
-    getElement(
-      `#${event.target.id} + .unit`
-    ).innerHTML = `&nbsp;${territoryMilitaryCount}`;
-    getElement('#soldier-count').innerText = leftMilitaryCount;
+    getElement(`#${event.target.id} + .unit`).innerHTML = `&nbsp;${territoryMilitaryCount}`;
+    updateRemainingMilitaryCount(leftMilitaryCount);
     return;
   }
   mousePointerPopUp(event, error);
@@ -27,7 +25,7 @@ const sendReinforcementRequest = function(event, militaryCount = 1) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({territory: event.target.id, militaryCount})
+    body: JSON.stringify({ territory: event.target.id, militaryCount })
   })
     .then(response => response.json())
     .then(response => showReinforcementStatus(response, event));
@@ -37,7 +35,7 @@ const updateTerritory = function(response, event) {
   if (response.status) {
     getElement(`#${event.target.id}`).style.fill = response.color;
     getElement(`#${event.target.id} + .unit`).innerHTML = '&nbsp;1';
-    getElement(`#soldier-count`).innerHTML = response.leftMilitaryCount;
+    updateRemainingMilitaryCount(response.leftMilitaryCount);
     return;
   }
   mousePointerPopUp(event, response.error);
@@ -49,14 +47,14 @@ const sendClaimRequest = function(event) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({territory: event.target.id})
+    body: JSON.stringify({ territory: event.target.id })
   })
     .then(response => response.json())
     .then(data => updateTerritory(data, event));
 };
 
 const selectListener = function() {
-  const listeners = {'1': sendClaimRequest, '2': sendReinforcementRequest};
+  const listeners = { '1': sendClaimRequest, '2': sendReinforcementRequest };
   const stage = localStorage.getItem('stage');
   listeners[stage](event);
 };

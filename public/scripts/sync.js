@@ -1,29 +1,29 @@
 const updateRemainingMilitaryCount = function(remainingMilitaryCount) {
-  const element = document.querySelector('.front');
-  const parentElement = element.parentElement;
-  if (parentElement.style.transform === 'rotateY(180deg)') {
-    parentElement.style.transform = 'rotateY(0deg)';
-    element.innerText = remainingMilitaryCount;
+  const $soldierCount = getElement('#soldier-count');
+  if ($soldierCount.children[0].innerText == remainingMilitaryCount) {
     return;
   }
-  document.querySelector('.back').innerText = remainingMilitaryCount;
-  parentElement.style.transform = 'rotateY(180deg)';
+  $soldierCount.children[0].innerText = remainingMilitaryCount;
+  $soldierCount.classList.remove('rotate');
+  $soldierCount.offsetWidth = $soldierCount.offsetWidth;
+  $soldierCount.classList.add('rotate');
+  setTimeout(() => {
+    $soldierCount.children[1].innerText = remainingMilitaryCount;
+  }, 100);
 };
 
 const updateMap = function(territories) {
   for (const territory in territories) {
     getElement(`#${territory}`).style.fill = territories[territory].occupiedBy;
-    getElement(
-      `#${territory} + .unit`
-    ).innerHTML = `&nbsp${territories[territory].militaryUnits}`;
+    getElement(`#${territory} + .unit`).innerHTML = `&nbsp${territories[territory].militaryUnits}`;
   }
 };
 
 const updateGameStage = function(currentStageNum) {
   const stages = {
-    1: 'Claim (1st Stage)',
-    2: 'Reinforcement (2nd Stage)',
-    3: 'Final (3rd Stage)'
+    1: 'Claim Stage',
+    2: 'Reinforcement Stage',
+    3: 'Final Stage'
   };
   const currentStage = getElement('#stages span');
   currentStage.innerText = `${stages[currentStageNum]}`;
@@ -42,10 +42,10 @@ const updateActivities = function(activities) {
 };
 
 const updateGameView = function(gameStatus) {
-  updateRemainingMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
   updateGameStage(gameStatus.currentStage);
   updateMap(gameStatus.territories);
   updateActivities(gameStatus.activities);
+  updateRemainingMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
 };
 
 const sendSyncReq = function() {
