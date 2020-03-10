@@ -23,13 +23,15 @@ class Game {
   #currentStage;
   #activities;
   #idGenerator;
-  constructor(territories) {
+  #numOfPlayers;
+  constructor(territories, numOfPlayers) {
     this.#territories = territories;
     this.#players = {};
     this.#currentPlayerId = 'indianred';
     this.#currentStage = 1;
     this.#activities = [];
     this.#idGenerator = createIdGenerator();
+    this.#numOfPlayers = numOfPlayers;
   }
 
   get status() {
@@ -53,10 +55,10 @@ class Game {
   }
 
   addPlayer(name) {
-    const id = this.#idGenerator.next().value;
+    const playerId = this.#idGenerator.next().value;
     this.addActivity(`${name} has joined.`);
-    this.#players[id] = new Player(name, id, 20);
-    return id;
+    this.#players[playerId] = new Player(name, playerId, 20);
+    return playerId;
   }
 
   updateStage() {
