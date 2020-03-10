@@ -153,30 +153,6 @@ h3 {
   padding: 4px;
 }
 
-.player1 {
-  background: rgba(255, 0, 0, 0.7);
-}
-
-.player2 {
-  background: rgba(8, 87, 5, 0.7);
-}
-
-.player3 {
-  background: rgba(7, 44, 100, 0.7);
-}
-
-.player4 {
-  background: rgba(92, 15, 155, 0.7);
-}
-
-.player5 {
-  background: rgba(202, 172, 0, 0.7);
-}
-
-.player6 {
-  background: rgba(0, 0, 0, 0.7);
-}
-
 .logo {
   z-index: 1;
   position: fixed;

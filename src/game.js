@@ -1,6 +1,7 @@
 const Player = require('./player');
 
 const stages = {1: 'Claim', 2: 'Reinforcement', 3: 'Final'};
+
 const hasDeployedAllMilitary = player => !player.status.leftMilitaryCount;
 
 const createIdGenerator = function*() {
@@ -60,8 +61,15 @@ class Game {
     return this.#players[this.#currentPlayerId];
   }
 
-  get numOfJoinedPlayers() {
-    return Object.keys(this.#players).length;
+  get joinedPlayerDetails() {
+    const joinedPlayerDetails = {};
+    joinedPlayerDetails.numOfJoinedPlayers = Object.keys(this.#players).length;
+    joinedPlayerDetails.playerColorAndName = [];
+    Object.values(this.#players).forEach(player => {
+      const {name, color} = player.status;
+      joinedPlayerDetails.playerColorAndName.push({name, color});
+    });
+    return joinedPlayerDetails;
   }
 
   addActivity(msg) {
@@ -72,7 +80,7 @@ class Game {
     const playerId = this.#idGenerator.next().value;
     this.addActivity(`${name} has joined.`);
     this.#players[playerId] = new Player(name, playerId, 20);
-    if (this.#numOfPlayers === this.numOfJoinedPlayers) {
+    if (this.#numOfPlayers === Object.keys(this.#players).length) {
       this.#isStarted = true;
     }
     return playerId;

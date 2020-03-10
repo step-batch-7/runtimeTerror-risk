@@ -1,7 +1,7 @@
 const getWaitingStatus = function(req, res) {
-  const numOfJoinedPlayers = req.game.numOfJoinedPlayers;
   const isAllPlayersJoined = req.game.hasStarted;
-  res.json({numOfJoinedPlayers, isAllPlayersJoined});
+  const {numOfJoinedPlayers, playerColorAndName} = req.game.joinedPlayerDetails;
+  res.json({numOfJoinedPlayers, isAllPlayersJoined, playerColorAndName});
 };
 
 const getGameDetails = function(req, res) {

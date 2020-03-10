@@ -172,7 +172,16 @@ describe('Handlers', () => {
         .set('Cookie', '_gameId=1000;')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect({numOfJoinedPlayers: 1, isAllPlayersJoined: false});
+        .expect({
+          isAllPlayersJoined: false,
+          numOfJoinedPlayers: 1,
+          playerColorAndName: [
+            {
+              color: 'indianred',
+              name: 'player1'
+            }
+          ]
+        });
     });
   });
 });

@@ -12,12 +12,30 @@ const sendReqForGameDetails = function() {
     .then(showGameDetails);
 };
 
+const showJoinedPlayersName = function(playerColorAndName) {
+  const $waitingDetailsBox = document.querySelector('.box');
+  const joinderPlayers = document.querySelectorAll('.player');
+  joinderPlayers.forEach(player => player.parentElement.removeChild(player));
+  playerColorAndName.forEach(({color, name}) => {
+    const $nameBox = document.createElement('div');
+    const $name = document.createElement('p');
+    $name.innerHTML = name;
+    $nameBox.appendChild($name);
+    $nameBox.className = 'player';
+    $nameBox.style.backgroundColor = color;
+    $waitingDetailsBox.appendChild($nameBox);
+  });
+};
+
 const showJoinedPlayers = function(response) {
   const $joinedPlayers = document.querySelector('#joinedPlayers');
-  const {numOfJoinedPlayers, isAllPlayersJoined} = response;
+  const {numOfJoinedPlayers, isAllPlayersJoined, playerColorAndName} = response;
   $joinedPlayers.innerHTML = numOfJoinedPlayers;
+  showJoinedPlayersName(playerColorAndName);
   if (isAllPlayersJoined) {
-    document.location = 'game.html';
+    setTimeout(() => {
+      document.location = 'game.html';
+    }, 1000);
   }
 };
 
