@@ -1,8 +1,6 @@
 const request = require('supertest');
 const { app } = require('../src/router');
-const Game = require('../src/game');
 const Controller = require('../src/controller');
-const generateTerritories = require('../src/territories');
 
 describe('Handlers', () => {
   context('Requests for static files', () => {
@@ -11,7 +9,7 @@ describe('Handlers', () => {
         .get('/index.html')
         .expect(200)
         .expect('Content-Type', 'text/html; charset=UTF-8', done)
-        .expect(/\.\/scripts\/map\.js/);
+        .expect(/Host Game/);
     });
 
     it('Should serve the index.html page for /', done => {
@@ -19,7 +17,7 @@ describe('Handlers', () => {
         .get('/')
         .expect(200)
         .expect('Content-Type', 'text/html; charset=UTF-8', done)
-        .expect(/\.\/scripts\/map\.js/);
+        .expect(/Host Game/);
     });
   });
 

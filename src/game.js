@@ -24,6 +24,7 @@ class Game {
   #activities;
   #idGenerator;
   #numOfPlayers;
+  #isStarted;
   constructor(territories, numOfPlayers) {
     this.#territories = territories;
     this.#players = {};
@@ -32,6 +33,7 @@ class Game {
     this.#activities = [];
     this.#idGenerator = createIdGenerator();
     this.#numOfPlayers = numOfPlayers;
+    this.#isStarted = false;
   }
 
   get status() {
@@ -46,6 +48,10 @@ class Game {
     return status;
   }
 
+  get hasStarted() {
+    return this.#isStarted;
+  }
+
   get currentPlayer() {
     return this.#players[this.#currentPlayerId];
   }
@@ -58,6 +64,8 @@ class Game {
     const playerId = this.#idGenerator.next().value;
     this.addActivity(`${name} has joined.`);
     this.#players[playerId] = new Player(name, playerId, 20);
+    if (this.#numOfPlayers === Object.keys(this.#players).length)
+      this.#isStarted = true;
     return playerId;
   }
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/entryPage.css" />
+    <title>Risk | Host</title>
+  </head>
+  <body>
+    <img src="./images/logo.png" alt="Logo" class="logo" />
+    <div class="background"></div>
+    <div class="boxContainer">
+      <form action="#">
+        <div class="box">
+          <label for="playerName">Player Name:</label
+          ><input
+            type="text"
+            name="playerName"
+            id="playerName"
+            required
+            minlength="3"
+            placeholder="eg. John Doe"
+            autocomplete="off"
+            autofocus
+          />
+          <label for="playerCount">Number Of Players:</label>
+          <select name="playerCount" id="playerCount">
+            <option value="3" selected>3 Players</option>
+            <option value="4">4 Players</option>
+            <option value="5">5 Players</option>
+            <option value="6">6 Players</option>
+          </select>
+          <input type="submit" />
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

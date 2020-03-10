@@ -27,7 +27,7 @@ class Controller {
       errorMsg = `Invalid Game Id(${gameId})`;
       return { joinStatus: false, errorMsg };
     }
-    const isGameNotStarted = this.#games[gameId].isGameStarted;
+    const isGameNotStarted = this.#games[gameId].hasStarted;
     if (isGameNotStarted) {
       errorMsg = `You can't join this Game (${gameId})`;
     }

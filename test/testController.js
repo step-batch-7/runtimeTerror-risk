@@ -37,6 +37,16 @@ describe('Controller', () => {
         errorMsg: 'Invalid Game Id(100)'
       });
     });
+
+    it('Should give false status if game is already started', () => {
+      const controller = new Controller();
+      controller.addGame('player1', 2);
+      controller.join(1000, 'player2');
+      assert.deepStrictEqual(controller.isValid(1000), {
+        joinStatus: false,
+        errorMsg: "You can't join this Game (1000)"
+      });
+    });
   });
 
   context('getGame', () => {
