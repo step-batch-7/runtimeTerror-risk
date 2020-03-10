@@ -20,7 +20,7 @@ describe('Game', function() {
   context('addPlayer', () => {
     it('should add a new player in player list', () => {
       const game = new Game(['india', 'china']);
-      assert.strictEqual(game.addPlayer('Player1'), 'crimson');
+      assert.strictEqual(game.addPlayer('Player1'), 'indianred');
     });
   });
 
@@ -82,7 +82,7 @@ describe('Game', function() {
     it('should claim territory if it is unclaimed', () => {
       assert.deepStrictEqual(game.claimTerritory('india'), {
         status: true,
-        color: 'crimson',
+        color: 'indianred',
         leftMilitaryCount: 19
       });
     });
