@@ -7,20 +7,20 @@ const getInputValues = function() {
   const numOfPlayers = $playerCount.value;
   $playerName.value = '';
   $playerCount.value = '';
-  return { playerName, numOfPlayers };
+  return {playerName, numOfPlayers};
 };
 
 const requestForHostGame = function(event) {
   const options = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(getInputValues())
   };
   event.preventDefault();
   fetch('/hostGame', options)
     .then(res => res.json())
-    .then(data => {
-      document.location = `waiting.html?gameId=${data.gameId}`;
+    .then(() => {
+      document.location = `waiting.html`;
     });
 };
 
