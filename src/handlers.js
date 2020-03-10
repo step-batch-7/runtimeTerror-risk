@@ -69,8 +69,8 @@ const findGame = function(req, res, next) {
     req.game = game;
     return next();
   }
-  res.status(400);
-  res.send('Bad Request');
+  res.statusCode = 400;
+  res.end('Bad Request');
 };
 
 module.exports = {
