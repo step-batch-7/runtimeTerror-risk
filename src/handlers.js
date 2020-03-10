@@ -32,7 +32,7 @@ const hostGame = function(req, res) {
   const { playerName, numOfPlayers } = req.body;
   const { gameId, playerId } = req.app.locals.controller.addGame(
     playerName,
-    numOfPlayers
+    +numOfPlayers
   );
   res.cookie('_gameId', `${gameId}`);
   res.cookie('_playerId', `${playerId}`);
