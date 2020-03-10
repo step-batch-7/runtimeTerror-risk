@@ -29,16 +29,19 @@ body {
 /* left military units count box */
 .soldier-details {
   background-color: rgb(200, 200, 200, 0.2);
-  border: 1px solid rgb(83, 87, 133);
   position: absolute;
   left: 1.5vw;
   bottom: 14vh;
-  width: 10.5vw;
+  width: 10vw;
   height: 2.5vw;
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: row;
+  /* justify-content: space-evenly; */
 }
-
+.sub-division {
+  border: 1px solid rgb(83, 87, 133);
+  width: 5vw;
+}
 .soldier-icon {
   height: 2vw;
   width: 2vw;
@@ -48,11 +51,30 @@ body {
 }
 
 .soldier-count {
-  padding: 0.5vw;
-  padding-left: 2vw;
+  width: 5vw;
+  height: 2.2vw;
   color: rgb(83, 87, 133);
-  border-left: 1px solid rgb(83, 87, 133);
   font-size: calc(0.8vw + 0.5em);
+  display: flex;
+  flex-wrap: wrap;
+  transition: transform 500ms;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.front,
+.back {
+  position: absolute;
+  text-align: center;
+  padding-top: 8%;
+  border: 1px solid rgb(83, 87, 133);
+  backface-visibility: hidden;
+  height: 90%;
+  width: 100%;
+}
+
+.back {
+  transform: rotateY(180deg);
 }
 
 /* stage showing box */

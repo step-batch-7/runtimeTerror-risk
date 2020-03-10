@@ -4,10 +4,15 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="stylesheet" href="./css/map.css" />
-    <link rel="shortcut icon" href="./images/riskLogo.png" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="./images/riskLogo.png"
+      type="image/x-icon"
+    />
     <script src="./scripts/sync.js"></script>
     <script src="./scripts/map.js"></script>
     <script src="./scripts/index.js"></script>
+    <script src="./scripts/flip.js"></script>
     <title>Risk</title>
   </head>
   <body>
@@ -17,8 +22,15 @@
     </div>
     <div id="stages"><span></span></div>
     <div class="soldier-details" title="Remaining military count">
-      <div class="soldier-icon"></div>
-      <div class="soldier-count" id="soldier-count">-</div>
+      <div class="sub-division">
+        <div class="soldier-icon"></div>
+      </div>
+      <div>
+        <div class="soldier-count" id="soldier-count">
+          <div class="front">5</div>
+          <div class="back">4</div>
+        </div>
+      </div>
     </div>
 
     <div class="activity-log-container">

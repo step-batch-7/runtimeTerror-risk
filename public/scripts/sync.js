@@ -1,12 +1,21 @@
 const updateRemainingMilitaryCount = function(remainingMilitaryCount) {
-  const soldierCount = getElement('#soldier-count');
-  soldierCount.innerText = remainingMilitaryCount;
+  const element = document.querySelector('.front');
+  const parentElement = element.parentElement;
+  if (parentElement.style.transform === 'rotateY(180deg)') {
+    parentElement.style.transform = 'rotateY(0deg)';
+    element.innerText = remainingMilitaryCount;
+    return;
+  }
+  document.querySelector('.back').innerText = remainingMilitaryCount;
+  parentElement.style.transform = 'rotateY(180deg)';
 };
 
 const updateMap = function(territories) {
   for (const territory in territories) {
     getElement(`#${territory}`).style.fill = territories[territory].occupiedBy;
-    getElement(`#${territory} + .unit`).innerHTML = `&nbsp${territories[territory].militaryUnits}`;
+    getElement(
+      `#${territory} + .unit`
+    ).innerHTML = `&nbsp${territories[territory].militaryUnits}`;
   }
 };
 
