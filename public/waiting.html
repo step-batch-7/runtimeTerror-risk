@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/waiting.css" />
     <title>Risk | Waiting Page</title>
+    <script src="./scripts/waiting.js"></script>
   </head>
   <body>
     <img src="./images/logo.png" alt="Logo" class="logo" />
@@ -15,12 +16,13 @@
           WAITING FOR <br />
           OTHER PLAYERS
         </h2>
-        <h3>Game ID: ----</h3>
+        <h3 id="gameId"></h3>
         <div class="spinnerContainer">
           <div class="spinner">
             <div class="innerSpinner"></div>
           </div>
         </div>
+        <p id="joinedPlayers"></p>
       </div>
     </div>
   </body>

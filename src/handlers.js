@@ -1,3 +1,9 @@
+const getGameDetails = function(req, res) {
+  const {_gameId} = req.cookies;
+  const numOfPlayers = req.game.numOfPlayers;
+  res.json({gameId: _gameId, numOfPlayers});
+};
+
 const hasFields = (...fields) => {
   return (req, res, next) => {
     if (fields.every(field => field in req.body)) {
@@ -14,7 +20,7 @@ const getGameStatus = function(req, res) {
 };
 
 const performReinforcement = function(req, res) {
-  const { territory, militaryCount } = req.body;
+  const {territory, militaryCount} = req.body;
   const reinforcementStatus = req.game.reinforceTerritory(
     territory,
     militaryCount
@@ -23,24 +29,24 @@ const performReinforcement = function(req, res) {
 };
 
 const performClaim = function(req, res) {
-  const { territory } = req.body;
+  const {territory} = req.body;
   const response = req.game.claimTerritory(territory);
   res.json(response);
 };
 
 const hostGame = function(req, res) {
-  const { playerName, numOfPlayers } = req.body;
-  const { gameId, playerId } = req.app.locals.controller.addGame(
+  const {playerName, numOfPlayers} = req.body;
+  const {gameId, playerId} = req.app.locals.controller.addGame(
     playerName,
     +numOfPlayers
   );
   res.cookie('_gameId', `${gameId}`);
   res.cookie('_playerId', `${playerId}`);
-  res.json({ gameId });
+  res.json({gameId});
 };
 
 const joinGame = function(req, res) {
-  const { gameId, playerName } = req.body;
+  const {gameId, playerName} = req.body;
   const gameValidity = req.app.locals.controller.isValid(gameId);
   if (gameValidity.joinStatus) {
     const playerId = req.app.locals.controller.join(gameId, playerName);
@@ -51,7 +57,7 @@ const joinGame = function(req, res) {
 };
 
 const findGame = function(req, res, next) {
-  const { _gameId } = req.cookies;
+  const {_gameId} = req.cookies;
   if (_gameId) {
     req.game = req.app.locals.controller.getGame(_gameId);
     return next();
@@ -66,5 +72,6 @@ module.exports = {
   hasFields,
   findGame,
   hostGame,
-  joinGame
+  joinGame,
+  getGameDetails
 };
