@@ -12,19 +12,22 @@
     <div class="boxContainer">
       <form action="#">
         <div class="box">
-          <label for="playerName">Player Name:</label
+          <label for="playerName"
+            >Player Name:<span class="required"> *</span></label
           ><input
             type="text"
             name="playerName"
             id="playerName"
             required
-            minlength="3"
             placeholder="eg. John Doe"
             autocomplete="off"
-            title="Only Alphabets allowed"
+            pattern="[A-Za-z]{3,12}"
+            title="3 to 12 Alpha characters allowed"
             autofocus
           />
-          <label for="playerCount">Number Of Players:</label>
+          <label for="playerCount"
+            >Number Of Players:<span class="required"> *</span></label
+          >
           <select name="playerCount" id="playerCount">
             <option value="3" selected>3 Players</option>
             <option value="4">4 Players</option>
