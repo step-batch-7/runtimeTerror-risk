@@ -1,12 +1,10 @@
 const getElement = selector => document.querySelector(selector);
 
 const getInputValues = function() {
-  const $playerName = getElement('#playerName');
-  const $playerCount = getElement('#playerCount');
-  const playerName = $playerName.value;
-  const numOfPlayers = $playerCount.value;
-  $playerName.value = '';
-  $playerCount.value = '';
+  const playerName = getElement('#playerName').value;
+  const numOfPlayers = getElement('#playerCount').value;
+  const $box = getElement('.box');
+  $box.classList.add('hidden');
   return {playerName, numOfPlayers};
 };
 
@@ -17,11 +15,11 @@ const requestForHostGame = function(event) {
     body: JSON.stringify(getInputValues())
   };
   event.preventDefault();
-  fetch('/hostGame', options)
-    .then(res => res.json())
-    .then(() => {
-      document.location = `waiting.html`;
-    });
+  fetch('/hostGame', options).then(res => {
+    if (res.status === 200) {
+      document.location = 'waiting.html';
+    }
+  });
 };
 
 const main = function() {

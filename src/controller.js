@@ -13,25 +13,24 @@ class Controller {
     return this.#games[gameId].addPlayer(playerName);
   }
 
-  addGame(playerName, noOfPlayers) {
+  addGame(noOfPlayers) {
     const game = new Game(generateTerritories(), noOfPlayers);
-    const playerId = game.addPlayer(playerName);
     const gameId = this.#lastGameId++;
     this.#games[gameId] = game;
-    return { gameId, playerId };
+    return gameId;
   }
 
   isValid(gameId) {
     let errorMsg = '';
     if (!this.#games[gameId]) {
       errorMsg = `Invalid Game Id(${gameId})`;
-      return { joinStatus: false, errorMsg };
+      return {joinStatus: false, errorMsg};
     }
     const isGameNotStarted = this.#games[gameId].hasStarted;
     if (isGameNotStarted) {
       errorMsg = `You can't join this Game (${gameId})`;
     }
-    return { joinStatus: !isGameNotStarted, errorMsg };
+    return {joinStatus: !isGameNotStarted, errorMsg};
   }
 
   getGame(gameId) {

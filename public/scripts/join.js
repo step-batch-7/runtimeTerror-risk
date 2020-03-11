@@ -7,17 +7,17 @@ const getInputValues = function() {
   const gameId = $gameId.value;
   $playerName.value = '';
   $gameId.value = '';
-  return { playerName, gameId };
+  return {playerName, gameId};
 };
 
-const rendorErrorMsg = function(errorMsg) {
+const renderErrorMsg = function(errorMsg) {
   getElement('#error-msg').innerText = errorMsg;
 };
 
 const requestForJoinGame = function(event) {
   const options = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(getInputValues())
   };
   event.preventDefault();
@@ -28,7 +28,7 @@ const requestForJoinGame = function(event) {
         document.location = 'waiting.html';
         return;
       }
-      rendorErrorMsg(data.errorMsg);
+      renderErrorMsg(data.errorMsg);
     });
 };
 

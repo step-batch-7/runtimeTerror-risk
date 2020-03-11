@@ -42,12 +42,10 @@ const performClaim = function(req, res) {
 
 const hostGame = function(req, res) {
   const {playerName, numOfPlayers} = req.body;
-  const {gameId, playerId} = req.app.locals.controller.addGame(
-    playerName,
-    +numOfPlayers
-  );
-  res.cookie('_gameId', `${gameId}`);
-  res.cookie('_playerId', `${playerId}`);
+  const gameId = req.app.locals.controller.addGame(+numOfPlayers);
+  const game = req.app.locals.controller.getGame(gameId);
+  const playerId = game.addPlayer(playerName);
+  res.cookie('_gameId', `${gameId}`).cookie('_playerId', `${playerId}`);
   res.json({gameId});
 };
 

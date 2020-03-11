@@ -24,7 +24,8 @@ describe('Handlers', () => {
   context('Requests for game status', () => {
     beforeEach(() => {
       const controller = new Controller();
-      controller.addGame('player1', 2);
+      controller.addGame(2);
+      controller.getGame(1000).addPlayer('player1');
       app.locals = {controller};
     });
     it('Should give remainingMilitaryCount in game status', done => {
@@ -84,7 +85,8 @@ describe('Handlers', () => {
   context('performReinforcement', () => {
     beforeEach(() => {
       const controller = new Controller();
-      controller.addGame('player1', 2);
+      controller.addGame(2);
+      controller.getGame(1000).addPlayer('player1');
       app.locals = {controller};
     });
 
@@ -110,7 +112,8 @@ describe('Handlers', () => {
   context('JoinGame', () => {
     beforeEach(() => {
       const controller = new Controller();
-      controller.addGame('player1', 2);
+      controller.addGame(2);
+      controller.getGame(1000).addPlayer('player1');
       app.locals = {controller};
     });
     it('Should join the game for valid gameId', done => {
@@ -147,7 +150,8 @@ describe('Handlers', () => {
   context('Request for game details', () => {
     beforeEach(() => {
       const controller = new Controller();
-      controller.addGame('player1', 2);
+      controller.addGame(2);
+      controller.getGame(1000).addPlayer('player1');
       app.locals = {controller};
     });
     it('Should give the gameId and number of players of a perticular game', done => {
@@ -163,7 +167,8 @@ describe('Handlers', () => {
   context('Request for waiting status', () => {
     beforeEach(() => {
       const controller = new Controller();
-      controller.addGame('player1', 2);
+      controller.addGame(2);
+      controller.getGame(1000).addPlayer('player1');
       app.locals = {controller};
     });
     it('Should give the number of joined players and status about starting of a perticular game', done => {

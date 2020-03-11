@@ -137,3 +137,6 @@ select:focus {
   height: 100px;
   width: auto;
 }
+.hidden {
+  display: none;
+}
