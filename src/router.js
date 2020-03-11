@@ -18,10 +18,11 @@ const app = express();
 
 app.locals.controller = new Controller();
 
-app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '100kb' }));
 app.use(cookieParser());
+
+app.use(express.static('public'));
 app.post('/hostGame', hasFields('playerName', 'numOfPlayers'), hostGame);
 app.post('/joinGame', hasFields('gameId', 'playerName'), joinGame);
 app.use(findGame);

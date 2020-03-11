@@ -26,7 +26,7 @@ describe('Handlers', () => {
       const controller = new Controller();
       controller.addGame(2);
       controller.getGame(1000).addPlayer('player1');
-      app.locals = {controller};
+      app.locals = { controller };
     });
     it('Should give remainingMilitaryCount in game status', done => {
       request(app)
@@ -87,7 +87,7 @@ describe('Handlers', () => {
       const controller = new Controller();
       controller.addGame(2);
       controller.getGame(1000).addPlayer('player1');
-      app.locals = {controller};
+      app.locals = { controller };
     });
 
     it('Should reinforce the given territory if the reinforcement is valid', done => {
@@ -114,7 +114,7 @@ describe('Handlers', () => {
       const controller = new Controller();
       controller.addGame(2);
       controller.getGame(1000).addPlayer('player1');
-      app.locals = {controller};
+      app.locals = { controller };
     });
     it('Should join the game for valid gameId', done => {
       request(app)
@@ -150,14 +150,9 @@ describe('Handlers', () => {
   context('Request for game details', () => {
     beforeEach(() => {
       const controller = new Controller();
-<<<<<<< HEAD
       controller.addGame(2);
       controller.getGame(1000).addPlayer('player1');
-      app.locals = {controller};
-=======
-      controller.addGame('player1', 2);
       app.locals = { controller };
->>>>>>> |#19|rashmi/noora| Added handler to check player is current player or
     });
     it('Should give the gameId and number of players of a perticular game', done => {
       request(app)
@@ -174,7 +169,7 @@ describe('Handlers', () => {
       const controller = new Controller();
       controller.addGame(2);
       controller.getGame(1000).addPlayer('player1');
-      app.locals = {controller};
+      app.locals = { controller };
     });
     it('Should give the number of joined players and status about starting of a perticular game', done => {
       request(app)
@@ -198,7 +193,8 @@ describe('Handlers', () => {
   context('validatePlayer', () => {
     beforeEach(() => {
       const controller = new Controller();
-      controller.addGame('player1', 2);
+      controller.addGame(2);
+      controller.getGame(1000).addPlayer('player1');
       app.locals = { controller };
     });
 
