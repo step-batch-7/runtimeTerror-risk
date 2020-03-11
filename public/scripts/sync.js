@@ -20,11 +20,7 @@ const updateMap = function(territories) {
 };
 
 const updateGameStage = function(currentStageNum) {
-  const stages = {
-    1: 'Claim Stage',
-    2: 'Reinforcement Stage',
-    3: 'Playing Stage'
-  };
+  const stages = { 1: 'Claim Stage', 2: 'Reinforcement Stage', 3: 'Playing Stage' };
   const currentStage = getElement('#stages span');
   currentStage.innerText = `${stages[currentStageNum]}`;
   localStorage.setItem('stage', currentStageNum);

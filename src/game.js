@@ -81,8 +81,9 @@ class Game {
 
   addPlayer(name) {
     const playerId = this.#idGenerator.next().value;
+    const initialMilitaryCount = 20 + (6 - +this.#numOfPlayers) * 5;
     this.addActivity(`${name} has joined.`);
-    this.#players[playerId] = new Player(name, playerId, 20);
+    this.#players[playerId] = new Player(name, playerId, initialMilitaryCount);
     if (this.#numOfPlayers === Object.keys(this.#players).length) {
       this.#isStarted = true;
     }

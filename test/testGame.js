@@ -19,7 +19,7 @@ describe('Game', function() {
 
   context('getPlayerList', () => {
     it('should give all player details', () => {
-      const game = new Game(['india', 'china']);
+      const game = new Game(['india', 'china'], 2);
       game.addPlayer('santhosh');
       game.addPlayer('satheesh');
       const expected = {
@@ -27,7 +27,7 @@ describe('Game', function() {
           { name: 'santhosh', color: 'indianred' },
           { name: 'satheesh', color: 'forestgreen' }
         ],
-        player: { name: 'santhosh', color: 'indianred', leftMilitaryCount: 20 }
+        player: { name: 'santhosh', color: 'indianred', leftMilitaryCount: 40 }
       };
       assert.deepStrictEqual(game.getPlayerList('indianred'), expected);
     });
@@ -74,12 +74,12 @@ describe('Game', function() {
 
     it('should give true status when reinforceTerritory is done', () => {
       const india = generateTerritories().india;
-      const game = new Game({ india });
+      const game = new Game({ india }, 1);
       game.addPlayer('Player1');
       game.claimTerritory('india');
       assert.deepStrictEqual(game.reinforceTerritory('india', 1), {
         status: true,
-        leftMilitaryCount: 18,
+        leftMilitaryCount: 43,
         territoryMilitaryCount: 2
       });
     });
@@ -93,13 +93,13 @@ describe('Game', function() {
   });
 
   context('claimTerritory', () => {
-    const game = new Game(generateTerritories());
+    const game = new Game(generateTerritories(), 1);
     game.addPlayer('Player1');
     it('should claim territory if it is unclaimed', () => {
       assert.deepStrictEqual(game.claimTerritory('india'), {
         status: true,
         color: 'indianred',
-        leftMilitaryCount: 19
+        leftMilitaryCount: 44
       });
     });
 

@@ -22,9 +22,7 @@ const showReinforcementStatus = function(response, event) {
 const sendReinforcementRequest = function(event, militaryCount = 1) {
   fetch('/reinforcement', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ territory: event.target.id, militaryCount })
   })
     .then(response => response.json())
