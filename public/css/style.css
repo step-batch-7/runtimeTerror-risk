@@ -33,7 +33,7 @@ body {
   position: relative;
   margin-top: 20px;
   margin-left: 8px;
-  padding: 5px 0 0 4px;
+  padding: 3px 0 0 4px;
   height: 26px;
 }
 /* left military units count box */
@@ -214,14 +214,14 @@ body {
   transform: scale(1.05);
   opacity: 1;
   font-weight: 400;
-  background-color: rgba(80, 80, 80, 0.4);
-  color: #000;
+  background-color: rgba(80, 87, 133, 0.2);
+  color: rgb(80, 87, 133);
   letter-spacing: 1px;
 }
 .current-player::before {
   padding-right: 0.8vw;
-  content: '> ';
+  content: '➡ ';
   transform: scale(1.2);
   margin-left: -1.3vw;
-  color: #111;
+  color: rgb(80, 87, 133);
 }
