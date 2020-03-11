@@ -77,12 +77,14 @@ const hasGameStarted = function(req, res, next) {
   res.redirect('/waiting.html');
 };
 
+const getPlayerList = function(req, res) {
+  const { _playerId } = req.cookies;
+  res.json(req.game.getPlayerList(_playerId));
+};
+
 const performReinforcement = function(req, res) {
   const { territory, militaryCount } = req.body;
-  const reinforcementStatus = req.game.reinforceTerritory(
-    territory,
-    militaryCount
-  );
+  const reinforcementStatus = req.game.reinforceTerritory(territory, militaryCount);
   res.json(reinforcementStatus);
 };
 
@@ -102,6 +104,7 @@ module.exports = {
   joinGame,
   getGameDetails,
   getWaitingStatus,
+  getPlayerList,
   authorizeGame,
   hasGameStarted
 };

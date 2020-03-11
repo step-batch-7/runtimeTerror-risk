@@ -53,6 +53,27 @@ const sendClaimRequest = function(event) {
     .then(data => updateTerritory(data, event));
 };
 
+const showPlayer = function(player) {
+  return `<div class="player">
+            <span>${player.name}</span>
+            <div style="background-color: ${player.color};" class="color-box"></div>
+          </div>`;
+};
+
+const displayPlayerList = function({ playerList, name }) {
+  console.log(playerList, name);
+  getElement('.player-name').innerText = name;
+  const htmlTemplate = playerList.map(showPlayer);
+  const $players = getElement('.players');
+  $players.innerHTML = htmlTemplate.join('\n');
+};
+
+const getPlayerList = function() {
+  fetch('/playerList', { method: 'GET' })
+    .then(response => response.json())
+    .then(displayPlayerList);
+};
+
 const selectListener = function() {
   const listeners = { '1': sendClaimRequest, '2': sendReinforcementRequest };
   const stage = localStorage.getItem('stage');
@@ -68,6 +89,7 @@ const addListenerOnterritory = () => {
 
 const main = function() {
   renderMap();
+  getPlayerList();
   addListenerOnterritory();
   sendSyncReq();
   setInterval(sendSyncReq, 1000);

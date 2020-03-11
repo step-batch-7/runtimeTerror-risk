@@ -39,11 +39,6 @@ class Game {
     for (let territory in this.#territories) {
       status.territories[territory] = this.#territories[territory].status;
     }
-    status.playerNames = [];
-    for (const playerId in this.#players) {
-      const player = this.#players[playerId];
-      status.playerNames.push(player.status);
-    }
     return status;
   }
 
@@ -72,6 +67,12 @@ class Game {
 
   get currentPlayerId() {
     return this.#currentPlayerId;
+  }
+
+  getPlayerList(playerId) {
+    const playerList = this.playerDetails.playerColorAndName;
+    const name = this.#players[playerId].status.name;
+    return { playerList, name };
   }
 
   addActivity(msg) {

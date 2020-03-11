@@ -17,6 +17,22 @@ describe('Game', function() {
     });
   });
 
+  context('getPlayerList', () => {
+    it('should give all player details', () => {
+      const game = new Game(['india', 'china']);
+      game.addPlayer('santhosh');
+      game.addPlayer('satheesh');
+      const expected = {
+        playerList: [
+          { name: 'santhosh', color: 'indianred' },
+          { name: 'satheesh', color: 'forestgreen' }
+        ],
+        name: 'santhosh'
+      };
+      assert.deepStrictEqual(game.getPlayerList('indianred'), expected);
+    });
+  });
+
   context('addPlayer', () => {
     it('should add a new player in player list', () => {
       const game = new Game(['india', 'china']);

@@ -12,6 +12,7 @@ const {
   hostGame,
   joinGame,
   getWaitingStatus,
+  getPlayerList,
   authorizeGame,
   hasGameStarted
 } = require('./handlers');
@@ -29,14 +30,11 @@ app.post('/hostGame', hasFields('playerName', 'numOfPlayers'), hostGame);
 app.post('/joinGame', hasFields('gameId', 'playerName'), joinGame);
 app.use(findGame);
 app.get('/waitingStatus', getWaitingStatus);
+app.get('/playerList', getPlayerList);
 app.get('/gameDetails', getGameDetails);
 app.get('/gameStatus', getGameStatus);
 app.use(authorizeGame);
-app.post(
-  '/reinforcement',
-  hasFields('territory', 'militaryCount'),
-  performReinforcement
-);
+app.post('/reinforcement', hasFields('territory', 'militaryCount'), performReinforcement);
 app.post('/performClaim', hasFields('territory'), performClaim);
 
 module.exports = { app };

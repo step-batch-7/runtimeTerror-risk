@@ -21,6 +21,23 @@ describe('Handlers', () => {
     });
   });
 
+  context('Requests for player details', () => {
+    beforeEach(() => {
+      const controller = new Controller();
+      controller.addGame(2);
+      controller.getGame(1000).addPlayer('player1');
+      app.locals = { controller };
+    });
+    it('Should give the player details', done => {
+      request(app)
+        .get('/playerList')
+        .set('Cookie', '_gameId=1000;_playerId=indianred')
+        .expect(200)
+        .expect('Content-Type', /application\/json/, done)
+        .expect(/indianred/);
+    });
+  });
+
   context('Requests for game status', () => {
     beforeEach(() => {
       const controller = new Controller();

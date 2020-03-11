@@ -41,26 +41,11 @@ const updateActivities = function(activities) {
   $activityLog.innerHTML = activityHTML;
 };
 
-const showPlayer = function(player, currentPlayer) {
-  const className = player == currentPlayer ? 'current-player' : '';
-  return `<div class="player ${className}" id>
-            <span>${player.name}</span>
-            <div style="background-color: ${player.color};" class="color-box"></div>
-          </div>`;
-};
-
-const updatePlayerList = function(playerList, currentPlayer) {
-  const htmlTemplate = playerList.map(player => showPlayer(player, currentPlayer));
-  const $players = getElement('.players');
-  $players.innerHTML = htmlTemplate.join('\n');
-};
-
 const updateGameView = function(gameStatus) {
   updateGameStage(gameStatus.currentStage);
   updateMap(gameStatus.territories);
   updateActivities(gameStatus.activities);
   updateRemainingMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
-  updatePlayerList(gameStatus.playerNames, gameStatus.currentPlayer);
 };
 
 const sendSyncReq = function() {

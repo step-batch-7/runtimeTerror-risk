@@ -25,7 +25,17 @@ body {
   height: 4vw;
   width: 5vw;
 }
-
+.player-name {
+  border-left: 2px solid #515585;
+  font-size: 20px;
+  font-weight: 500;
+  color: #515585;
+  position: relative;
+  margin-top: 20px;
+  margin-left: 8px;
+  padding: 5px 0 0 4px;
+  height: 26px;
+}
 /* left military units count box */
 .soldier-details {
   background-color: rgb(200, 200, 200, 0.2);
@@ -187,7 +197,7 @@ body {
   margin-left: 1.4vw;
   display: flex;
   justify-content: flex-start;
-  border: 0.8px solid gray;
+  border: 0.8px solid rgb(83, 87, 133);
   color: #111;
 }
 .color-box {
