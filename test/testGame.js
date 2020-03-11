@@ -58,10 +58,7 @@ describe('Game', function() {
 
     it('should give false status when territory is not current player territory', () => {
       const { india, china } = generateTerritories();
-      const game = new Game({
-        india,
-        china
-      });
+      const game = new Game({ india, china });
       game.addPlayer('Player1');
       game.addPlayer('Player2');
       game.claimTerritory('india');

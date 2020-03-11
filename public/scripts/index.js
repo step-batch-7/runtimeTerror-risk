@@ -56,18 +56,19 @@ const showPlayer = function(player) {
           </div>`;
 };
 
-const displayPlayerList = function({ playerList, player }) {
+const displayPlayerDetails = function({ playerList, player }) {
   getElement('.player-name').innerText = player.name;
+  getElement('.front').innerText = player.leftMilitaryCount;
   const htmlTemplate = playerList.map(showPlayer);
   const $players = getElement('.players');
   $players.innerHTML = htmlTemplate.join('\n');
   localStorage.setItem('myId', player.color);
 };
 
-const getPlayerList = function() {
+const getPlayerDetails = function() {
   fetch('/playerList', { method: 'GET' })
     .then(response => response.json())
-    .then(displayPlayerList);
+    .then(displayPlayerDetails);
 };
 
 const selectListener = function() {
@@ -85,7 +86,7 @@ const addListenerOnterritory = () => {
 
 const main = function() {
   renderMap();
-  getPlayerList();
+  getPlayerDetails();
   addListenerOnterritory();
   sendSyncReq();
   setInterval(sendSyncReq, 1000);
