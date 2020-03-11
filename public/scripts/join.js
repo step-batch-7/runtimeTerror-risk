@@ -7,7 +7,8 @@ const getInputValues = function() {
 };
 
 const renderErrorMsg = function(errorMsg) {
-  getElement('#error-msg').innerText = errorMsg;
+  const $errorMsg = getElement('#error-msg');
+  $errorMsg.innerHTML = `<div class="error-msg">${errorMsg}</div>`;
 };
 
 const requestForJoinGame = function(event) {
