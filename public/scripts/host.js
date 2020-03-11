@@ -16,9 +16,7 @@ const requestForHostGame = function(event) {
   };
   event.preventDefault();
   fetch('/hostGame', options).then(res => {
-    if (res.status === 200) {
-      document.location = 'waiting.html';
-    }
+    res.ok && (document.location = 'waiting.html');
   });
 };
 
