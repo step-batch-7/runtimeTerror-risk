@@ -12,7 +12,9 @@ const mousePointerPopUp = function(event, msg) {
 const showReinforcementStatus = function(response, event) {
   const { status, leftMilitaryCount, territoryMilitaryCount, error } = response;
   if (status) {
-    getElement(`#${event.target.id} + .unit`).innerHTML = `&nbsp;${territoryMilitaryCount}`;
+    getElement(
+      `#${event.target.id} + .unit`
+    ).innerHTML = `&nbsp;${territoryMilitaryCount}`;
     updateRemainingMilitaryCount(leftMilitaryCount);
     return;
   }

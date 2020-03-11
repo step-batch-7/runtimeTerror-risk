@@ -15,15 +15,31 @@ const updateRemainingMilitaryCount = function(remainingMilitaryCount) {
 const updateMap = function(territories) {
   for (const territory in territories) {
     getElement(`#${territory}`).style.fill = territories[territory].occupiedBy;
-    getElement(`#${territory} + .unit`).innerHTML = `&nbsp${territories[territory].militaryUnits}`;
+    getElement(
+      `#${territory} + .unit`
+    ).innerHTML = `&nbsp${territories[territory].militaryUnits}`;
   }
 };
 
-const updateGameStage = function(currentStageNum) {
-  const stages = { 1: 'Claim Stage', 2: 'Reinforcement Stage', 3: 'Playing Stage' };
-  const currentStage = getElement('#stages span');
-  currentStage.innerText = `${stages[currentStageNum]}`;
-  localStorage.setItem('stage', currentStageNum);
+const showPhases = function(currentPhase) {
+  const phases = { 1: 'reinforcement', 2: 'attack', 3: 'fortify' };
+  localStorage.setItem('phase', currentPhase);
+  const $phaseBox = getElement('.phase-block');
+  $phaseBox.style.transform = 'scale(1)';
+  const $phase = getElement(`.${phases[currentPhase]}`);
+  $phase.classList.add('current-phase');
+};
+
+const updateGameStage = function({ currentStage, currentPhase }) {
+  const stages = {
+    1: 'Claim Stage',
+    2: 'Reinforcement Stage',
+    3: 'Playing Stage'
+  };
+  const $currentStage = getElement('#stages span');
+  $currentStage.innerText = `${stages[currentStage]}`;
+  localStorage.setItem('stage', currentStage);
+  currentStage === 3 && showPhases(currentPhase);
 };
 
 const updateActivities = function(activities) {
@@ -48,7 +64,7 @@ const highLightCurrentPlayer = function(currentPlayer) {
 
 const updateGameView = function(gameStatus) {
   const myName = localStorage.getItem('myName');
-  updateGameStage(gameStatus.currentStage);
+  updateGameStage(gameStatus);
   updateMap(gameStatus.territories);
   updateActivities(gameStatus.activities);
   highLightCurrentPlayer(gameStatus.currentPlayer);

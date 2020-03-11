@@ -5,7 +5,14 @@ const stages = { 1: 'Claim', 2: 'Reinforcement', 3: 'Playing' };
 const hasDeployedAllMilitary = player => player.status.leftMilitaryCount < 1;
 
 const createIdGenerator = function*() {
-  const ids = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
+  const ids = [
+    'indianred',
+    'forestgreen',
+    'mediumslateblue',
+    'yellowgreen',
+    'plum',
+    'orange'
+  ];
   while (ids.length) {
     yield ids.shift();
   }
@@ -19,6 +26,7 @@ class Game {
   #idGenerator;
   #numOfPlayers;
   #isStarted;
+  #currentPhase;
   constructor(territories, numOfPlayers) {
     this.#territories = territories;
     this.#players = {};
@@ -28,12 +36,14 @@ class Game {
     this.#idGenerator = createIdGenerator();
     this.#numOfPlayers = numOfPlayers;
     this.#isStarted = false;
+    this.#currentPhase = 0;
   }
 
   get status() {
     const status = {};
     status.currentPlayer = this.currentPlayer.status;
     status.currentStage = this.#currentStage;
+    status.currentPhase = this.#currentPhase;
     status.activities = this.#activities.slice();
     status.territories = {};
     for (let territory in this.#territories) {
@@ -93,14 +103,29 @@ class Game {
   updateStage() {
     this.#currentPlayerId = 'indianred';
     this.#currentStage += 1;
+    this.updatePhase();
     const currentStageName = stages[this.#currentStage];
     const msg = `${currentStageName} stage started`;
     this.addActivity(msg);
     return this.#currentStage;
   }
 
+  updatePhase() {
+    if (this.#currentStage === 3) {
+      this.#currentPhase += 1;
+    }
+    return this.#currentPhase;
+  }
+
   updateCurrentPlayer() {
-    const ids = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
+    const ids = [
+      'indianred',
+      'forestgreen',
+      'mediumslateblue',
+      'yellowgreen',
+      'plum',
+      'orange'
+    ];
     const index = ids.indexOf(this.#currentPlayerId);
     const nextPlayerIndex = (index + 1) % Object.keys(this.#players).length;
     this.#currentPlayerId = ids[nextPlayerIndex];

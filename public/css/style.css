@@ -225,3 +225,51 @@ body {
   margin-left: -1.3vw;
   color: rgb(80, 87, 133);
 }
+
+/* phases */
+
+.phase-block {
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+  height: 6vh;
+  width: 25vw;
+  bottom: 6vh;
+  left: 40vw;
+  color: rgba(80, 87, 133, 0.4);
+}
+
+.phase-block > div {
+  text-align: center;
+  line-height: 6vh;
+  height: 80%;
+  font-size: calc(0.7vw + 0.5em);
+}
+
+.next {
+  padding-top: 0.3vh;
+}
+
+.nextButton {
+  margin-left: -3vw;
+  height: 40%;
+  width: 60%;
+  transition: transform 500ms;
+}
+
+.nextButton:hover {
+  padding-top: 0.2vh;
+  cursor: pointer;
+  transform: scale(1.4);
+}
+
+.current-phase {
+  font-weight: 800;
+  font-size: calc(0.9vw + 0.5em);
+  border-bottom: 2px solid rgb(80, 87, 133);
+  color: rgba(80, 87, 133, 1);
+}
+
+.hide {
+  transform: scale(0);
+}
