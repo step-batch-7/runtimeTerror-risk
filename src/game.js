@@ -5,7 +5,14 @@ const stages = { 1: 'Claim', 2: 'Reinforcement', 3: 'Playing' };
 const hasDeployedAllMilitary = player => player.status.leftMilitaryCount < 1;
 
 const createIdGenerator = function*() {
-  const ids = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
+  const ids = [
+    'indianred',
+    'forestgreen',
+    'mediumslateblue',
+    'yellowgreen',
+    'plum',
+    'orange'
+  ];
   while (ids.length) {
     yield ids.shift();
   }
@@ -54,7 +61,7 @@ class Game {
     return this.#players[this.#currentPlayerId];
   }
 
-  get joinedPlayerDetails() {
+  get playerDetails() {
     const joinedPlayerDetails = {};
     joinedPlayerDetails.numOfJoinedPlayers = Object.keys(this.#players).length;
     joinedPlayerDetails.playerColorAndName = [];
@@ -63,6 +70,10 @@ class Game {
       joinedPlayerDetails.playerColorAndName.push({ name, color });
     });
     return joinedPlayerDetails;
+  }
+
+  get currentPlayerId() {
+    return this.#currentPlayerId;
   }
 
   addActivity(msg) {
@@ -89,7 +100,14 @@ class Game {
   }
 
   updateCurrentPlayer() {
-    const ids = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
+    const ids = [
+      'indianred',
+      'forestgreen',
+      'mediumslateblue',
+      'yellowgreen',
+      'plum',
+      'orange'
+    ];
     const index = ids.indexOf(this.#currentPlayerId);
     const nextPlayerIndex = (index + 1) % Object.keys(this.#players).length;
     this.#currentPlayerId = ids[nextPlayerIndex];

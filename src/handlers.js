@@ -1,13 +1,13 @@
 const getWaitingStatus = function(req, res) {
   const isAllPlayersJoined = req.game.hasStarted;
-  const {numOfJoinedPlayers, playerColorAndName} = req.game.joinedPlayerDetails;
-  res.json({numOfJoinedPlayers, isAllPlayersJoined, playerColorAndName});
+  const { numOfJoinedPlayers, playerColorAndName } = req.game.playerDetails;
+  res.json({ numOfJoinedPlayers, isAllPlayersJoined, playerColorAndName });
 };
 
 const getGameDetails = function(req, res) {
-  const {_gameId} = req.cookies;
+  const { _gameId } = req.cookies;
   const numOfPlayers = req.game.numOfPlayers;
-  res.json({gameId: _gameId, numOfPlayers});
+  res.json({ gameId: _gameId, numOfPlayers });
 };
 
 const hasFields = (...fields) => {
@@ -25,32 +25,17 @@ const getGameStatus = function(req, res) {
   res.json(gameStatus);
 };
 
-const performReinforcement = function(req, res) {
-  const {territory, militaryCount} = req.body;
-  const reinforcementStatus = req.game.reinforceTerritory(
-    territory,
-    militaryCount
-  );
-  res.json(reinforcementStatus);
-};
-
-const performClaim = function(req, res) {
-  const {territory} = req.body;
-  const response = req.game.claimTerritory(territory);
-  res.json(response);
-};
-
 const hostGame = function(req, res) {
-  const {playerName, numOfPlayers} = req.body;
+  const { playerName, numOfPlayers } = req.body;
   const gameId = req.app.locals.controller.addGame(+numOfPlayers);
   const game = req.app.locals.controller.getGame(gameId);
   const playerId = game.addPlayer(playerName);
   res.cookie('_gameId', `${gameId}`).cookie('_playerId', `${playerId}`);
-  res.json({gameId});
+  res.json({ gameId });
 };
 
 const joinGame = function(req, res) {
-  const {gameId, playerName} = req.body;
+  const { gameId, playerName } = req.body;
   const gameValidity = req.app.locals.controller.isValid(gameId);
   if (gameValidity.joinStatus) {
     const playerId = req.app.locals.controller.join(gameId, playerName);
@@ -61,7 +46,7 @@ const joinGame = function(req, res) {
 };
 
 const findGame = function(req, res, next) {
-  const {_gameId} = req.cookies;
+  const { _gameId } = req.cookies;
   const game = req.app.locals.controller.getGame(_gameId);
   if (_gameId && game) {
     req.game = game;
@@ -69,6 +54,30 @@ const findGame = function(req, res, next) {
   }
   res.statusCode = 400;
   res.end('Bad Request');
+};
+
+const validatePlayer = function(req, res, next) {
+  const player = req.game.currentPlayerId;
+  if (player === req.cookies._playerId) {
+    return next();
+  }
+  res.statusCode = 404;
+  res.json({ error: 'Invalid Player' });
+};
+
+const performReinforcement = function(req, res) {
+  const { territory, militaryCount } = req.body;
+  const reinforcementStatus = req.game.reinforceTerritory(
+    territory,
+    militaryCount
+  );
+  res.json(reinforcementStatus);
+};
+
+const performClaim = function(req, res) {
+  const { territory } = req.body;
+  const response = req.game.claimTerritory(territory);
+  res.json(response);
 };
 
 module.exports = {
@@ -80,5 +89,6 @@ module.exports = {
   hostGame,
   joinGame,
   getGameDetails,
-  getWaitingStatus
+  getWaitingStatus,
+  validatePlayer
 };
