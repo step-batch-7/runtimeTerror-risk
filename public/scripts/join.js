@@ -1,12 +1,10 @@
 const getElement = selector => document.querySelector(selector);
 
 const getInputValues = function() {
-  const $playerName = getElement('#playerName');
-  const $gameId = getElement('#gameId');
-  const playerName = $playerName.value;
-  const gameId = $gameId.value;
-  $playerName.value = '';
-  $gameId.value = '';
+  const playerName = getElement('#playerName').value;
+  const gameId = getElement('#gameId').value;
+  const $box = getElement('.box');
+  $box.classList.add('hidden');
   return {playerName, gameId};
 };
 
