@@ -5,14 +5,7 @@ const stages = { 1: 'Claim', 2: 'Reinforcement', 3: 'Playing' };
 const hasDeployedAllMilitary = player => player.status.leftMilitaryCount < 1;
 
 const createIdGenerator = function*() {
-  const ids = [
-    'indianred',
-    'forestgreen',
-    'mediumslateblue',
-    'yellowgreen',
-    'plum',
-    'orange'
-  ];
+  const ids = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
   while (ids.length) {
     yield ids.shift();
   }
@@ -45,6 +38,11 @@ class Game {
     status.territories = {};
     for (let territory in this.#territories) {
       status.territories[territory] = this.#territories[territory].status;
+    }
+    status.playerNames = [];
+    for (const playerId in this.#players) {
+      const player = this.#players[playerId];
+      status.playerNames.push(player.status);
     }
     return status;
   }
@@ -100,14 +98,7 @@ class Game {
   }
 
   updateCurrentPlayer() {
-    const ids = [
-      'indianred',
-      'forestgreen',
-      'mediumslateblue',
-      'yellowgreen',
-      'plum',
-      'orange'
-    ];
+    const ids = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
     const index = ids.indexOf(this.#currentPlayerId);
     const nextPlayerIndex = (index + 1) % Object.keys(this.#players).length;
     this.#currentPlayerId = ids[nextPlayerIndex];

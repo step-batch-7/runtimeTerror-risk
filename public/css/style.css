@@ -168,3 +168,50 @@ body {
 .hidden {
   display: none;
 }
+
+/* player names and currentPlayer */
+.players {
+  position: absolute;
+  bottom: 30vh;
+  width: 12vw;
+  display: flex;
+  flex-direction: column;
+  margin-left: 2px;
+}
+.player {
+  font-size: calc(0.6vw + 0.5em);
+  font-weight: 200;
+  opacity: 0.8;
+  background-color: rgb(200, 200, 200, 0.2);
+  padding: 0.4vw;
+  margin-left: 1.4vw;
+  display: flex;
+  justify-content: flex-start;
+  border: 0.8px solid gray;
+  color: #111;
+}
+.color-box {
+  width: 1.5vw;
+  height: 1.5vw;
+  border-radius: 0.2vw;
+  margin-top: -0.16vw;
+  border: 0.5px solid #fff;
+  position: absolute;
+  right: 1vw;
+}
+
+.current-player {
+  transform: scale(1.05);
+  opacity: 1;
+  font-weight: 400;
+  background-color: rgba(80, 80, 80, 0.4);
+  color: #000;
+  letter-spacing: 1px;
+}
+.current-player::before {
+  padding-right: 0.8vw;
+  content: '> ';
+  transform: scale(1.2);
+  margin-left: -1.3vw;
+  color: #111;
+}
