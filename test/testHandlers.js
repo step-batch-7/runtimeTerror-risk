@@ -226,4 +226,28 @@ describe('Handlers', () => {
         .expect({error: 'Invalid Player'});
     });
   });
+
+  context('hasGameStarted', () => {
+    beforeEach(() => {
+      const controller = new Controller();
+      controller.addGame(2);
+      controller.getGame(1000).addPlayer('player1');
+      app.locals = { controller };
+    });
+
+    it('Should redirect to the waiting page when the game is not started', done => {
+      request(app)
+        .get('/game.html')
+        .set('Cookie', '_gameId=1000;_playerId=indianred')
+        .expect(302, done);
+    });
+
+    it('Should go to the next handler when the game is already started', done => {
+      app.locals.controller.getGame(1000).addPlayer('player2');
+      request(app)
+        .get('/game.html')
+        .set('Cookie', '_gameId=1000;_playerId="indianred"')
+        .expect(200, done);
+    });
+  });
 });

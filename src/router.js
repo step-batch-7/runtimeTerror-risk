@@ -12,7 +12,8 @@ const {
   hostGame,
   joinGame,
   getWaitingStatus,
-  validatePlayer
+  validatePlayer,
+  hasGameStarted
 } = require('./handlers');
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '100kb' }));
 app.use(cookieParser());
 
+app.get('/game.html', findGame, hasGameStarted);
 app.use(express.static('public'));
 app.post('/hostGame', hasFields('playerName', 'numOfPlayers'), hostGame);
 app.post('/joinGame', hasFields('gameId', 'playerName'), joinGame);

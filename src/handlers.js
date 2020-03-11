@@ -69,6 +69,15 @@ const validatePlayer = function(req, res, next) {
   res.json({error: 'Invalid Player'});
 };
 
+const hasGameStarted = function(req, res, next) {
+  const hasStarted = req.game.hasStarted;
+  if (hasStarted) {
+    return next();
+  }
+  console.log('coming');
+  res.redirect('/waiting.html');
+};
+
 const performReinforcement = function(req, res) {
   const {territory, militaryCount} = req.body;
   const reinforcementStatus = req.game.reinforceTerritory(
@@ -94,5 +103,6 @@ module.exports = {
   joinGame,
   getGameDetails,
   getWaitingStatus,
-  validatePlayer
+  validatePlayer,
+  hasGameStarted
 };
