@@ -12,7 +12,7 @@ const {
   hostGame,
   joinGame,
   getWaitingStatus,
-  validatePlayer,
+  authorizeGame,
   hasGameStarted
 } = require('./handlers');
 const app = express();
@@ -31,7 +31,7 @@ app.use(findGame);
 app.get('/waitingStatus', getWaitingStatus);
 app.get('/gameDetails', getGameDetails);
 app.get('/gameStatus', getGameStatus);
-app.use(validatePlayer);
+app.use(authorizeGame);
 app.post(
   '/reinforcement',
   hasFields('territory', 'militaryCount'),
