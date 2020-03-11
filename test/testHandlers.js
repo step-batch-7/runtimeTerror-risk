@@ -50,7 +50,7 @@ describe('Handlers', () => {
       request(app)
         .get('/gameStatus')
         .expect(400, done)
-        .expect('Bad Request');
+        .expect({error: 'Game not found'});
     });
 
     it('Should tell bad request if invalid game id in cookie', done => {
@@ -58,7 +58,7 @@ describe('Handlers', () => {
         .get('/gameStatus')
         .set('Cookie', '_gameId=123')
         .expect(400, done)
-        .expect('Bad Request');
+        .expect({error: 'Game not found'});
     });
   });
 
@@ -121,7 +121,11 @@ describe('Handlers', () => {
         .post('/joinGame')
         .send({ playerName: 'india', gameId: 1000 })
         .expect(200)
+<<<<<<< HEAD
         .expect({ joinStatus: true, errorMsg: '' }, done);
+=======
+        .expect({joinStatus: true}, done);
+>>>>>>> |#14|Shivam/Drishya|modified joinGame handlers
     });
 
     it('Should not join the game for invalid gameId', done => {
@@ -130,6 +134,14 @@ describe('Handlers', () => {
         .send({ playerName: 'india', gameId: 3 })
         .expect(200)
         .expect({ joinStatus: false, errorMsg: 'Invalid Game Id(3)' }, done);
+    });
+    it('Should not join the game for invalid gameId', done => {
+      app.locals.controller.join(1000, 'player2');
+      request(app)
+        .post('/joinGame')
+        .send({playerName: 'india', gameId: 1000})
+        .expect(200)
+        .expect({joinStatus: false, errorMsg: 'Game already started'}, done);
     });
   });
 
