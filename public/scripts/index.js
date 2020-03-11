@@ -44,9 +44,7 @@ const updateTerritory = function(response, event) {
 const sendClaimRequest = function(event) {
   fetch('/performClaim', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ territory: event.target.id })
   })
     .then(response => response.json())
@@ -61,11 +59,11 @@ const showPlayer = function(player) {
 };
 
 const displayPlayerList = function({ playerList, name }) {
-  console.log(playerList, name);
   getElement('.player-name').innerText = name;
   const htmlTemplate = playerList.map(showPlayer);
   const $players = getElement('.players');
   $players.innerHTML = htmlTemplate.join('\n');
+  localStorage.setItem('myName', name);
 };
 
 const getPlayerList = function() {

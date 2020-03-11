@@ -42,10 +42,13 @@ const updateActivities = function(activities) {
 };
 
 const updateGameView = function(gameStatus) {
+  const myName = localStorage.getItem('myName');
   updateGameStage(gameStatus.currentStage);
   updateMap(gameStatus.territories);
   updateActivities(gameStatus.activities);
-  updateRemainingMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
+  if (gameStatus.currentPlayer.name == myName) {
+    updateRemainingMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
+  }
 };
 
 const sendSyncReq = function() {
