@@ -2,7 +2,7 @@ const Player = require('./player');
 
 const stages = { 1: 'Claim', 2: 'Reinforcement', 3: 'Playing' };
 
-const hasDeployedAllMilitary = player => !player.status.leftMilitaryCount;
+const hasDeployedAllMilitary = player => player.status.leftMilitaryCount < 1;
 
 const createIdGenerator = function*() {
   const ids = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
