@@ -120,8 +120,8 @@ body {
 .activity-log-container {
   position: absolute;
   top: 10px;
-  right: 60px;
-  width: 20vw;
+  right: 12px;
+  width: 21vw;
   display: flex;
   flex-direction: column;
 }
@@ -136,7 +136,7 @@ body {
 .activity-body {
   display: flex;
   flex-direction: column;
-  max-height: 20vw;
+  height: 20vw;
   overflow-y: scroll;
   background: rgba(80, 87, 133, 0.1);
 }
@@ -272,4 +272,81 @@ body {
 
 .hide {
   transform: scale(0);
+}
+
+/* Attack zone */
+.attack-zone {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  height: 21vw;
+  width: 21vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.attack-body {
+  display: flex;
+  flex-direction: column;
+  height: 88%;
+  background-image: linear-gradient(
+    rgba(0, 128, 0, 0.288),
+    rgba(255, 0, 0, 0.322)
+  );
+}
+.attack-area {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid #51558572; */
+}
+
+.dices-area {
+  height: 45%;
+  display: flex;
+  justify-content: space-around;
+}
+.soldiers {
+  height: 55%;
+  display: flex;
+  justify-content: space-evenly;
+}
+.military-unit {
+  height: 4vw;
+  width: 4vw;
+  margin: auto 0;
+  background-size: contain;
+  background-image: url('../images/soldier.png');
+}
+.roll-dice-btn {
+  width: 20%;
+  height: 75%;
+  margin: auto 0;
+  border: 1px solid #515585;
+  background-color: #515585;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 0px 0px 8px #515585;
+}
+.roll-dice-btn > div {
+  color: white;
+  text-align: center;
+  padding: 0.2vh 0;
+  font-size: calc(0.6vw + 0.5em);
+  font-weight: 200;
+  pointer-events: none;
+}
+.dices {
+  width: 70%;
+  display: flex;
+  justify-content: space-around;
+}
+.dice {
+  margin: auto 0;
+  height: 3vw;
+  width: 3vw;
+  border: 1px solid red;
+}
+#defender {
+  border-bottom: 1px dashed #51558572;
 }
