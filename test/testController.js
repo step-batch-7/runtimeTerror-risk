@@ -1,4 +1,4 @@
-const {assert} = require('chai');
+const { assert } = require('chai');
 const Controller = require('../src/controller');
 
 describe('Controller', () => {
@@ -14,15 +14,15 @@ describe('Controller', () => {
       const controller = new Controller();
       controller.addGame(3);
       controller.getGame(1000).addPlayer('player1');
-      assert.deepStrictEqual(controller.join(1000, 'player2'), 'forestgreen');
+      assert.deepStrictEqual(controller.join(1000, 'player2'), 2);
     });
   });
 
   context('getGame', () => {
-    it('Should give game instance of given given gameId', () => {
+    it('Should give game instance of given gameId', () => {
       const controller = new Controller();
-      controller.addGame('player1', 2);
-      assert.deepStrictEqual(controller.getGame(1000), {});
+      const gameId = controller.addGame(2);
+      assert.deepStrictEqual(controller.getGame(gameId), {});
     });
   });
 });

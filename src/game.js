@@ -1,47 +1,35 @@
 const Player = require('./player');
 
-const stages = { 1: 'Claim', 2: 'Reinforcement', 3: 'Playing' };
+const stageNames = { 1: 'Claim', 2: 'Reinforcement', 3: 'Playing' };
 
 const hasDeployedAllMilitary = player => player.status.leftMilitaryCount < 1;
 
-const createIdGenerator = function*() {
-  const ids = [
-    'indianred',
-    'forestgreen',
-    'mediumslateblue',
-    'yellowgreen',
-    'plum',
-    'orange'
-  ];
-  while (ids.length) {
-    yield ids.shift();
-  }
-};
 class Game {
   #territories;
   #players;
   #currentPlayerId;
   #currentStage;
   #activities;
-  #idGenerator;
   #numOfPlayers;
   #isStarted;
   #currentPhase;
+  #lastPlayerId;
   constructor(territories, numOfPlayers) {
     this.#territories = territories;
     this.#players = {};
-    this.#currentPlayerId = 'indianred';
+    this.#currentPlayerId = 1;
     this.#currentStage = 1;
     this.#activities = [];
-    this.#idGenerator = createIdGenerator();
     this.#numOfPlayers = numOfPlayers;
     this.#isStarted = false;
     this.#currentPhase = 0;
+    this.#lastPlayerId = 0;
   }
 
   get status() {
     const status = {};
     status.currentPlayer = this.currentPlayer.status;
+    status.currentPlayerId = this.#currentPlayerId;
     status.currentStage = this.#currentStage;
     status.currentPhase = this.#currentPhase;
     status.activities = this.#activities.slice();
@@ -65,24 +53,15 @@ class Game {
   }
 
   get playerDetails() {
-    const joinedPlayerDetails = {};
-    joinedPlayerDetails.numOfJoinedPlayers = Object.keys(this.#players).length;
-    joinedPlayerDetails.playerColorAndName = [];
-    Object.values(this.#players).forEach(player => {
-      const { name, color } = player.status;
-      joinedPlayerDetails.playerColorAndName.push({ name, color });
-    });
-    return joinedPlayerDetails;
+    const playersDetails = {};
+    for (let playerId in this.#players) {
+      playersDetails[playerId] = this.#players[playerId].status;
+    }
+    return playersDetails;
   }
 
   get currentPlayerId() {
     return this.#currentPlayerId;
-  }
-
-  getPlayerList(playerId) {
-    const playerList = this.playerDetails.playerColorAndName;
-    const player = this.#players[playerId].status;
-    return { playerList, player };
   }
 
   addActivity(msg) {
@@ -90,45 +69,31 @@ class Game {
   }
 
   addPlayer(name) {
-    const playerId = this.#idGenerator.next().value;
     const initialMilitaryCount = 20 + (6 - +this.#numOfPlayers) * 5;
+    this.#players[++this.#lastPlayerId] = new Player(name, initialMilitaryCount);
+    this.#isStarted = this.#numOfPlayers === Object.keys(this.#players).length;
     this.addActivity(`${name} has joined.`);
-    this.#players[playerId] = new Player(name, playerId, initialMilitaryCount);
-    if (this.#numOfPlayers === Object.keys(this.#players).length) {
-      this.#isStarted = true;
-    }
-    return playerId;
+    return this.#lastPlayerId;
   }
 
   updateStage() {
-    this.#currentPlayerId = 'indianred';
     this.#currentStage += 1;
+    this.#currentPlayerId = 1;
     this.updatePhase();
-    const currentStageName = stages[this.#currentStage];
+    const currentStageName = stageNames[this.#currentStage];
     const msg = `${currentStageName} stage started`;
     this.addActivity(msg);
     return this.#currentStage;
   }
 
   updatePhase() {
-    if (this.#currentStage === 3) {
-      this.#currentPhase += 1;
-    }
+    this.#currentStage === 3 && this.#currentPhase++;
     return this.#currentPhase;
   }
 
   updateCurrentPlayer() {
-    const ids = [
-      'indianred',
-      'forestgreen',
-      'mediumslateblue',
-      'yellowgreen',
-      'plum',
-      'orange'
-    ];
-    const index = ids.indexOf(this.#currentPlayerId);
-    const nextPlayerIndex = (index + 1) % Object.keys(this.#players).length;
-    this.#currentPlayerId = ids[nextPlayerIndex];
+    this.#currentPlayerId = this.#currentPlayerId + 1;
+    this.#currentPlayerId > this.#numOfPlayers && (this.#currentPlayerId = 1);
     return this.#currentPlayerId;
   }
 
@@ -138,11 +103,11 @@ class Game {
     territory.deployMilitary(1);
     this.currentPlayer.addTerritory(territoryId);
     this.currentPlayer.removeMilitary(1);
-    const { name, color, leftMilitaryCount } = this.currentPlayer.status;
+    const { name, leftMilitaryCount } = this.currentPlayer.status;
     const msg = `${name} has claimed ${territory.status.name}`;
     this.addActivity(msg);
     this.updateCurrentPlayer();
-    return { color, leftMilitaryCount };
+    return { leftMilitaryCount };
   }
 
   claimTerritory(territoryName) {
@@ -152,12 +117,12 @@ class Game {
     if (this.#territories[territoryName].isOccupied()) {
       return { status: false, error: 'Territory already claimed' };
     }
-    const { color, leftMilitaryCount } = this.assignOwnerTo(territoryName);
+    const { leftMilitaryCount } = this.assignOwnerTo(territoryName);
     const territories = Object.values(this.#territories);
     if (territories.every(territory => territory.isOccupied())) {
       this.updateStage();
     }
-    return { status: true, color, leftMilitaryCount };
+    return { status: true, leftMilitaryCount };
   }
 
   changeTurnToNextDeployer() {
@@ -175,7 +140,7 @@ class Game {
 
   reinforceTerritory(territoryName, militaryCount) {
     if (this.#currentStage !== 2) {
-      return { status: false, error: 'wrong stage or phase' };
+      return { status: false, error: 'Wrong stage or phase' };
     }
 
     const selectedTerritory = this.#territories[territoryName];
@@ -184,8 +149,7 @@ class Game {
     }
 
     this.deployMilitaryTo(selectedTerritory, militaryCount);
-    const players = Object.values(this.#players);
-    players.every(hasDeployedAllMilitary) && this.updateStage();
+    Object.values(this.#players).every(hasDeployedAllMilitary) && this.updateStage();
     const { leftMilitaryCount } = this.currentPlayer.status;
     const territoryMilitaryCount = selectedTerritory.status.militaryUnits;
     this.#currentStage === 2 && this.changeTurnToNextDeployer();

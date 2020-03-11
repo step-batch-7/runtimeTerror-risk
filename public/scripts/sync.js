@@ -1,4 +1,11 @@
-const updateRemainingMilitaryCount = function(remainingMilitaryCount) {
+const getPlayerId = () => document.cookie.match(/_playerId=([0-9]+)/)[1];
+
+const getPlayerColor = function(playerId) {
+  playerColors = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
+  return playerColors[playerId - 1];
+};
+
+const updateMilitaryCount = function(remainingMilitaryCount) {
   const $soldierCount = getElement('#soldier-count');
   if ($soldierCount.children[0].innerText == remainingMilitaryCount) {
     return;
@@ -14,7 +21,7 @@ const updateRemainingMilitaryCount = function(remainingMilitaryCount) {
 
 const updateMap = function(territories) {
   for (const territory in territories) {
-    getElement(`#${territory}`).style.fill = territories[territory].occupiedBy;
+    getElement(`#${territory}`).style.fill = getPlayerColor(territories[territory].occupiedBy);
     getElement(`#${territory} + .unit`).innerHTML = `&nbsp${territories[territory].militaryUnits}`;
   }
 };
@@ -51,23 +58,22 @@ const updateActivities = function(activities) {
   $activityLog.innerHTML = activityHTML;
 };
 
-const highLightCurrentPlayer = function(currentPlayer) {
+const highLightPlayer = function(playerId) {
   const $previousPlayer = getElement('.current-player');
   if ($previousPlayer) {
     $previousPlayer.classList.remove('current-player');
   }
-  const $currentPlayerName = getElement(`#${currentPlayer.color}`);
+  const $currentPlayerName = getElement(`[id="${playerId}"]`);
   $currentPlayerName.classList.add('current-player');
 };
 
 const updateGameView = function(gameStatus) {
-  const myId = localStorage.getItem('myId');
   updateGameStage(gameStatus);
   updateMap(gameStatus.territories);
   updateActivities(gameStatus.activities);
-  highLightCurrentPlayer(gameStatus.currentPlayer);
-  if (gameStatus.currentPlayer.color == myId) {
-    updateRemainingMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
+  highLightPlayer(gameStatus.currentPlayerId);
+  if (gameStatus.currentPlayerId == getPlayerId()) {
+    updateMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
   }
 };
 

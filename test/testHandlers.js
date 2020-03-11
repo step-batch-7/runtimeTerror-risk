@@ -31,10 +31,10 @@ describe('Handlers', () => {
     it('Should give the player details', done => {
       request(app)
         .get('/playerList')
-        .set('Cookie', '_gameId=1000;_playerId=indianred')
+        .set('Cookie', '_gameId=1000;_playerId=1')
         .expect(200)
         .expect('Content-Type', /application\/json/, done)
-        .expect(/indianred/);
+        .expect(/player1/);
     });
   });
 
@@ -48,7 +48,7 @@ describe('Handlers', () => {
     it('Should give remainingMilitaryCount in game status', done => {
       request(app)
         .get('/gameStatus')
-        .set('Cookie', '_gameId=1000;_playerId=indianred')
+        .set('Cookie', '_gameId=1000;_playerId=1')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
         .expect(/leftMilitaryCount/);
@@ -57,7 +57,7 @@ describe('Handlers', () => {
     it('Should give currentStage in game status', done => {
       request(app)
         .get('/gameStatus')
-        .set('Cookie', '_gameId=1000;_playerId=indianred')
+        .set('Cookie', '_gameId=1000;_playerId=1')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
         .expect(/currentStage/);
@@ -90,17 +90,17 @@ describe('Handlers', () => {
     it('Should claim the given territory if the fields are valid', done => {
       request(app)
         .post('/performClaim')
-        .set('Cookie', '_gameId=1000;_playerId=indianred')
+        .set('Cookie', '_gameId=1000;_playerId=1')
         .send({ territory: 'india' })
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect(/status/);
+        .expect(/status.+true/);
     });
 
     it('Should respond with "Bad Request" if the fields are invalid', done => {
       request(app)
         .post('/performClaim')
-        .set('Cookie', '_gameId=1000;_playerId=indianred')
+        .set('Cookie', '_gameId=1000;_playerId=1')
         .send({ country: 'india' })
         .expect(400, done);
     });
@@ -118,7 +118,7 @@ describe('Handlers', () => {
     it('Should reinforce the given territory if the reinforcement is valid', done => {
       request(app)
         .post('/reinforcement')
-        .set('Cookie', '_gameId=1000;_playerId=indianred')
+        .set('Cookie', '_gameId=1000;_playerId=1')
         .send({ territory: 'india', militaryCount: 1 })
         .expect(200, done)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -128,7 +128,7 @@ describe('Handlers', () => {
     it('Should respond with "Bad Request" if the fields are invalid', done => {
       request(app)
         .post('/reinforcement')
-        .set('Cookie', '_gameId=1000;_playerId=indianred')
+        .set('Cookie', '_gameId=1000;_playerId=1')
         .send({ country: 'india' })
         .expect(400, done);
     });
@@ -146,6 +146,7 @@ describe('Handlers', () => {
         .post('/joinGame')
         .send({ playerName: 'india', gameId: 1000 })
         .expect(202)
+        .expect('Set-Cookie', '_gameId=1000; Path=/,_playerId=2; Path=/')
         .expect({ joinStatus: true }, done);
     });
 
@@ -176,6 +177,7 @@ describe('Handlers', () => {
         .post('/hostGame')
         .send({ playerName: 'india', numOfPlayers: 2 })
         .expect(202)
+        .expect('Set-Cookie', '_gameId=1000; Path=/,_playerId=1; Path=/')
         .expect({ gameId: 1000 }, done);
     });
   });
@@ -212,13 +214,12 @@ describe('Handlers', () => {
         .expect('Content-Type', 'application/json; charset=utf-8', done)
         .expect({
           isAllPlayersJoined: false,
-          numOfJoinedPlayers: 1,
-          playerColorAndName: [
-            {
-              color: 'indianred',
-              name: 'player1'
+          playerDetails: {
+            1: {
+              name: 'player1',
+              leftMilitaryCount: 40
             }
-          ]
+          }
         });
     });
   });
@@ -235,7 +236,7 @@ describe('Handlers', () => {
       app.locals.controller.getGame(1000).addPlayer('player2');
       request(app)
         .post('/performClaim')
-        .set('Cookie', '_gameId=1000;_playerId=indianred')
+        .set('Cookie', '_gameId=1000;_playerId=1')
         .send({ territory: 'india' })
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
@@ -245,7 +246,7 @@ describe('Handlers', () => {
     it('Should give 406 when game is not started', done => {
       request(app)
         .post('/performClaim')
-        .set('Cookie', '_gameId=1000;_playerId=indianred')
+        .set('Cookie', '_gameId=1000;_playerId=1')
         .send({ territory: 'india' })
         .expect(406)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
@@ -255,7 +256,7 @@ describe('Handlers', () => {
     it('Should give 406 when the requested player is not the current player', done => {
       request(app)
         .post('/reinforcement')
-        .set('Cookie', '_gameId=1000;_playerId=red')
+        .set('Cookie', '_gameId=1000;_playerId=2')
         .send({ territory: 'india', militaryCount: 1 })
         .expect(406, done)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -274,7 +275,7 @@ describe('Handlers', () => {
     it('Should redirect to the waiting page when the game is not started', done => {
       request(app)
         .get('/game.html')
-        .set('Cookie', '_gameId=1000;_playerId=indianred')
+        .set('Cookie', '_gameId=1000;_playerId=1')
         .expect(302, done);
     });
 
@@ -282,7 +283,7 @@ describe('Handlers', () => {
       app.locals.controller.getGame(1000).addPlayer('player2');
       request(app)
         .get('/game.html')
-        .set('Cookie', '_gameId=1000;_playerId="indianred"')
+        .set('Cookie', '_gameId=1000;_playerId=1')
         .expect(200, done);
     });
   });

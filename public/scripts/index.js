@@ -12,10 +12,8 @@ const mousePointerPopUp = function(event, msg) {
 const showReinforcementStatus = function(response, event) {
   const { status, leftMilitaryCount, territoryMilitaryCount, error } = response;
   if (status) {
-    getElement(
-      `#${event.target.id} + .unit`
-    ).innerHTML = `&nbsp;${territoryMilitaryCount}`;
-    updateRemainingMilitaryCount(leftMilitaryCount);
+    getElement(`#${event.target.id} + .unit`).innerHTML = `&nbsp;${territoryMilitaryCount}`;
+    updateMilitaryCount(leftMilitaryCount);
     return;
   }
   mousePointerPopUp(event, error);
@@ -33,9 +31,9 @@ const sendReinforcementRequest = function(event, militaryCount = 1) {
 
 const updateTerritory = function(response, event) {
   if (response.status) {
-    getElement(`#${event.target.id}`).style.fill = response.color;
+    getElement(`#${event.target.id}`).style.fill = getPlayerColor(getPlayerId());
     getElement(`#${event.target.id} + .unit`).innerHTML = '&nbsp;1';
-    updateRemainingMilitaryCount(response.leftMilitaryCount);
+    updateMilitaryCount(response.leftMilitaryCount);
     return;
   }
   mousePointerPopUp(event, response.error);
@@ -51,20 +49,22 @@ const sendClaimRequest = function(event) {
     .then(data => updateTerritory(data, event));
 };
 
-const showPlayer = function(player) {
-  return `<div class="player" id="${player.color}">
-            <span>${player.name}</span>
-            <div style="background-color: ${player.color};" class="color-box"></div>
+const showPlayer = function(playerId, name) {
+  return `<div class="player" id="${playerId}">
+            <span>${name}</span>
+            <div style="background-color: ${getPlayerColor(playerId)};" class="color-box"></div>
           </div>`;
 };
 
-const displayPlayerDetails = function({ playerList, player }) {
-  getElement('.player-name').innerText = player.name;
-  getElement('.front').innerText = player.leftMilitaryCount;
-  const htmlTemplate = playerList.map(showPlayer);
-  const $players = getElement('.players');
-  $players.innerHTML = htmlTemplate.join('\n');
-  localStorage.setItem('myId', player.color);
+const displayPlayerDetails = function(playerDetails) {
+  const myPlayer = playerDetails[getPlayerId()];
+  getElement('.player-name').innerText = myPlayer.name;
+  getElement('.front').innerText = myPlayer.leftMilitaryCount;
+  let htmlTemplate = '';
+  for (let playerId in playerDetails) {
+    htmlTemplate += showPlayer(playerId, playerDetails[playerId].name);
+  }
+  getElement('.players').innerHTML = htmlTemplate;
 };
 
 const getPlayerDetails = function() {
@@ -79,7 +79,7 @@ const selectListener = function() {
   listeners[stage](event);
 };
 
-const addListenerOnterritory = () => {
+const addListenerOnTerritory = () => {
   const countries = Array.from(document.querySelectorAll('.area'));
   countries.forEach(territory => {
     territory.addEventListener('click', selectListener);
@@ -89,7 +89,7 @@ const addListenerOnterritory = () => {
 const main = function() {
   renderMap();
   getPlayerDetails();
-  addListenerOnterritory();
+  addListenerOnTerritory();
   sendSyncReq();
   setInterval(sendSyncReq, 1000);
 };

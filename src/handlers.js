@@ -1,7 +1,6 @@
 const getWaitingStatus = function(req, res) {
   const isAllPlayersJoined = req.game.hasStarted;
-  const { numOfJoinedPlayers, playerColorAndName } = req.game.playerDetails;
-  res.json({ numOfJoinedPlayers, isAllPlayersJoined, playerColorAndName });
+  res.json({ isAllPlayersJoined, playerDetails: req.game.playerDetails });
 };
 
 const getGameDetails = function(req, res) {
@@ -62,7 +61,7 @@ const findGame = function(req, res, next) {
 
 const authorizeGame = function(req, res, next) {
   const player = req.game.currentPlayerId;
-  if (player === req.cookies._playerId && req.game.hasStarted) {
+  if (player === +req.cookies._playerId && req.game.hasStarted) {
     return next();
   }
   res.statusCode = 406;
@@ -79,7 +78,7 @@ const hasGameStarted = function(req, res, next) {
 
 const getPlayerList = function(req, res) {
   const { _playerId } = req.cookies;
-  res.json(req.game.getPlayerList(_playerId));
+  res.json(req.game.playerDetails);
 };
 
 const performReinforcement = function(req, res) {

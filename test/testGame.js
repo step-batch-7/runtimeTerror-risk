@@ -4,61 +4,55 @@ const Player = require('../src/player');
 const generateTerritories = require('../src/territories');
 
 describe('Game', function() {
+  const { india, china } = generateTerritories();
   it('should give instance of game class', function() {
-    const game = new Game(['india', 'china']);
+    const game = new Game({ india }, 3);
     assert.instanceOf(game, Game);
   });
 
   context('status', () => {
     it('should give current status of the game', () => {
-      const game = new Game(['india', 'china']);
+      const game = new Game({ india }, 3);
       game.addPlayer('John');
-      assert.isObject(game.status);
-    });
-  });
-
-  context('getPlayerList', () => {
-    it('should give all player details', () => {
-      const game = new Game(['india', 'china'], 2);
-      game.addPlayer('santhosh');
-      game.addPlayer('satheesh');
       const expected = {
-        playerList: [
-          { name: 'santhosh', color: 'indianred' },
-          { name: 'satheesh', color: 'forestgreen' }
-        ],
-        player: { name: 'santhosh', color: 'indianred', leftMilitaryCount: 40 }
+        currentPlayer: { name: 'John', leftMilitaryCount: 35 },
+        currentPlayerId: 1,
+        currentStage: 1,
+        currentPhase: 0,
+        activities: [{ msg: 'John has joined.' }],
+        territories: {
+          india: {
+            id: 'india',
+            name: 'India',
+            occupiedBy: undefined,
+            neighborsName: ['siam', 'china', 'afghanistan', 'middleEast'],
+            militaryUnits: 0
+          }
+        }
       };
-      assert.deepStrictEqual(game.getPlayerList('indianred'), expected);
+      assert.deepStrictEqual(game.status, expected);
     });
   });
 
   context('addPlayer', () => {
     it('should add a new player in player list', () => {
-      const game = new Game(['india', 'china']);
-      assert.strictEqual(game.addPlayer('Player1'), 'indianred');
-    });
-  });
-
-  context('addActivity', () => {
-    it('should add a new activity', () => {
-      const game = new Game(['india', 'china']);
-      assert.strictEqual(game.addActivity('New game started'), 1);
+      const game = new Game({ india, china });
+      assert.strictEqual(game.addPlayer('Player1'), 1);
     });
   });
 
   context('reinforceTerritory', () => {
     it('should give false status when the stage is not 2 ', () => {
-      const game = new Game(generateTerritories());
+      const game = new Game({ india, china }, 3);
       assert.deepStrictEqual(game.reinforceTerritory('india', 1), {
         status: false,
-        error: 'wrong stage or phase'
+        error: 'Wrong stage or phase'
       });
     });
 
     it('should give false status when territory is not current player territory', () => {
       const { india, china } = generateTerritories();
-      const game = new Game({ india, china });
+      const game = new Game({ india, china }, 2);
       game.addPlayer('Player1');
       game.addPlayer('Player2');
       game.claimTerritory('india');
@@ -82,20 +76,12 @@ describe('Game', function() {
     });
   });
 
-  context('updateStage', () => {
-    it('should update the stage of game', () => {
-      const game = new Game(['india', 'china']);
-      assert.strictEqual(game.updateStage(), 2);
-    });
-  });
-
   context('claimTerritory', () => {
-    const game = new Game(generateTerritories(), 1);
+    const game = new Game({ india, china }, 1);
     game.addPlayer('Player1');
     it('should claim territory if it is unclaimed', () => {
       assert.deepStrictEqual(game.claimTerritory('india'), {
         status: true,
-        color: 'indianred',
         leftMilitaryCount: 44
       });
     });
@@ -108,20 +94,11 @@ describe('Game', function() {
     });
 
     it('should give error message if it is not in claim stage', () => {
-      game.updateStage();
+      game.claimTerritory('china');
       assert.deepStrictEqual(game.claimTerritory('india'), {
         status: false,
         error: 'wrong stage'
       });
-    });
-  });
-
-  context('updateCurrentPlayer', () => {
-    const game = new Game(generateTerritories());
-    game.addPlayer('Player1');
-    game.addPlayer('Player2');
-    it('should update currentPlayer from Player1 to Player2', () => {
-      assert.strictEqual(game.updateCurrentPlayer(), 'forestgreen');
     });
   });
 });

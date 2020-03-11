@@ -3,9 +3,8 @@ class Player {
   #color;
   #territories;
   #leftMilitaryCount;
-  constructor(name, color, initialMilitaryCount) {
+  constructor(name, initialMilitaryCount) {
     this.#name = name;
-    this.#color = color;
     this.#territories = [];
     this.#leftMilitaryCount = initialMilitaryCount;
   }
@@ -14,7 +13,6 @@ class Player {
     const status = {};
     status.name = this.#name;
     status.leftMilitaryCount = this.#leftMilitaryCount;
-    status.color = this.#color;
     return status;
   }
 
