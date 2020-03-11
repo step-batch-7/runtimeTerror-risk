@@ -27,7 +27,7 @@ describe('Game', function() {
           { name: 'santhosh', color: 'indianred' },
           { name: 'satheesh', color: 'forestgreen' }
         ],
-        name: 'santhosh'
+        player: { name: 'santhosh', color: 'indianred', leftMilitaryCount: 20 }
       };
       assert.deepStrictEqual(game.getPlayerList('indianred'), expected);
     });

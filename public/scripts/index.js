@@ -52,18 +52,18 @@ const sendClaimRequest = function(event) {
 };
 
 const showPlayer = function(player) {
-  return `<div class="player">
+  return `<div class="player" id="${player.color}">
             <span>${player.name}</span>
             <div style="background-color: ${player.color};" class="color-box"></div>
           </div>`;
 };
 
-const displayPlayerList = function({ playerList, name }) {
-  getElement('.player-name').innerText = name;
+const displayPlayerList = function({ playerList, player }) {
+  getElement('.player-name').innerText = player.name;
   const htmlTemplate = playerList.map(showPlayer);
   const $players = getElement('.players');
   $players.innerHTML = htmlTemplate.join('\n');
-  localStorage.setItem('myName', name);
+  localStorage.setItem('myId', player.color);
 };
 
 const getPlayerList = function() {

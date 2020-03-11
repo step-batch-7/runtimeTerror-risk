@@ -41,11 +41,21 @@ const updateActivities = function(activities) {
   $activityLog.innerHTML = activityHTML;
 };
 
+const highLightCurrentPlayer = function(currentPlayer) {
+  const $previousPlayer = getElement('.current-player');
+  if ($previousPlayer) {
+    $previousPlayer.classList.remove('current-player');
+  }
+  const $currentPlayerName = getElement(`#${currentPlayer.color}`);
+  $currentPlayerName.classList.add('current-player');
+};
+
 const updateGameView = function(gameStatus) {
   const myName = localStorage.getItem('myName');
   updateGameStage(gameStatus.currentStage);
   updateMap(gameStatus.territories);
   updateActivities(gameStatus.activities);
+  highLightCurrentPlayer(gameStatus.currentPlayer);
   if (gameStatus.currentPlayer.name == myName) {
     updateRemainingMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
   }

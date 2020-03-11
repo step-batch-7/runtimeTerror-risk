@@ -71,8 +71,8 @@ class Game {
 
   getPlayerList(playerId) {
     const playerList = this.playerDetails.playerColorAndName;
-    const name = this.#players[playerId].status.name;
-    return { playerList, name };
+    const player = this.#players[playerId].status;
+    return { playerList, player };
   }
 
   addActivity(msg) {
