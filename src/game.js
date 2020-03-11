@@ -138,11 +138,10 @@ class Game {
     territory.deployMilitary(1);
     this.currentPlayer.addTerritory(territoryId);
     this.currentPlayer.removeMilitary(1);
-    const territoryName = territory.status.name;
     const { name, color, leftMilitaryCount } = this.currentPlayer.status;
-    const msg = `${name} has claimed ${territoryName}`;
-    this.updateCurrentPlayer();
+    const msg = `${name} has claimed ${territory.status.name}`;
     this.addActivity(msg);
+    this.updateCurrentPlayer();
     return { color, leftMilitaryCount };
   }
 
@@ -187,9 +186,9 @@ class Game {
     this.deployMilitaryTo(selectedTerritory, militaryCount);
     const players = Object.values(this.#players);
     players.every(hasDeployedAllMilitary) && this.updateStage();
-    this.#currentStage === 2 && this.changeTurnToNextDeployer();
     const { leftMilitaryCount } = this.currentPlayer.status;
     const territoryMilitaryCount = selectedTerritory.status.militaryUnits;
+    this.#currentStage === 2 && this.changeTurnToNextDeployer();
     return { status: true, leftMilitaryCount, territoryMilitaryCount };
   }
 }

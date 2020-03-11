@@ -15,9 +15,7 @@ const updateRemainingMilitaryCount = function(remainingMilitaryCount) {
 const updateMap = function(territories) {
   for (const territory in territories) {
     getElement(`#${territory}`).style.fill = territories[territory].occupiedBy;
-    getElement(
-      `#${territory} + .unit`
-    ).innerHTML = `&nbsp${territories[territory].militaryUnits}`;
+    getElement(`#${territory} + .unit`).innerHTML = `&nbsp${territories[territory].militaryUnits}`;
   }
 };
 
@@ -63,12 +61,12 @@ const highLightCurrentPlayer = function(currentPlayer) {
 };
 
 const updateGameView = function(gameStatus) {
-  const myName = localStorage.getItem('myName');
+  const myId = localStorage.getItem('myId');
   updateGameStage(gameStatus);
   updateMap(gameStatus.territories);
   updateActivities(gameStatus.activities);
   highLightCurrentPlayer(gameStatus.currentPlayer);
-  if (gameStatus.currentPlayer.name == myName) {
+  if (gameStatus.currentPlayer.color == myId) {
     updateRemainingMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
   }
 };
