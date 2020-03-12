@@ -278,4 +278,23 @@ describe('Handlers', () => {
         .expect(200, done);
     });
   });
+
+  context('updatePhase', () => {
+    beforeEach(() => {
+      const controller = new Controller();
+      controller.addGame(1);
+      controller.getGame(1000).addPlayer('player1');
+      controller.getGame(1000).updateStage();
+      controller.getGame(1000).updateStage();
+      app.locals = { controller };
+    });
+
+    it('Should update the current phase of the game', done => {
+      request(app)
+        .get('/updatePhase')
+        .set('Cookie', '_gameId=1000;_playerId=1')
+        .expect(200, done)
+        .expect({ currentPhase: 2 });
+    });
+  });
 });

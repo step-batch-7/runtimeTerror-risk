@@ -13,7 +13,8 @@ const {
   joinGame,
   getPlayersDetails,
   authorizeGame,
-  hasGameStarted
+  hasGameStarted,
+  updatePhase
 } = require('./handlers');
 const app = express();
 
@@ -32,7 +33,12 @@ app.get('/playersDetails', getPlayersDetails);
 app.get('/gameDetails', getGameDetails);
 app.get('/gameStatus', getGameStatus);
 app.use(authorizeGame);
-app.post('/reinforcement', hasFields('territory', 'militaryCount'), performReinforcement);
+app.post(
+  '/reinforcement',
+  hasFields('territory', 'militaryCount'),
+  performReinforcement
+);
 app.post('/performClaim', hasFields('territory'), performClaim);
+app.get('/updatePhase', updatePhase);
 
 module.exports = { app };

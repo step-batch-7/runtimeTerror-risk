@@ -88,6 +88,11 @@ const performClaim = function(req, res) {
   res.json(response);
 };
 
+const updatePhase = function(req, res) {
+  const currentPhase = req.game.updatePhase();
+  res.json({ currentPhase });
+};
+
 module.exports = {
   getGameStatus,
   performClaim,
@@ -99,5 +104,6 @@ module.exports = {
   getGameDetails,
   getPlayersDetails,
   authorizeGame,
-  hasGameStarted
+  hasGameStarted,
+  updatePhase
 };

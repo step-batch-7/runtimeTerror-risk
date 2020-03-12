@@ -92,6 +92,7 @@ class Game {
     if (this.#currentStage === 3) {
       this.#currentPhase = (this.#currentPhase % 3) + 1;
     }
+    return this.#currentPhase;
   }
 
   updateCurrentPlayer() {

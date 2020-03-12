@@ -1,3 +1,9 @@
+const updatePhase = function() {
+  fetch('/updatePhase', { method: 'GET' })
+    .then(response => response.json())
+    .then(({ currentPhase }) => showPhases(currentPhase));
+};
+
 const mousePointerPopUp = function(event, msg) {
   const $mousePopUp = getElement('#mouse-pop-up');
   $mousePopUp.classList.remove('hidden');
@@ -12,7 +18,9 @@ const mousePointerPopUp = function(event, msg) {
 const showReinforcementStatus = function(response, event) {
   const { status, leftMilitaryCount, territoryMilitaryCount, error } = response;
   if (status) {
-    getElement(`#${event.target.id} + .unit`).innerHTML = `&nbsp;${territoryMilitaryCount}`;
+    getElement(
+      `#${event.target.id} + .unit`
+    ).innerHTML = `&nbsp;${territoryMilitaryCount}`;
     updateMilitaryCount(leftMilitaryCount);
     return;
   }
@@ -52,7 +60,9 @@ const sendClaimRequest = function(event) {
 const showPlayer = function(playerId, name) {
   return `<div class="player" id="${playerId}">
             <span>${name}</span>
-            <div style="background-color: ${getPlayerColor(playerId)};" class="color-box"></div>
+            <div style="background-color: ${getPlayerColor(
+              playerId
+            )};" class="color-box"></div>
           </div>`;
 };
 
