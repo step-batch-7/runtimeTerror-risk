@@ -1,6 +1,5 @@
 const { assert } = require('chai');
 const Game = require('../src/game');
-const Player = require('../src/player');
 const generateTerritories = require('../src/territories');
 
 describe('Game', function() {
@@ -18,7 +17,7 @@ describe('Game', function() {
         currentPlayer: { name: 'John', leftMilitaryCount: 35, territories: [] },
         currentPlayerId: 1,
         currentStage: 1,
-        currentPhase: 0,
+        currentPhase: 1,
         activities: [{ msg: 'John has joined.' }],
         territories: {
           india: {
@@ -98,6 +97,69 @@ describe('Game', function() {
       assert.deepStrictEqual(game.claim('india'), {
         status: false,
         error: 'wrong stage'
+      });
+    });
+  });
+
+  context('updatePhase', () => {
+    it('should update the current Phase', () => {
+      const game = new Game({ india, china }, 1);
+      game.addPlayer('Player1');
+      game.updateStage();
+      game.updateStage();
+      assert.deepStrictEqual(game.updatePhase(), 2);
+    });
+
+    it('should not update the current Phase when the stage is not 3', () => {
+      const game = new Game({ india, china }, 1);
+      game.addPlayer('Player1');
+      game.updateStage();
+      assert.deepStrictEqual(game.updatePhase(), 1);
+    });
+  });
+
+  context('isActionValidBy', () => {
+    it('should give true when the action is valid by the given user', () => {
+      const game = new Game({ india, china }, 1);
+      game.addPlayer('Player1');
+      assert.isTrue(game.isActionValidBy(1));
+    });
+
+    it('should give true when the action is not valid by the given user', () => {
+      const game = new Game({ india, china }, 2);
+      game.addPlayer('Player1');
+      assert.isFalse(game.isActionValidBy(1));
+    });
+  });
+
+  context('numOfPlayers', () => {
+    it('should give the total number of the game', () => {
+      const game = new Game({ india, china }, 1);
+      game.addPlayer('Player1');
+      assert.strictEqual(game.numOfPlayers, 1);
+    });
+  });
+
+  context('hasStarted', () => {
+    it('should give true when game is started', () => {
+      const game = new Game({ india, china }, 1);
+      game.addPlayer('Player1');
+      assert.isTrue(game.hasStarted);
+    });
+
+    it('should give false when the game is not started', () => {
+      const game = new Game({ india, china }, 2);
+      game.addPlayer('Player1');
+      assert.isFalse(game.hasStarted);
+    });
+  });
+
+  context('playersDetails', () => {
+    it('should give details of all players', () => {
+      const game = new Game({ india, china }, 1);
+      game.addPlayer('Player1');
+      assert.deepStrictEqual(game.playersDetails, {
+        1: { leftMilitaryCount: 45, name: 'Player1', territories: [] }
       });
     });
   });

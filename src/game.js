@@ -22,7 +22,7 @@ class Game {
     this.#activities = [];
     this.#numOfPlayers = numOfPlayers;
     this.#isStarted = false;
-    this.#currentPhase = 0;
+    this.#currentPhase = 1;
     this.#lastPlayerId = 0;
   }
 
@@ -60,8 +60,8 @@ class Game {
     return playersDetails;
   }
 
-  isCurrentPlayer(playerId) {
-    return this.#currentPlayerId === playerId;
+  isActionValidBy(playerId) {
+    return this.hasStarted && this.#currentPlayerId === playerId;
   }
 
   addActivity(msg) {
@@ -79,7 +79,6 @@ class Game {
   updateStage() {
     this.#currentStage += 1;
     this.#currentPlayerId = 1;
-    this.updatePhase();
     const currentStageName = stageNames[this.#currentStage];
     this.addActivity(`${currentStageName} stage started`);
   }

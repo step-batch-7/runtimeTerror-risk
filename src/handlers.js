@@ -58,8 +58,8 @@ const findGame = function(req, res, next) {
 };
 
 const authorizeGame = function(req, res, next) {
-  const isCurrentPlayer = req.game.isCurrentPlayer(+req.cookies._playerId);
-  if (req.game.hasStarted && isCurrentPlayer) {
+  const isActionValid = req.game.isActionValidBy(+req.cookies._playerId);
+  if (isActionValid) {
     return next();
   }
   res.status(406).json({ error: 'This is not your turn' });
