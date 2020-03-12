@@ -219,14 +219,15 @@ body {
   letter-spacing: 1px;
 }
 .current-player::before {
-  padding-right: 0.8vw;
-  content: '➡ ';
-  transform: scale(1.2);
-  margin-left: -1.3vw;
+  background-image: url(../images/leftArrow.png);
+  background-size: 1.4vw 1.4vw;
+  display: inline-block;
+  width: 1.4vw;
+  height: 1.4vw;
+  content: '';
+  margin-left: -1.7vw;
   color: rgb(80, 87, 133);
 }
-
-/* phases */
 
 .phase-block {
   position: absolute;
