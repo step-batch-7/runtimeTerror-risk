@@ -81,8 +81,7 @@ class Game {
     this.#currentPlayerId = 1;
     this.updatePhase();
     const currentStageName = stageNames[this.#currentStage];
-    const msg = `${currentStageName} stage started`;
-    this.addActivity(msg);
+    this.addActivity(`${currentStageName} stage started`);
   }
 
   updatePhase() {
