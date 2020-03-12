@@ -154,11 +154,11 @@ describe('Game', function() {
     });
   });
 
-  context('playersDetails', () => {
+  context('getPlayersDetails', () => {
     it('should give details of all players', () => {
       const game = new Game({ india, china }, 1);
       game.addPlayer('Player1');
-      assert.deepStrictEqual(game.playersDetails, {
+      assert.deepStrictEqual(game.getPlayersDetails(), {
         1: { leftMilitaryCount: 45, name: 'Player1', territories: [] }
       });
     });
