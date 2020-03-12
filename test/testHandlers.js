@@ -43,7 +43,9 @@ describe('Handlers', () => {
         .set('Cookie', '_gameId=1000;_playerId=1')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect(/{"currentPlayer":{"name":"player1","leftMilitaryCount":40,"territories":\[\]/);
+        .expect(
+          /{"currentPlayer":{"name":"player1","leftMilitaryCount":40,"territories":\[\]/
+        );
     });
 
     it('Should tell bad request if cookie is not present', done => {
@@ -94,7 +96,7 @@ describe('Handlers', () => {
       const controller = new Controller();
       controller.addGame(1);
       controller.getGame(1000).addPlayer('player1');
-      controller.getGame(1000).claimTerritory('india');
+      controller.getGame(1000).claim('india');
       controller.getGame(1000).updateStage();
       app.locals = { controller };
     });

@@ -89,7 +89,9 @@ class Game {
   }
 
   updatePhase() {
-    this.#currentStage === 3 && this.#currentPhase++;
+    if (this.#currentStage === 3) {
+      this.#currentPhase = (this.#currentPhase % 3) + 1;
+    }
   }
 
   updateCurrentPlayer() {
@@ -110,7 +112,7 @@ class Game {
     return { leftMilitaryCount };
   }
 
-  claimTerritory(territoryName) {
+  claim(territoryName) {
     if (this.#currentStage != 1) {
       return { status: false, error: 'wrong stage' };
     }
@@ -138,7 +140,7 @@ class Game {
     this.addActivity(activityMsg);
   }
 
-  reinforceTerritory(territoryName, militaryCount) {
+  reinforce(territoryName, militaryCount) {
     if (this.#currentStage !== 2) {
       return { status: false, error: 'Wrong stage or phase' };
     }
