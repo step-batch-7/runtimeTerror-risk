@@ -28,7 +28,7 @@
 }
 .area {
   fill: #ddd;
-  stroke-width: 1px;
+  stroke-width: 1.2px;
   cursor: pointer;
 }
 .territory-name {
@@ -51,19 +51,19 @@
   text-align: center;
 }
 .oceania {
-  stroke: red;
+  stroke: rgb(255, 123, 0);
 }
 .asia {
-  stroke: green;
+  stroke: rgb(40, 104, 40);
 }
 .south-america {
-  stroke: orange;
+  stroke: rgb(177, 49, 202);
 }
 .north-america {
-  stroke: blue;
+  stroke: rgb(8, 161, 103);
 }
 .europe {
-  stroke: purple;
+  stroke: #374ee6;
 }
 .africa {
   stroke: brown;

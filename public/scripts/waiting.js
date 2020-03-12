@@ -1,12 +1,5 @@
 const getPlayerColor = function(playerId) {
-  const playerColors = [
-    'indianred',
-    'forestgreen',
-    'mediumslateblue',
-    'yellowgreen',
-    'plum',
-    'orange'
-  ];
+  const playerColors = ['#EF9A9A', '#C5E1A5', '#FFCC80', '#C9B5E6', '#FFF59D', '#F5D9EC'];
   return playerColors[playerId - 1];
 };
 

@@ -1,14 +1,7 @@
 const getPlayerId = () => document.cookie.match(/_playerId=([0-9]+)/)[1];
 
 const getPlayerColor = function(playerId) {
-  const playerColors = [
-    'indianred',
-    'forestgreen',
-    'mediumslateblue',
-    'yellowgreen',
-    'plum',
-    'orange'
-  ];
+  const playerColors = ['#EF9A9A', '#C5E1A5', '#FFCC80', '#C9B5E6', '#FFF59D', '#F5D9EC'];
   return playerColors[playerId - 1];
 };
 
@@ -28,7 +21,7 @@ const updateMilitaryCount = function(remainingMilitaryCount) {
 
 const updateMap = function(territories) {
   Object.entries(territories).forEach(([territoryId, territory]) => {
-    const {occupiedBy, militaryUnits} = territory;
+    const { occupiedBy, militaryUnits } = territory;
     getElement(`#${territoryId}`).style.fill = getPlayerColor(occupiedBy);
     const $textElement = getElement(`#${territoryId} + .unit`);
     $textElement.innerHTML = `${militaryUnits}`.padStart(2, ' ');
@@ -39,7 +32,7 @@ const showPhases = function(currentPhase, error, event) {
   if (error) {
     return mousePointerPopUp(event, error);
   }
-  const phases = {1: 'reinforcement', 2: 'attack', 3: 'fortify'};
+  const phases = { 1: 'reinforcement', 2: 'attack', 3: 'fortify' };
   const $phaseBox = getElement('.phase-block');
   $phaseBox.style.transform = 'scale(1)';
   const $previousPhase = getElement('.current-phase');
@@ -48,7 +41,7 @@ const showPhases = function(currentPhase, error, event) {
   $phase.classList.add('current-phase');
 };
 
-const updateGameStage = function({currentStage, currentPhase}) {
+const updateGameStage = function({ currentStage, currentPhase }) {
   const stages = {
     1: 'Claim Stage',
     2: 'Reinforcement Stage',
@@ -63,7 +56,7 @@ const updateGameStage = function({currentStage, currentPhase}) {
 const updateActivities = function(activities) {
   const $activityLog = getElement('#activity-log');
   let activityHTML = '';
-  activities.forEach(({msg}) => {
+  activities.forEach(({ msg }) => {
     activityHTML += `<div class="activity-details">
                       <span class="activity-message">${msg}</span>
                     </div>`;
@@ -89,7 +82,7 @@ const updateGameView = function(gameStatus) {
 };
 
 const sendSyncReq = function() {
-  const reqOptions = {method: 'GET'};
+  const reqOptions = { method: 'GET' };
   fetch('/gameStatus', reqOptions)
     .then(response => response.json())
     .then(updateGameView);
