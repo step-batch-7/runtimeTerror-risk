@@ -35,8 +35,11 @@ const updateMap = function(territories) {
   });
 };
 
-const showPhases = function(currentPhase) {
-  const phases = { 1: 'reinforcement', 2: 'attack', 3: 'fortify' };
+const showPhases = function(currentPhase, error, event) {
+  if (error) {
+    return mousePointerPopUp(event, error);
+  }
+  const phases = {1: 'reinforcement', 2: 'attack', 3: 'fortify'};
   const $phaseBox = getElement('.phase-block');
   $phaseBox.style.transform = 'scale(1)';
   const $previousPhase = getElement('.current-phase');
@@ -45,7 +48,7 @@ const showPhases = function(currentPhase) {
   $phase.classList.add('current-phase');
 };
 
-const updateGameStage = function({ currentStage, currentPhase }) {
+const updateGameStage = function({currentStage, currentPhase}) {
   const stages = {
     1: 'Claim Stage',
     2: 'Reinforcement Stage',
@@ -60,7 +63,7 @@ const updateGameStage = function({ currentStage, currentPhase }) {
 const updateActivities = function(activities) {
   const $activityLog = getElement('#activity-log');
   let activityHTML = '';
-  activities.forEach(({ msg }) => {
+  activities.forEach(({msg}) => {
     activityHTML += `<div class="activity-details">
                       <span class="activity-message">${msg}</span>
                     </div>`;
@@ -86,7 +89,7 @@ const updateGameView = function(gameStatus) {
 };
 
 const sendSyncReq = function() {
-  const reqOptions = { method: 'GET' };
+  const reqOptions = {method: 'GET'};
   fetch('/gameStatus', reqOptions)
     .then(response => response.json())
     .then(updateGameView);
