@@ -19,7 +19,7 @@ const showReinforcementStatus = function(response, event) {
   const {leftMilitaryCount, territoryMilitaryCount, error} = response;
   if (response.isDone) {
     const $textElement = getElement(`#${event.target.id} + .unit`);
-    $textElement.innerHTML = `${territoryMilitaryCount}`;
+    $textElement.innerHTML = `${territoryMilitaryCount}`.padStart(2, ' ');
     return updateMilitaryCount(leftMilitaryCount);
   }
   mousePointerPopUp(event, error);
@@ -39,8 +39,9 @@ const sendReinforcementRequest = function(event, militaryCount = 1) {
 const updateTerritory = function(response, event) {
   if (response.isDone) {
     event.target.style.fill = getPlayerColor(getPlayerId());
-    getElement(`#${event.target.id} + .unit`).innerHTML = '1';
-    return updateMilitaryCount(response.leftMilitaryCount);
+    getElement(`#${event.target.id} + .unit`).innerHTML = '1'.padStart(2, ' ');
+    updateMilitaryCount(response.leftMilitaryCount);
+    return;
   }
   mousePointerPopUp(event, response.error);
 };

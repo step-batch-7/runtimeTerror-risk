@@ -28,10 +28,10 @@ const updateMilitaryCount = function(remainingMilitaryCount) {
 
 const updateMap = function(territories) {
   Object.entries(territories).forEach(([territoryId, territory]) => {
-    const { occupiedBy, militaryUnits } = territory;
+    const {occupiedBy, militaryUnits} = territory;
     getElement(`#${territoryId}`).style.fill = getPlayerColor(occupiedBy);
     const $textElement = getElement(`#${territoryId} + .unit`);
-    $textElement.innerHTML = `${militaryUnits}`;
+    $textElement.innerHTML = `${militaryUnits}`.padStart(2, ' ');
   });
 };
 
