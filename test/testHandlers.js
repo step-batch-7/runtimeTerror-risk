@@ -34,7 +34,9 @@ describe('Handlers', () => {
         .set('Cookie', '_gameId=1000;_playerId=1')
         .expect(200)
         .expect('Content-Type', /application\/json/, done)
-        .expect(/player1/);
+        .expect({
+          '1': { name: 'player1', leftMilitaryCount: 40, territories: [] }
+        });
     });
   });
 
@@ -51,7 +53,7 @@ describe('Handlers', () => {
         .set('Cookie', '_gameId=1000;_playerId=1')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect(/leftMilitaryCount/);
+        .expect(/{"currentPlayer":{"name":"player1","leftMilitaryCount":40/);
     });
 
     it('Should give currentStage in game status', done => {
@@ -60,7 +62,9 @@ describe('Handlers', () => {
         .set('Cookie', '_gameId=1000;_playerId=1')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect(/currentStage/);
+        .expect(
+          /{"currentPlayer":{"name":"player1","leftMilitaryCount":40,"territories":\[\]/
+        );
     });
 
     it('Should tell bad request if cookie is not present', done => {
@@ -94,7 +98,7 @@ describe('Handlers', () => {
         .send({ territory: 'india' })
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect(/status.+true/);
+        .expect({ status: true, leftMilitaryCount: 39 });
     });
 
     it('Should respond with "Bad Request" if the fields are invalid', done => {
@@ -246,7 +250,7 @@ describe('Handlers', () => {
         .send({ territory: 'india' })
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect(/status/);
+        .expect({ status: true, leftMilitaryCount: 39 });
     });
 
     it('Should give 406 when game is not started', done => {
