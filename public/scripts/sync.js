@@ -14,7 +14,7 @@ const getPlayerColor = function(playerId) {
 
 const updateMilitaryCount = function(remainingMilitaryCount) {
   const $soldierCount = getElement('#soldier-count');
-  if ($soldierCount.children[0].innerText === remainingMilitaryCount) {
+  if (+$soldierCount.children[0].innerText === remainingMilitaryCount) {
     return;
   }
   $soldierCount.children[0].innerText = remainingMilitaryCount;
@@ -83,7 +83,7 @@ const updateGameView = function(gameStatus) {
   updateMap(gameStatus.territories);
   updateActivities(gameStatus.activities);
   highLightPlayer(gameStatus.currentPlayerId);
-  if (gameStatus.currentPlayerId === getPlayerId()) {
+  if (gameStatus.currentPlayerId === +getPlayerId()) {
     updateMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
   }
 };
