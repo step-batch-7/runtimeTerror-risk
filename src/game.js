@@ -52,11 +52,11 @@ class Game {
     return this.#players[this.#currentPlayerId];
   }
 
-  get playersDetails() {
+  getPlayersDetails() {
     const playersDetails = {};
-    for (let playerId in this.#players) {
-      playersDetails[playerId] = this.#players[playerId].status;
-    }
+    Object.entries(this.#players).forEach(([playerId, player]) => {
+      playersDetails[playerId] = player.status;
+    });
     return playersDetails;
   }
 

@@ -14,7 +14,7 @@ const getPlayerColor = function(playerId) {
 
 const updateMilitaryCount = function(remainingMilitaryCount) {
   const $soldierCount = getElement('#soldier-count');
-  if ($soldierCount.children[0].innerText == remainingMilitaryCount) {
+  if ($soldierCount.children[0].innerText === remainingMilitaryCount) {
     return;
   }
   $soldierCount.children[0].innerText = remainingMilitaryCount;
@@ -27,14 +27,12 @@ const updateMilitaryCount = function(remainingMilitaryCount) {
 };
 
 const updateMap = function(territories) {
-  for (const territory in territories) {
-    getElement(`#${territory}`).style.fill = getPlayerColor(
-      territories[territory].occupiedBy
-    );
-    getElement(
-      `#${territory} + .unit`
-    ).innerHTML = `${territories[territory].militaryUnits}`;
-  }
+  Object.entries(territories).forEach(([territoryId, territory]) => {
+    const { occupiedBy, militaryUnits } = territory;
+    getElement(`#${territoryId}`).style.fill = getPlayerColor(occupiedBy);
+    const $textElement = getElement(`#${territoryId} + .unit`);
+    $textElement.innerHTML = `${militaryUnits}`;
+  });
 };
 
 const showPhases = function(currentPhase) {
@@ -72,9 +70,7 @@ const updateActivities = function(activities) {
 
 const highLightPlayer = function(playerId) {
   const $previousPlayer = getElement('.current-player');
-  if ($previousPlayer) {
-    $previousPlayer.classList.remove('current-player');
-  }
+  $previousPlayer && $previousPlayer.classList.remove('current-player');
   const $currentPlayerName = getElement(`[id="${playerId}"]`);
   $currentPlayerName.classList.add('current-player');
 };
@@ -84,7 +80,7 @@ const updateGameView = function(gameStatus) {
   updateMap(gameStatus.territories);
   updateActivities(gameStatus.activities);
   highLightPlayer(gameStatus.currentPlayerId);
-  if (gameStatus.currentPlayerId == getPlayerId()) {
+  if (gameStatus.currentPlayerId === getPlayerId()) {
     updateMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
   }
 };

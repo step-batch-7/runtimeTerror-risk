@@ -1,5 +1,12 @@
 const getPlayerColor = function(playerId) {
-  const playerColors = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
+  const playerColors = [
+    'indianred',
+    'forestgreen',
+    'mediumslateblue',
+    'yellowgreen',
+    'plum',
+    'orange'
+  ];
   return playerColors[playerId - 1];
 };
 
@@ -33,7 +40,6 @@ const showJoinedPlayersName = function(playersDetails) {
 };
 
 const showJoinedPlayers = function({ hasGameStarted, playersDetails }) {
-  console.log(playersDetails);
   const $joinedPlayers = document.querySelector('#joinedPlayers');
   $joinedPlayers.innerHTML = Object.keys(playersDetails).length;
   showJoinedPlayersName(playersDetails);

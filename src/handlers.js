@@ -1,6 +1,6 @@
 const getPlayersDetails = function(req, res) {
   const hasGameStarted = req.game.hasStarted;
-  res.json({ hasGameStarted, playersDetails: req.game.playersDetails });
+  res.json({ hasGameStarted, playersDetails: req.game.getPlayersDetails() });
 };
 
 const getGameDetails = function(req, res) {

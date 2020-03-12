@@ -18,19 +18,20 @@ const mousePointerPopUp = function(event, msg) {
 const showReinforcementStatus = function(response, event) {
   const { leftMilitaryCount, territoryMilitaryCount, error } = response;
   if (response.isDone) {
-    getElement(`#${event.target.id} + .unit`).innerHTML = `&nbsp;${territoryMilitaryCount}`;
-    updateMilitaryCount(leftMilitaryCount);
-    return;
+    const $textElement = getElement(`#${event.target.id} + .unit`);
+    $textElement.innerHTML = `${territoryMilitaryCount}`;
+    return updateMilitaryCount(leftMilitaryCount);
   }
   mousePointerPopUp(event, error);
 };
 
 const sendReinforcementRequest = function(event, militaryCount = 1) {
-  fetch('/reinforcement', {
+  const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ territory: event.target.id, militaryCount })
-  })
+  };
+  fetch('/reinforcement', requestOptions)
     .then(response => response.json())
     .then(response => showReinforcementStatus(response, event));
 };
@@ -38,27 +39,28 @@ const sendReinforcementRequest = function(event, militaryCount = 1) {
 const updateTerritory = function(response, event) {
   if (response.isDone) {
     event.target.style.fill = getPlayerColor(getPlayerId());
-    getElement(`#${event.target.id} + .unit`).innerHTML = '&nbsp;1';
-    updateMilitaryCount(response.leftMilitaryCount);
-    return;
+    getElement(`#${event.target.id} + .unit`).innerHTML = '1';
+    return updateMilitaryCount(response.leftMilitaryCount);
   }
   mousePointerPopUp(event, response.error);
 };
 
 const sendClaimRequest = function(event) {
-  fetch('/performClaim', {
+  const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ territory: event.target.id })
-  })
+  };
+  fetch('/performClaim', requestOptions)
     .then(response => response.json())
     .then(data => updateTerritory(data, event));
 };
 
 const showPlayer = function(playerId, name) {
+  const playerColor = getPlayerColor(playerId);
   return `<div class="player" id="${playerId}">
             <span>${name}</span>
-            <div style="background-color: ${getPlayerColor(playerId)};" class="color-box"></div>
+            <div style="background-color: ${playerColor};" class="color-box"></div>
           </div>`;
 };
 
