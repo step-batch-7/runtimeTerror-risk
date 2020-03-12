@@ -12,7 +12,8 @@ describe('Player', function() {
       const player = new Player('Player1', 30);
       assert.deepStrictEqual(player.status, {
         leftMilitaryCount: 30,
-        name: 'Player1'
+        name: 'Player1',
+        territories: []
       });
     });
   });
@@ -20,14 +21,16 @@ describe('Player', function() {
   context('removeMilitary', () => {
     it('should give removeMilitary of the player', () => {
       const player = new Player('Player1', 30);
-      assert.strictEqual(player.removeMilitary(1), 29);
+      player.removeMilitary(1);
+      assert.strictEqual(player.status.leftMilitaryCount, 29);
     });
   });
 
   context('addTerritory', () => {
     it('should add territory to territories list of player', () => {
       const player = new Player('Player1', 30);
-      assert.strictEqual(player.addTerritory('india'), 1);
+      player.addTerritory('india');
+      assert.isTrue(player.status.territories.includes('india'));
     });
   });
 });

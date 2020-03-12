@@ -18,7 +18,6 @@ class Territory {
 
   deployMilitary(militaryCount) {
     this.#militaryUnits += militaryCount;
-    return this.#militaryUnits;
   }
 
   isOccupied() {
@@ -27,17 +26,16 @@ class Territory {
 
   changeRuler(playerId) {
     this.#occupiedBy = playerId;
-    return this.#occupiedBy;
   }
 
   get status() {
-    return {
-      id: this.#id,
-      name: this.#name,
-      occupiedBy: this.#occupiedBy,
-      neighborsName: this.#neighbors.slice(),
-      militaryUnits: this.#militaryUnits
-    };
+    const status = {};
+    status.id = this.#id;
+    status.name = this.#name;
+    status.occupiedBy = this.#occupiedBy;
+    status.neighborsName = this.#neighbors.slice();
+    status.militaryUnits = this.#militaryUnits;
+    return status;
   }
 }
 

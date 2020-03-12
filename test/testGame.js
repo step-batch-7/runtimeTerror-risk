@@ -15,7 +15,7 @@ describe('Game', function() {
       const game = new Game({ india }, 3);
       game.addPlayer('John');
       const expected = {
-        currentPlayer: { name: 'John', leftMilitaryCount: 35 },
+        currentPlayer: { name: 'John', leftMilitaryCount: 35, territories: [] },
         currentPlayerId: 1,
         currentStage: 1,
         currentPhase: 0,

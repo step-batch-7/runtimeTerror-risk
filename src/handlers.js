@@ -83,7 +83,10 @@ const getPlayerList = function(req, res) {
 
 const performReinforcement = function(req, res) {
   const { territory, militaryCount } = req.body;
-  const reinforcementStatus = req.game.reinforceTerritory(territory, militaryCount);
+  const reinforcementStatus = req.game.reinforceTerritory(
+    territory,
+    militaryCount
+  );
   res.json(reinforcementStatus);
 };
 

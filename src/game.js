@@ -65,12 +65,15 @@ class Game {
   }
 
   addActivity(msg) {
-    return this.#activities.unshift({ msg });
+    this.#activities.unshift({ msg });
   }
 
   addPlayer(name) {
     const initialMilitaryCount = 20 + (6 - +this.#numOfPlayers) * 5;
-    this.#players[++this.#lastPlayerId] = new Player(name, initialMilitaryCount);
+    this.#players[++this.#lastPlayerId] = new Player(
+      name,
+      initialMilitaryCount
+    );
     this.#isStarted = this.#numOfPlayers === Object.keys(this.#players).length;
     this.addActivity(`${name} has joined.`);
     return this.#lastPlayerId;
@@ -83,18 +86,15 @@ class Game {
     const currentStageName = stageNames[this.#currentStage];
     const msg = `${currentStageName} stage started`;
     this.addActivity(msg);
-    return this.#currentStage;
   }
 
   updatePhase() {
     this.#currentStage === 3 && this.#currentPhase++;
-    return this.#currentPhase;
   }
 
   updateCurrentPlayer() {
     this.#currentPlayerId = this.#currentPlayerId + 1;
     this.#currentPlayerId > this.#numOfPlayers && (this.#currentPlayerId = 1);
-    return this.#currentPlayerId;
   }
 
   assignOwnerTo(territoryId) {
@@ -149,7 +149,8 @@ class Game {
     }
 
     this.deployMilitaryTo(selectedTerritory, militaryCount);
-    Object.values(this.#players).every(hasDeployedAllMilitary) && this.updateStage();
+    Object.values(this.#players).every(hasDeployedAllMilitary) &&
+      this.updateStage();
     const { leftMilitaryCount } = this.currentPlayer.status;
     const territoryMilitaryCount = selectedTerritory.status.militaryUnits;
     this.#currentStage === 2 && this.changeTurnToNextDeployer();

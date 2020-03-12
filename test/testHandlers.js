@@ -109,9 +109,10 @@ describe('Handlers', () => {
   context('performReinforcement', () => {
     beforeEach(() => {
       const controller = new Controller();
-      controller.addGame(2);
+      controller.addGame(1);
       controller.getGame(1000).addPlayer('player1');
-      controller.getGame(1000).addPlayer('player2');
+      controller.getGame(1000).claimTerritory('india');
+      controller.getGame(1000).updateStage();
       app.locals = { controller };
     });
 
@@ -122,7 +123,11 @@ describe('Handlers', () => {
         .send({ territory: 'india', militaryCount: 1 })
         .expect(200, done)
         .expect('Content-Type', 'application/json; charset=utf-8')
-        .expect(/status/);
+        .expect({
+          status: true,
+          leftMilitaryCount: 43,
+          territoryMilitaryCount: 2
+        });
     });
 
     it('Should respond with "Bad Request" if the fields are invalid', done => {
@@ -217,7 +222,8 @@ describe('Handlers', () => {
           playerDetails: {
             1: {
               name: 'player1',
-              leftMilitaryCount: 40
+              leftMilitaryCount: 40,
+              territories: []
             }
           }
         });

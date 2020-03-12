@@ -1,4 +1,4 @@
-const {assert} = require('chai');
+const { assert } = require('chai');
 const Territory = require('../src/territory');
 
 describe('Territory', function() {
@@ -10,7 +10,8 @@ describe('Territory', function() {
   context('changeRuler', () => {
     it('should change the ruler of the territory', () => {
       const territory = new Territory('india', ['china']);
-      assert.strictEqual(territory.changeRuler('red'), 'red');
+      territory.changeRuler(1);
+      assert.strictEqual(territory.status.occupiedBy, 1);
     });
   });
 
@@ -42,7 +43,8 @@ describe('Territory', function() {
   context('deployMilitary', function() {
     it('Should give the incremented military unit', function() {
       const territory = new Territory('india', ['china']);
-      assert.strictEqual(territory.deployMilitary(1), 1);
+      territory.deployMilitary(1);
+      assert.strictEqual(territory.status.militaryUnits, 1);
     });
   });
 
