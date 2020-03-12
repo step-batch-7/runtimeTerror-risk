@@ -31,7 +31,7 @@ const sendReinforcementRequest = function(event, militaryCount = 1) {
 
 const updateTerritory = function(response, event) {
   if (response.status) {
-    getElement(`#${event.target.id}`).style.fill = getPlayerColor(getPlayerId());
+    event.target.style.fill = getPlayerColor(getPlayerId());
     getElement(`#${event.target.id} + .unit`).innerHTML = '&nbsp;1';
     updateMilitaryCount(response.leftMilitaryCount);
     return;
@@ -56,19 +56,19 @@ const showPlayer = function(playerId, name) {
           </div>`;
 };
 
-const displayPlayerDetails = function(playerDetails) {
-  const myPlayer = playerDetails[getPlayerId()];
+const displayPlayerDetails = function({ playersDetails }) {
+  const myPlayer = playersDetails[getPlayerId()];
   getElement('.player-name').innerText = myPlayer.name;
   getElement('.front').innerText = myPlayer.leftMilitaryCount;
   let htmlTemplate = '';
-  for (let playerId in playerDetails) {
-    htmlTemplate += showPlayer(playerId, playerDetails[playerId].name);
+  for (let playerId in playersDetails) {
+    htmlTemplate += showPlayer(playerId, playersDetails[playerId].name);
   }
   getElement('.players').innerHTML = htmlTemplate;
 };
 
 const getPlayerDetails = function() {
-  fetch('/playerList', { method: 'GET' })
+  fetch('/playersDetails', { method: 'GET' })
     .then(response => response.json())
     .then(displayPlayerDetails);
 };

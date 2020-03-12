@@ -1,5 +1,5 @@
 const getPlayerColor = function(playerId) {
-  playerColors = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
+  const playerColors = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
   return playerColors[playerId - 1];
 };
 
@@ -17,14 +17,14 @@ const sendReqForGameDetails = function() {
     .then(showGameDetails);
 };
 
-const showJoinedPlayersName = function(playerDetails) {
+const showJoinedPlayersName = function(playersDetails) {
   const $waitingDetailsBox = document.querySelector('.box');
   const joinderPlayers = document.querySelectorAll('.player');
   joinderPlayers.forEach(player => player.parentElement.removeChild(player));
-  for (let playerId in playerDetails) {
+  for (let playerId in playersDetails) {
     const $nameBox = document.createElement('div');
     const $name = document.createElement('p');
-    $name.innerHTML = playerDetails[playerId].name;
+    $name.innerHTML = playersDetails[playerId].name;
     $nameBox.appendChild($name);
     $nameBox.className = 'player';
     $nameBox.style.backgroundColor = getPlayerColor(playerId);
@@ -32,27 +32,28 @@ const showJoinedPlayersName = function(playerDetails) {
   }
 };
 
-const showJoinedPlayers = function({ isAllPlayersJoined, playerDetails }) {
+const showJoinedPlayers = function({ hasGameStarted, playersDetails }) {
+  console.log(playersDetails);
   const $joinedPlayers = document.querySelector('#joinedPlayers');
-  $joinedPlayers.innerHTML = Object.keys(playerDetails).length;
-  showJoinedPlayersName(playerDetails);
-  if (isAllPlayersJoined) {
+  $joinedPlayers.innerHTML = Object.keys(playersDetails).length;
+  showJoinedPlayersName(playersDetails);
+  if (hasGameStarted) {
     setTimeout(() => {
       document.location = 'game.html';
     }, 1000);
   }
 };
 
-const sendSyncReq = function() {
-  fetch('waitingStatus', { method: 'GET' })
+const sendReqForPlayerDetails = function() {
+  fetch('/playersDetails', { method: 'GET' })
     .then(response => response.json())
     .then(showJoinedPlayers);
 };
 
 const main = function() {
   sendReqForGameDetails();
-  sendSyncReq();
-  setInterval(sendSyncReq, 1000);
+  sendReqForPlayerDetails();
+  setInterval(sendReqForPlayerDetails, 1000);
 };
 
 window.onload = main;

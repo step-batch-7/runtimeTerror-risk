@@ -11,8 +11,7 @@ const {
   findGame,
   hostGame,
   joinGame,
-  getWaitingStatus,
-  getPlayerList,
+  getPlayersDetails,
   authorizeGame,
   hasGameStarted
 } = require('./handlers');
@@ -29,8 +28,7 @@ app.use(express.static('public'));
 app.post('/hostGame', hasFields('playerName', 'numOfPlayers'), hostGame);
 app.post('/joinGame', hasFields('gameId', 'playerName'), joinGame);
 app.use(findGame);
-app.get('/waitingStatus', getWaitingStatus);
-app.get('/playerList', getPlayerList);
+app.get('/playersDetails', getPlayersDetails);
 app.get('/gameDetails', getGameDetails);
 app.get('/gameStatus', getGameStatus);
 app.use(authorizeGame);

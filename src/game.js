@@ -52,7 +52,7 @@ class Game {
     return this.#players[this.#currentPlayerId];
   }
 
-  get playerDetails() {
+  get playersDetails() {
     const playersDetails = {};
     for (let playerId in this.#players) {
       playersDetails[playerId] = this.#players[playerId].status;

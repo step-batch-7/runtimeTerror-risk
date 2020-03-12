@@ -1,7 +1,7 @@
 const getPlayerId = () => document.cookie.match(/_playerId=([0-9]+)/)[1];
 
 const getPlayerColor = function(playerId) {
-  playerColors = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
+  const playerColors = ['indianred', 'forestgreen', 'mediumslateblue', 'yellowgreen', 'plum', 'orange'];
   return playerColors[playerId - 1];
 };
 
@@ -22,7 +22,7 @@ const updateMilitaryCount = function(remainingMilitaryCount) {
 const updateMap = function(territories) {
   for (const territory in territories) {
     getElement(`#${territory}`).style.fill = getPlayerColor(territories[territory].occupiedBy);
-    getElement(`#${territory} + .unit`).innerHTML = `&nbsp${territories[territory].militaryUnits}`;
+    getElement(`#${territory} + .unit`).innerHTML = `${territories[territory].militaryUnits}`;
   }
 };
 
