@@ -14,8 +14,7 @@ const hasFields = (...fields) => {
     if (fields.every(field => field in req.body)) {
       return next();
     }
-    res.statusCode = 400;
-    res.end('bad Request');
+    res.status(400).end('bad Request');
   };
 };
 
@@ -55,8 +54,7 @@ const findGame = function(req, res, next) {
     req.game = game;
     return next();
   }
-  res.statusCode = 400;
-  res.json({ error: 'Game not found' });
+  res.status(400).json({ error: 'Game not found' });
 };
 
 const authorizeGame = function(req, res, next) {
@@ -64,8 +62,7 @@ const authorizeGame = function(req, res, next) {
   if (req.game.hasStarted && isCurrentPlayer) {
     return next();
   }
-  res.statusCode = 406;
-  res.json({ error: 'This is not your turn' });
+  res.status(406).json({ error: 'This is not your turn' });
 };
 
 const hasGameStarted = function(req, res, next) {

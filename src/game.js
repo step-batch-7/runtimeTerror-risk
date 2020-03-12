@@ -34,7 +34,7 @@ class Game {
     status.currentPhase = this.#currentPhase;
     status.activities = this.#activities.slice();
     status.territories = {};
-    for (let territory in this.#territories) {
+    for (const territory in this.#territories) {
       status.territories[territory] = this.#territories[territory].status;
     }
     return status;
@@ -70,10 +70,7 @@ class Game {
 
   addPlayer(name) {
     const initialMilitaryCount = 20 + (6 - +this.#numOfPlayers) * 5;
-    this.#players[++this.#lastPlayerId] = new Player(
-      name,
-      initialMilitaryCount
-    );
+    this.#players[++this.#lastPlayerId] = new Player(name, initialMilitaryCount);
     this.#isStarted = this.#numOfPlayers === Object.keys(this.#players).length;
     this.addActivity(`${name} has joined.`);
     return this.#lastPlayerId;
@@ -152,8 +149,7 @@ class Game {
     }
 
     this.deployMilitaryTo(selectedTerritory, militaryCount);
-    Object.values(this.#players).every(hasDeployedAllMilitary) &&
-      this.updateStage();
+    Object.values(this.#players).every(hasDeployedAllMilitary) && this.updateStage();
     const { leftMilitaryCount } = this.currentPlayer.status;
     const territoryMilitaryCount = selectedTerritory.status.militaryUnits;
     this.#currentStage === 2 && this.changeTurnToNextDeployer();

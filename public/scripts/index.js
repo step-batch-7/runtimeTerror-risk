@@ -71,7 +71,7 @@ const displayPlayerDetails = function({ playersDetails }) {
   getElement('.player-name').innerText = myPlayer.name;
   getElement('.front').innerText = myPlayer.leftMilitaryCount;
   let htmlTemplate = '';
-  for (let playerId in playersDetails) {
+  for (const playerId in playersDetails) {
     htmlTemplate += showPlayer(playerId, playersDetails[playerId].name);
   }
   getElement('.players').innerHTML = htmlTemplate;
