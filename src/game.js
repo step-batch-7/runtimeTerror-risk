@@ -60,8 +60,8 @@ class Game {
     return playersDetails;
   }
 
-  get currentPlayerId() {
-    return this.#currentPlayerId;
+  isCurrentPlayer(playerId) {
+    return this.#currentPlayerId === playerId;
   }
 
   addActivity(msg) {

@@ -60,8 +60,8 @@ const findGame = function(req, res, next) {
 };
 
 const authorizeGame = function(req, res, next) {
-  const player = req.game.currentPlayerId;
-  if (player === +req.cookies._playerId && req.game.hasStarted) {
+  const isCurrentPlayer = req.game.isCurrentPlayer(+req.cookies._playerId);
+  if (req.game.hasStarted && isCurrentPlayer) {
     return next();
   }
   res.statusCode = 406;
