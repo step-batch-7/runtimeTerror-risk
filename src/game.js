@@ -90,42 +90,41 @@ class Game {
     return this.#currentPhase;
   }
 
-  updateCurrentPlayer() {
+  changeTurn() {
     this.#currentPlayerId = this.#currentPlayerId + 1;
     this.#currentPlayerId > this.#numOfPlayers && (this.#currentPlayerId = 1);
   }
 
   assignOwnerTo(territoryId) {
-    const territory = this.#territories[territoryId];
-    territory.changeRuler(this.#currentPlayerId);
-    territory.deployMilitary(1);
+    const selectedTerritory = this.#territories[territoryId];
+    selectedTerritory.changeRuler(this.#currentPlayerId);
+    selectedTerritory.deployMilitary(1);
     this.currentPlayer.addTerritory(territoryId);
     this.currentPlayer.removeMilitary(1);
     const { name, leftMilitaryCount } = this.currentPlayer.status;
-    const msg = `${name} has claimed ${territory.status.name}`;
-    this.addActivity(msg);
-    this.updateCurrentPlayer();
+    this.addActivity(`${name} has claimed ${selectedTerritory.status.name}`);
+    this.changeTurn();
     return { leftMilitaryCount };
   }
 
   claim(territoryName) {
     if (this.#currentStage != 1) {
-      return { status: false, error: 'wrong stage' };
+      return { isDone: false, error: 'wrong stage' };
     }
     if (this.#territories[territoryName].isOccupied()) {
-      return { status: false, error: 'Territory already claimed' };
+      return { isDone: false, error: 'Territory already claimed' };
     }
     const { leftMilitaryCount } = this.assignOwnerTo(territoryName);
     const territories = Object.values(this.#territories);
     if (territories.every(territory => territory.isOccupied())) {
       this.updateStage();
     }
-    return { status: true, leftMilitaryCount };
+    return { isDone: true, leftMilitaryCount };
   }
 
   changeTurnToNextDeployer() {
     do {
-      this.updateCurrentPlayer();
+      this.changeTurn();
     } while (this.currentPlayer.status.leftMilitaryCount < 1);
   }
 
@@ -138,12 +137,12 @@ class Game {
 
   reinforce(territoryName, militaryCount) {
     if (this.#currentStage !== 2) {
-      return { status: false, error: 'Wrong stage or phase' };
+      return { isDone: false, error: 'Wrong stage or phase' };
     }
 
     const selectedTerritory = this.#territories[territoryName];
     if (!selectedTerritory.isOccupiedBy(this.#currentPlayerId)) {
-      return { status: false, error: 'This is not your territory' };
+      return { isDone: false, error: 'This is not your territory' };
     }
 
     this.deployMilitaryTo(selectedTerritory, militaryCount);
@@ -151,7 +150,7 @@ class Game {
     const { leftMilitaryCount } = this.currentPlayer.status;
     const territoryMilitaryCount = selectedTerritory.status.militaryUnits;
     this.#currentStage === 2 && this.changeTurnToNextDeployer();
-    return { status: true, leftMilitaryCount, territoryMilitaryCount };
+    return { isDone: true, leftMilitaryCount, territoryMilitaryCount };
   }
 }
 

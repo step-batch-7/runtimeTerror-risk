@@ -16,11 +16,9 @@ const mousePointerPopUp = function(event, msg) {
 };
 
 const showReinforcementStatus = function(response, event) {
-  const { status, leftMilitaryCount, territoryMilitaryCount, error } = response;
-  if (status) {
-    getElement(
-      `#${event.target.id} + .unit`
-    ).innerHTML = `&nbsp;${territoryMilitaryCount}`;
+  const { leftMilitaryCount, territoryMilitaryCount, error } = response;
+  if (response.isDone) {
+    getElement(`#${event.target.id} + .unit`).innerHTML = `&nbsp;${territoryMilitaryCount}`;
     updateMilitaryCount(leftMilitaryCount);
     return;
   }
@@ -38,7 +36,7 @@ const sendReinforcementRequest = function(event, militaryCount = 1) {
 };
 
 const updateTerritory = function(response, event) {
-  if (response.status) {
+  if (response.isDone) {
     event.target.style.fill = getPlayerColor(getPlayerId());
     getElement(`#${event.target.id} + .unit`).innerHTML = '&nbsp;1';
     updateMilitaryCount(response.leftMilitaryCount);
@@ -60,9 +58,7 @@ const sendClaimRequest = function(event) {
 const showPlayer = function(playerId, name) {
   return `<div class="player" id="${playerId}">
             <span>${name}</span>
-            <div style="background-color: ${getPlayerColor(
-              playerId
-            )};" class="color-box"></div>
+            <div style="background-color: ${getPlayerColor(playerId)};" class="color-box"></div>
           </div>`;
 };
 
