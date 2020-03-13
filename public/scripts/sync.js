@@ -1,14 +1,7 @@
 const getPlayerId = () => document.cookie.match(/_playerId=([0-9]+)/)[1];
 
 const getPlayerColor = function(playerId) {
-  const playerColors = [
-    '#EF9A9A',
-    '#C5E1A5',
-    '#FFCC80',
-    '#C9B5E6',
-    '#FFF59D',
-    '#F5D9EC'
-  ];
+  const playerColors = ['#EF9A9A', '#C5E1A5', '#FFCC80', '#C9B5E6', '#FFF59D', '#F5D9EC'];
   return playerColors[playerId - 1];
 };
 
@@ -58,13 +51,14 @@ const updateGameStage = function({ currentStage, currentPhase }) {
 };
 
 const updateActivities = function(activities) {
-  let activityHTML = '';
-  activities.forEach(({ msg }) => {
-    activityHTML += `<div class="activity-details">
-    <span class="activity-message">${msg}</span>
-    </div>`;
-  });
   getElement('#activity-log').innerHTML = activityHTML;
+  const $activityLog = getElement('#activity-log');
+  const activityHTML = activities.map(({ msg }) => {
+    return `<div class="activity-details">
+              <span class="activity-message">${msg}</span>
+            </div>`;
+  });
+  $activityLog.innerHTML = activityHTML.join('\n');
 };
 
 const highLightPlayer = function(playerId) {
