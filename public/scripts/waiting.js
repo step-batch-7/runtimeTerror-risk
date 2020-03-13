@@ -13,7 +13,7 @@ const getPlayerColor = function(playerId) {
 const showGameDetails = function(response) {
   const $gameId = document.querySelector('#gameId');
   const $totalPlayers = document.querySelector('#totalPlayers');
-  const { gameId, numOfPlayers } = response;
+  const {gameId, numOfPlayers} = response;
   $gameId.innerHTML = `Game Id: ${gameId}`;
   $totalPlayers.innerHTML = numOfPlayers;
 };
@@ -29,15 +29,11 @@ const getPlayerTemplate = function([playerId, player]) {
           </div>`;
 };
 
-const showJoinedPlayersName = function(playersDetails) {
-  const playersTemplate = Object.entries(playersDetails).map(getPlayerTemplate);
-  document.querySelector('#name-area').innerHTML = playersTemplate.join('');
-};
-
-const showJoinedPlayers = function({ hasGameStarted, playersDetails }) {
+const showJoinedPlayers = function({hasGameStarted, playersDetails}) {
   const $joinedPlayers = document.querySelector('#joinedPlayers');
   $joinedPlayers.innerHTML = Object.keys(playersDetails).length;
-  showJoinedPlayersName(playersDetails);
+  const playersTemplate = Object.entries(playersDetails).map(getPlayerTemplate);
+  document.querySelector('#name-area').innerHTML = playersTemplate.join('');
   if (hasGameStarted) {
     setTimeout(() => {
       document.location = 'game.html';
