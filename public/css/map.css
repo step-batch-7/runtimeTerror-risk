@@ -27,7 +27,7 @@
   }
 }
 .area {
-  fill: #ddd;
+  fill: rgba(221, 221, 221, 0.7);
   stroke-width: 1.2px;
   cursor: pointer;
 }
