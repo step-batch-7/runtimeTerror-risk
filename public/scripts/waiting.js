@@ -21,15 +21,15 @@ const showJoinedPlayersName = function(playersDetails) {
   const $waitingDetailsBox = document.querySelector('.box');
   const joinderPlayers = document.querySelectorAll('.player');
   joinderPlayers.forEach(player => player.parentElement.removeChild(player));
-  for (let playerId in playersDetails) {
+  Object.entries(playersDetails).forEach(([playerId, player]) => {
     const $nameBox = document.createElement('div');
     const $name = document.createElement('p');
-    $name.innerHTML = playersDetails[playerId].name;
+    $name.innerHTML = player.name;
     $nameBox.appendChild($name);
     $nameBox.className = 'player';
     $nameBox.style.backgroundColor = getPlayerColor(playerId);
     $waitingDetailsBox.appendChild($nameBox);
-  }
+  });
 };
 
 const showJoinedPlayers = function({ hasGameStarted, playersDetails }) {

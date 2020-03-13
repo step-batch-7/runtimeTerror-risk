@@ -34,9 +34,9 @@ class Game {
     status.currentPhase = this.#currentPhase;
     status.activities = this.#activities.slice();
     status.territories = {};
-    for (const territory in this.#territories) {
-      status.territories[territory] = this.#territories[territory].status;
-    }
+    Object.entries(this.#territories).forEach(([territoryId, territory]) => {
+      status.territories[territoryId] = territory.status;
+    });
     return status;
   }
 
