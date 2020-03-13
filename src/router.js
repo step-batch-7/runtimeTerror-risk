@@ -20,7 +20,6 @@ const app = express();
 
 app.locals.controller = new Controller();
 
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '100kb' }));
 app.use(cookieParser());
 
