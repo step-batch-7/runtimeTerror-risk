@@ -1,5 +1,5 @@
 * {
-  font-family: sans-serif;
+  font-family: 'Nunito', sans-serif;
 }
 
 body {
@@ -52,7 +52,7 @@ body {
   flex-direction: column;
 }
 
-.box > p {
+.box > i {
   text-align: right;
   margin: 0px 20px;
   font-size: 18px;
@@ -143,14 +143,16 @@ h3 {
 .player {
   padding: 0 25px;
   margin: 15px 10px 0px;
+  box-shadow: 0 0 5px -1px gray;
 }
 
 .player > p {
   text-align: center;
   font-size: 22px;
-  color: white;
+  color: #515585;
   margin: 6px auto;
   padding: 4px;
+  font-weight: 200;
 }
 
 .logo {

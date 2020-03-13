@@ -14,7 +14,7 @@ const showGameDetails = function(response) {
   const $gameId = document.querySelector('#gameId');
   const $totalPlayers = document.querySelector('#totalPlayers');
   const {gameId, numOfPlayers} = response;
-  $gameId.innerHTML = gameId;
+  $gameId.innerHTML = `Game Id: ${gameId}`;
   $totalPlayers.innerHTML = numOfPlayers;
 };
 
