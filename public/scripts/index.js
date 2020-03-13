@@ -1,7 +1,7 @@
 const updatePhase = function(event) {
-  fetch('/updatePhase', { method: 'GET' })
-    .then(response => response.json())
-    .then(({ currentPhase, error }) => showPhases(currentPhase, error, event));
+  sendGETRequest('/updatePhase', ({ currentPhase, error }) =>
+    showPhases(currentPhase, error, event)
+  );
 };
 
 const mousePointerPopUp = function(event, msg) {
@@ -31,9 +31,8 @@ const sendReinforcementRequest = function(event, militaryCount = 1) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ territory: event.target.id, militaryCount })
   };
-  fetch('/reinforcement', requestOptions)
-    .then(response => response.json())
-    .then(response => showReinforcementStatus(response, event));
+  const callback = response => showReinforcementStatus(response, event);
+  sendPOSTRequest('/reinforcement', requestOptions, callback);
 };
 
 const updateTerritory = function(response, event) {
@@ -52,9 +51,8 @@ const sendClaimRequest = function(event) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ territory: event.target.id })
   };
-  fetch('/performClaim', requestOptions)
-    .then(response => response.json())
-    .then(data => updateTerritory(data, event));
+  const callback = response => updateTerritory(response, event);
+  sendPOSTRequest('/performClaim', requestOptions, callback);
 };
 
 const getPlayerNameTemplate = function([playerId, player]) {
@@ -74,9 +72,13 @@ const displayPlayersDetails = function({ playersDetails }) {
 };
 
 const getPlayersDetails = function() {
+<<<<<<< HEAD
   fetch('/playersDetails', { method: 'GET' })
     .then(response => response.json())
     .then(displayPlayersDetails);
+=======
+  sendGETRequest('/playersDetails', displayPlayersDetails);
+>>>>>>> |#18|noora/rashmi| Created sendGETRequest and sendPOSTRequest functions
 };
 
 const selectListener = function() {

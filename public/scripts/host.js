@@ -5,13 +5,13 @@ const getInputValues = function() {
   const numOfPlayers = getElement('#playerCount').value;
   const $box = getElement('.box');
   $box.classList.add('hidden');
-  return {playerName, numOfPlayers};
+  return { playerName, numOfPlayers };
 };
 
 const requestForHostGame = function(event) {
   const options = {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(getInputValues())
   };
   event.preventDefault();

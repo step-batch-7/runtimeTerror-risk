@@ -78,8 +78,5 @@ const updateGameView = function(gameStatus) {
 };
 
 const sendSyncReq = function() {
-  const reqOptions = { method: 'GET' };
-  fetch('/gameStatus', reqOptions)
-    .then(response => response.json())
-    .then(updateGameView);
+  sendGETRequest('/gameStatus', updateGameView);
 };

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/entryPage.css" />
     <title>Risk | Host</title>
+    <script src="./scripts/request.js"></script>
+    <script src="./scripts/host.js"></script>
   </head>
   <body>
     <img src="./images/logo.png" alt="Logo" class="logo" />
@@ -12,7 +14,8 @@
     <div class="boxContainer">
       <form action="#">
         <div class="box">
-          <label for="playerName">Player Name:<span class="required"> *</span></label
+          <label for="playerName"
+            >Player Name:<span class="required"> *</span></label
           ><input
             type="text"
             name="playerName"
@@ -24,7 +27,9 @@
             title="3 to 12 alphabetic characters only"
             autofocus
           />
-          <label for="playerCount">Number Of Players:<span class="required"> *</span></label>
+          <label for="playerCount"
+            >Number Of Players:<span class="required"> *</span></label
+          >
           <select name="playerCount" id="playerCount">
             <option value="2" selected>2 Players</option>
             <option value="3">3 Players</option>
@@ -36,6 +41,5 @@
         </div>
       </form>
     </div>
-    <script src="./scripts/host.js"></script>
   </body>
 </html>

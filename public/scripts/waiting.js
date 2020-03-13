@@ -13,15 +13,13 @@ const getPlayerColor = function(playerId) {
 const showGameDetails = function(response) {
   const $gameId = document.querySelector('#gameId');
   const $totalPlayers = document.querySelector('#totalPlayers');
-  const {gameId, numOfPlayers} = response;
+  const { gameId, numOfPlayers } = response;
   $gameId.innerHTML = `Game Id: ${gameId}`;
   $totalPlayers.innerHTML = numOfPlayers;
 };
 
 const sendReqForGameDetails = function() {
-  fetch('gameDetails', {method: 'GET'})
-    .then(response => response.json())
-    .then(showGameDetails);
+  sendGETRequest('gameDetails', showGameDetails);
 };
 
 const getPlayerTemplate = function([playerId, player]) {
@@ -36,7 +34,7 @@ const showJoinedPlayersName = function(playersDetails) {
   document.querySelector('#name-area').innerHTML = playersTemplate.join('');
 };
 
-const showJoinedPlayers = function({hasGameStarted, playersDetails}) {
+const showJoinedPlayers = function({ hasGameStarted, playersDetails }) {
   const $joinedPlayers = document.querySelector('#joinedPlayers');
   $joinedPlayers.innerHTML = Object.keys(playersDetails).length;
   showJoinedPlayersName(playersDetails);
@@ -48,9 +46,7 @@ const showJoinedPlayers = function({hasGameStarted, playersDetails}) {
 };
 
 const sendReqForPlayersDetails = function() {
-  fetch('/playersDetails', {method: 'GET'})
-    .then(response => response.json())
-    .then(showJoinedPlayers);
+  sendGETRequest('/playersDetails', showJoinedPlayers);
 };
 
 const main = function() {
