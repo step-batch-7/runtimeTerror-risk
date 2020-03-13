@@ -37,13 +37,12 @@ const sendReinforcementRequest = function(event, militaryCount = 1) {
 };
 
 const updateTerritory = function(response, event) {
-  if (response.isDone) {
-    event.target.style.fill = getPlayerColor(getPlayerId());
-    getElement(`#${event.target.id} + .unit`).innerHTML = '1'.padStart(2, ' ');
-    updateMilitaryCount(response.leftMilitaryCount);
-    return;
+  if (!response.isDone) {
+    return mousePointerPopUp(event, response.error);
   }
-  mousePointerPopUp(event, response.error);
+  event.target.style.fill = getPlayerColor(getPlayerId());
+  getElement(`#${event.target.id} + .unit`).innerHTML = '1'.padStart(2, ' ');
+  updateMilitaryCount(response.leftMilitaryCount);
 };
 
 const sendClaimRequest = function(event) {

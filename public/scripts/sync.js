@@ -1,7 +1,14 @@
 const getPlayerId = () => document.cookie.match(/_playerId=([0-9]+)/)[1];
 
 const getPlayerColor = function(playerId) {
-  const playerColors = ['#EF9A9A', '#C5E1A5', '#FFCC80', '#C9B5E6', '#FFF59D', '#F5D9EC'];
+  const playerColors = [
+    '#EF9A9A',
+    '#C5E1A5',
+    '#FFCC80',
+    '#C9B5E6',
+    '#FFF59D',
+    '#F5D9EC'
+  ];
   return playerColors[playerId - 1];
 };
 
@@ -33,12 +40,10 @@ const showPhases = function(currentPhase, error, event) {
     return mousePointerPopUp(event, error);
   }
   const phases = { 1: 'reinforcement', 2: 'attack', 3: 'fortify' };
-  const $phaseBox = getElement('.phase-block');
-  $phaseBox.style.transform = 'scale(1)';
+  getElement('.phase-block').style.transform = 'scale(1)';
   const $previousPhase = getElement('.current-phase');
   $previousPhase && $previousPhase.classList.remove('current-phase');
-  const $phase = getElement(`.${phases[currentPhase]}`);
-  $phase.classList.add('current-phase');
+  getElement(`.${phases[currentPhase]}`).classList.add('current-phase');
 };
 
 const updateGameStage = function({ currentStage, currentPhase }) {
@@ -47,28 +52,25 @@ const updateGameStage = function({ currentStage, currentPhase }) {
     2: 'Reinforcement Stage',
     3: 'Playing Stage'
   };
-  const $currentStage = getElement('#stages span');
-  $currentStage.innerText = `${stages[currentStage]}`;
+  getElement('#stages span').innerText = `${stages[currentStage]}`;
   localStorage.setItem('stage', currentStage);
   currentStage === 3 && showPhases(currentPhase);
 };
 
 const updateActivities = function(activities) {
-  const $activityLog = getElement('#activity-log');
   let activityHTML = '';
   activities.forEach(({ msg }) => {
     activityHTML += `<div class="activity-details">
-                      <span class="activity-message">${msg}</span>
-                    </div>`;
+    <span class="activity-message">${msg}</span>
+    </div>`;
   });
-  $activityLog.innerHTML = activityHTML;
+  getElement('#activity-log').innerHTML = activityHTML;
 };
 
 const highLightPlayer = function(playerId) {
   const $previousPlayer = getElement('.current-player');
   $previousPlayer && $previousPlayer.classList.remove('current-player');
-  const $currentPlayerName = getElement(`[id="${playerId}"]`);
-  $currentPlayerName.classList.add('current-player');
+  getElement(`[id="${playerId}"]`).classList.add('current-player');
 };
 
 const updateGameView = function(gameStatus) {

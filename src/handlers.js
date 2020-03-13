@@ -18,10 +18,7 @@ const hasFields = (...fields) => {
   };
 };
 
-const getGameStatus = function(req, res) {
-  const gameStatus = req.game.status;
-  res.json(gameStatus);
-};
+const getGameStatus = (req, res) => res.json(req.game.status);
 
 const hostGame = function(req, res) {
   const { playerName, numOfPlayers } = req.body;
@@ -81,8 +78,7 @@ const performReinforcement = function(req, res) {
 
 const performClaim = function(req, res) {
   const { territory } = req.body;
-  const response = req.game.claim(territory);
-  res.json(response);
+  res.json(req.game.claim(territory));
 };
 
 const updatePhase = function(req, res) {
