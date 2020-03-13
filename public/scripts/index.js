@@ -1,7 +1,7 @@
 const updatePhase = function(event) {
-  fetch('/updatePhase', { method: 'GET' })
+  fetch('/updatePhase', {method: 'GET'})
     .then(response => response.json())
-    .then(({ currentPhase, error }) => showPhases(currentPhase, error, event));
+    .then(({currentPhase, error}) => showPhases(currentPhase, error, event));
 };
 
 const mousePointerPopUp = function(event, msg) {
@@ -16,7 +16,7 @@ const mousePointerPopUp = function(event, msg) {
 };
 
 const showReinforcementStatus = function(response, event) {
-  const { leftMilitaryCount, territoryMilitaryCount, error } = response;
+  const {leftMilitaryCount, territoryMilitaryCount, error} = response;
   if (response.isDone) {
     const $textElement = getElement(`#${event.target.id} + .unit`);
     $textElement.innerHTML = `${territoryMilitaryCount}`.padStart(2, ' ');
@@ -28,8 +28,8 @@ const showReinforcementStatus = function(response, event) {
 const sendReinforcementRequest = function(event, militaryCount = 1) {
   const requestOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ territory: event.target.id, militaryCount })
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({territory: event.target.id, militaryCount})
   };
   fetch('/reinforcement', requestOptions)
     .then(response => response.json())
@@ -37,19 +37,20 @@ const sendReinforcementRequest = function(event, militaryCount = 1) {
 };
 
 const updateTerritory = function(response, event) {
-  if (!response.isDone) {
-    return mousePointerPopUp(event, response.error);
+  if (response.isDone) {
+    event.target.style.fill = getPlayerColor(getPlayerId());
+    getElement(`#${event.target.id} + .unit`).innerHTML = ' 1';
+    updateMilitaryCount(response.leftMilitaryCount);
+    return;
   }
-  event.target.style.fill = getPlayerColor(getPlayerId());
-  getElement(`#${event.target.id} + .unit`).innerHTML = '1'.padStart(2, ' ');
-  updateMilitaryCount(response.leftMilitaryCount);
+  mousePointerPopUp(event, response.error);
 };
 
 const sendClaimRequest = function(event) {
   const requestOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ territory: event.target.id })
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({territory: event.target.id})
   };
   fetch('/performClaim', requestOptions)
     .then(response => response.json())
@@ -64,7 +65,7 @@ const showPlayer = function(playerId, name) {
           </div>`;
 };
 
-const displayPlayerDetails = function({ playersDetails }) {
+const displayPlayersDetails = function({playersDetails}) {
   const myPlayer = playersDetails[getPlayerId()];
   getElement('.player-name').innerText = myPlayer.name;
   getElement('.front').innerText = myPlayer.leftMilitaryCount;
@@ -75,19 +76,19 @@ const displayPlayerDetails = function({ playersDetails }) {
   getElement('.players').innerHTML = htmlTemplate;
 };
 
-const getPlayerDetails = function() {
-  fetch('/playersDetails', { method: 'GET' })
+const getPlayersDetails = function() {
+  fetch('/playersDetails', {method: 'GET'})
     .then(response => response.json())
-    .then(displayPlayerDetails);
+    .then(displayPlayersDetails);
 };
 
 const selectListener = function() {
-  const listeners = { '1': sendClaimRequest, '2': sendReinforcementRequest };
+  const listeners = {'1': sendClaimRequest, '2': sendReinforcementRequest};
   const stage = localStorage.getItem('stage');
   listeners[stage](event);
 };
 
-const addListenerOnTerritory = () => {
+const attachListenerToTerritories = () => {
   const countries = Array.from(document.querySelectorAll('.area'));
   countries.forEach(territory => {
     territory.addEventListener('click', selectListener);
@@ -96,8 +97,8 @@ const addListenerOnTerritory = () => {
 
 const main = function() {
   renderMap();
-  getPlayerDetails();
-  addListenerOnTerritory();
+  getPlayersDetails();
+  attachListenerToTerritories();
   sendSyncReq();
   setInterval(sendSyncReq, 1000);
 };

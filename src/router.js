@@ -3,15 +3,15 @@ const cookieParser = require('cookie-parser');
 const Controller = require('./controller');
 
 const {
-  getGameStatus,
-  getGameDetails,
+  serveGameStatus,
+  serveGameDetails,
   performClaim,
   performReinforcement,
   hasFields,
   findGame,
   hostGame,
   joinGame,
-  getPlayersDetails,
+  servePlayersDetails,
   authorizeGame,
   hasGameStarted,
   updatePhase
@@ -28,9 +28,9 @@ app.use(express.static('public'));
 app.post('/hostGame', hasFields('playerName', 'numOfPlayers'), hostGame);
 app.post('/joinGame', hasFields('gameId', 'playerName'), joinGame);
 app.use(findGame);
-app.get('/playersDetails', getPlayersDetails);
-app.get('/gameDetails', getGameDetails);
-app.get('/gameStatus', getGameStatus);
+app.get('/playersDetails', servePlayersDetails);
+app.get('/gameDetails', serveGameDetails);
+app.get('/gameStatus', serveGameStatus);
 app.use(authorizeGame);
 app.post(
   '/reinforcement',
