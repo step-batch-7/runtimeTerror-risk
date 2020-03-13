@@ -1,7 +1,14 @@
 const getPlayerId = () => document.cookie.match(/_playerId=([0-9]+)/)[1];
 
 const getPlayerColor = function(playerId) {
-  const playerColors = ['#EF9A9A', '#C5E1A5', '#FFCC80', '#C9B5E6', '#FFF59D', '#F5D9EC'];
+  const playerColors = [
+    '#EF9A9A',
+    '#C5E1A5',
+    '#FFCC80',
+    '#C9B5E6',
+    '#FFF59D',
+    '#F5D9EC'
+  ];
   return playerColors[playerId - 1];
 };
 
@@ -21,7 +28,7 @@ const updateMilitaryCount = function(remainingMilitaryCount) {
 
 const updateMap = function(territories) {
   Object.entries(territories).forEach(([territoryId, territory]) => {
-    const { occupiedBy, militaryUnits } = territory;
+    const {occupiedBy, militaryUnits} = territory;
     getElement(`#${territoryId}`).style.fill = getPlayerColor(occupiedBy);
     const $textElement = getElement(`#${territoryId} + .unit`);
     $textElement.innerHTML = `${militaryUnits}`.padStart(2, ' ');
@@ -32,8 +39,8 @@ const showPhases = function(currentPhase, error, event) {
   if (error) {
     return mousePointerPopUp(event, error);
   }
-  const phases = { 1: 'reinforcement', 2: 'attack', 3: 'fortify' };
-  getElement('.phase-block').style.transform = 'scale(1)';
+  const phases = {1: 'reinforcement', 2: 'attack', 3: 'fortify'};
+  getElement('.phase-block').classList.remove('hide');
   const $previousPhase = getElement('.current-phase');
   $previousPhase && $previousPhase.classList.remove('current-phase');
   getElement(`.${phases[currentPhase]}`).classList.add('current-phase');
@@ -50,7 +57,7 @@ const updateGameStage = function(currentStage) {
 };
 
 const updateActivities = function(activities) {
-  const activityHTML = activities.map(({ msg }) => {
+  const activityHTML = activities.map(({msg}) => {
     return `<div class="activity-details">
     <span class="activity-message">${msg}</span>
     </div>`;
@@ -72,9 +79,7 @@ const updateGameView = function(gameStatus) {
   if (+gameStatus.currentPlayer.id === +getPlayerId()) {
     updateMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
   }
-  if (gameStatus.currentStage === 3) {
-    showPhases(gameStatus.currentPhase);
-  }
+  gameStatus.currentStage === 3 && showPhases(gameStatus.currentPhase);
 };
 
 const sendSyncReq = function() {
