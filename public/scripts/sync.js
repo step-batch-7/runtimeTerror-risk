@@ -28,7 +28,7 @@ const updateMilitaryCount = function(remainingMilitaryCount) {
 
 const updateMap = function(territories) {
   Object.entries(territories).forEach(([territoryId, territory]) => {
-    const {occupiedBy, militaryUnits} = territory;
+    const { occupiedBy, militaryUnits } = territory;
     getElement(`#${territoryId}`).style.fill = getPlayerColor(occupiedBy);
     const $textElement = getElement(`#${territoryId} + .unit`);
     $textElement.innerHTML = `${militaryUnits}`.padStart(2, ' ');
@@ -39,7 +39,7 @@ const showPhases = function(currentPhase, error, event) {
   if (error) {
     return mousePointerPopUp(event, error);
   }
-  const phases = {1: 'reinforcement', 2: 'attack', 3: 'fortify'};
+  const phases = { 1: 'reinforcement', 2: 'attack', 3: 'fortify' };
   getElement('.phase-block').style.transform = 'scale(1)';
   const $previousPhase = getElement('.current-phase');
   $previousPhase && $previousPhase.classList.remove('current-phase');
@@ -57,14 +57,12 @@ const updateGameStage = function(currentStage) {
 };
 
 const updateActivities = function(activities) {
-  getElement('#activity-log').innerHTML = activityHTML;
-  const $activityLog = getElement('#activity-log');
-  const activityHTML = activities.map(({msg}) => {
+  const activityHTML = activities.map(({ msg }) => {
     return `<div class="activity-details">
-              <span class="activity-message">${msg}</span>
-            </div>`;
+    <span class="activity-message">${msg}</span>
+    </div>`;
   });
-  $activityLog.innerHTML = activityHTML.join('\n');
+  getElement('#activity-log').innerHTML = activityHTML;
 };
 
 const highLightPlayer = function(playerId) {
@@ -87,7 +85,7 @@ const updateGameView = function(gameStatus) {
 };
 
 const sendSyncReq = function() {
-  const reqOptions = {method: 'GET'};
+  const reqOptions = { method: 'GET' };
   fetch('/gameStatus', reqOptions)
     .then(response => response.json())
     .then(updateGameView);
