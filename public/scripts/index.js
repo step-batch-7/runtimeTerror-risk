@@ -1,7 +1,7 @@
 const updatePhase = function(event) {
-  fetch('/updatePhase', {method: 'GET'})
+  fetch('/updatePhase', { method: 'GET' })
     .then(response => response.json())
-    .then(({currentPhase, error}) => showPhases(currentPhase, error, event));
+    .then(({ currentPhase, error }) => showPhases(currentPhase, error, event));
 };
 
 const mousePointerPopUp = function(event, msg) {
@@ -16,7 +16,7 @@ const mousePointerPopUp = function(event, msg) {
 };
 
 const showReinforcementStatus = function(response, event) {
-  const {leftMilitaryCount, territoryMilitaryCount, error} = response;
+  const { leftMilitaryCount, territoryMilitaryCount, error } = response;
   if (response.isDone) {
     const $textElement = getElement(`#${event.target.id} + .unit`);
     $textElement.innerHTML = `${territoryMilitaryCount}`.padStart(2, ' ');
@@ -28,8 +28,8 @@ const showReinforcementStatus = function(response, event) {
 const sendReinforcementRequest = function(event, militaryCount = 1) {
   const requestOptions = {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({territory: event.target.id, militaryCount})
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ territory: event.target.id, militaryCount })
   };
   fetch('/reinforcement', requestOptions)
     .then(response => response.json())
@@ -49,41 +49,38 @@ const updateTerritory = function(response, event) {
 const sendClaimRequest = function(event) {
   const requestOptions = {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({territory: event.target.id})
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ territory: event.target.id })
   };
   fetch('/performClaim', requestOptions)
     .then(response => response.json())
     .then(data => updateTerritory(data, event));
 };
 
-const showPlayer = function(playerId, name) {
+const getPlayerNameTemplate = function([playerId, player]) {
   const playerColor = getPlayerColor(playerId);
   return `<div class="player" id="${playerId}">
-            <span>${name}</span>
+            <span>${player.name}</span>
             <div style="background-color: ${playerColor};" class="color-box"></div>
           </div>`;
 };
 
-const displayPlayersDetails = function({playersDetails}) {
+const displayPlayersDetails = function({ playersDetails }) {
   const myPlayer = playersDetails[getPlayerId()];
   getElement('.player-name').innerText = myPlayer.name;
   getElement('.front').innerText = myPlayer.leftMilitaryCount;
-  let htmlTemplate = '';
-  Object.entries(playersDetails).forEach(([playerId, player]) => {
-    htmlTemplate += showPlayer(playerId, player.name);
-  });
-  getElement('.players').innerHTML = htmlTemplate;
+  const templates = Object.entries(playersDetails).map(getPlayerNameTemplate);
+  getElement('.players').innerHTML = templates.join('');
 };
 
 const getPlayersDetails = function() {
-  fetch('/playersDetails', {method: 'GET'})
+  fetch('/playersDetails', { method: 'GET' })
     .then(response => response.json())
     .then(displayPlayersDetails);
 };
 
 const selectListener = function() {
-  const listeners = {'1': sendClaimRequest, '2': sendReinforcementRequest};
+  const listeners = { '1': sendClaimRequest, '2': sendReinforcementRequest };
   const stage = localStorage.getItem('stage');
   listeners[stage](event);
 };
