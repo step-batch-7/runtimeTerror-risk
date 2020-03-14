@@ -183,7 +183,7 @@ class Game {
     }
     return {status: false, error: 'You don’t have enough military units'};
   }
-  addDefenderToAttack(defendFrom) {
+  addDefender(defendFrom) {
     const attackerTerritory = this.#attack.attackerTerritory;
     const isNeighbor = attackerTerritory.neighbors.includes(defendFrom);
     if (isNeighbor && !this.isMine(defendFrom)) {
@@ -204,11 +204,9 @@ class Game {
     const leftMilitaryUnit = this.#attack.addDefenderMilitary(militaryUnit);
     return {leftMilitaryUnit, dice: militaryUnit};
   }
-
   isValidDefender(playerId) {
-    return playerId === this.#attack.getDefender.playerId;
+    return this.#attack.isValidDefender(playerId);
   }
-
   rollDefenderDice() {
     this.#attack.rollDefenderDice();
   }

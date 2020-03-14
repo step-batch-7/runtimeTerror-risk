@@ -40,5 +40,9 @@ class Attack {
   rollDefenderDice() {
     return;
   }
+
+  isValidDefender(playerId) {
+    return playerId === this.#defender.playerId;
+  }
 }
 module.exports = Attack;

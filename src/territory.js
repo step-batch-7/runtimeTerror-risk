@@ -24,6 +24,11 @@ class Territory {
     this.#militaryUnits += militaryCount;
   }
 
+  removeMilitary(militaryUnits) {
+    this.#militaryUnits -= militaryUnits;
+    return this.#militaryUnits;
+  }
+
   isOccupied() {
     return this.#occupiedBy !== undefined;
   }

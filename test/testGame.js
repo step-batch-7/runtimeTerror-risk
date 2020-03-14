@@ -1,6 +1,7 @@
 const {assert} = require('chai');
 const Game = require('../src/game');
 const Territory = require('../src/territory');
+const Player = require('../src/player');
 const generateTerritories = require('../src/territories');
 
 describe('Game', function() {
@@ -169,6 +170,27 @@ describe('Game', function() {
     });
   });
 
+  context('isMine', () => {
+    let game;
+    let india;
+    let china;
+    beforeEach(() => {
+      india = new Territory('india', ['china'], 'India');
+      china = new Territory('china', ['india'], 'China');
+      game = new Game({india, china}, 2);
+      game.addPlayer('Player1');
+      game.addPlayer('Player2');
+      game.claim('india');
+      game.claim('china');
+    });
+    it('should give true if territory is occupied by currentPlayer', () => {
+      assert.isTrue(game.isMine('india'));
+    });
+    it('should give true if territory is occupied by currentPlayer', () => {
+      assert.isFalse(game.isMine('china'));
+    });
+  });
+
   context('InitiateAttack', () => {
     let game;
     let india;
@@ -206,7 +228,7 @@ describe('Game', function() {
     });
   });
 
-  context('AddDefenderToAttack', () => {
+  context('AddDefender', () => {
     let game;
     let india;
     let china;
@@ -223,16 +245,110 @@ describe('Game', function() {
     });
 
     it('Should not add defender if attacking, defending territories are same player', () => {
-      assert.deepStrictEqual(game.addDefenderToAttack('india'), {
+      assert.deepStrictEqual(game.addDefender('india'), {
         status: false,
         error: "You can't attack this territory"
       });
     });
     it('Should add defender to attack for valid defender', () => {
-      assert.deepStrictEqual(game.addDefenderToAttack('china'), {
+      assert.deepStrictEqual(game.addDefender('china'), {
         status: true,
         error: ''
       });
+    });
+  });
+
+  context('isAttackGoingOn', () => {
+    let game;
+    let india;
+    let china;
+    beforeEach(() => {
+      india = new Territory('india', ['china'], 'India');
+      china = new Territory('china', ['india'], 'China');
+      game = new Game({india, china}, 2);
+      game.addPlayer('Player1');
+      game.addPlayer('Player2');
+      game.claim('india');
+      game.claim('china');
+    });
+    it('should give true if attack is going on', () => {
+      game.deployMilitaryTo(india, 10);
+      game.initiateAttack('india');
+      assert.isTrue(game.isAttackGoingOn());
+    });
+    it('should give true if attack is going on', () => {
+      assert.isFalse(game.isAttackGoingOn());
+    });
+  });
+
+  context('addAttackerMilitary', () => {
+    let game;
+    let india;
+    let china;
+    beforeEach(() => {
+      india = new Territory('india', ['china'], 'India');
+      china = new Territory('china', ['india'], 'China');
+      game = new Game({india, china}, 2);
+      game.addPlayer('Player1');
+      game.addPlayer('Player2');
+      game.claim('india');
+      game.claim('china');
+      game.deployMilitaryTo(india, 10);
+      game.initiateAttack('india');
+    });
+    it('should add military unit to attacker military ', () => {
+      assert.deepStrictEqual(game.addAttackerMilitary(1), {
+        leftMilitaryUnit: 10,
+        dice: 1
+      });
+    });
+  });
+
+  context('addDefenderMilitary', () => {
+    let game;
+    let india;
+    let china;
+    beforeEach(() => {
+      india = new Territory('india', ['china'], 'India');
+      china = new Territory('china', ['india'], 'China');
+      game = new Game({india, china}, 2);
+      game.addPlayer('Player1');
+      game.addPlayer('Player2');
+      game.claim('india');
+      game.claim('china');
+      game.deployMilitaryTo(india, 10);
+      game.initiateAttack('india');
+      game.addDefender('china');
+    });
+    it('should add military unit to defender military ', () => {
+      assert.deepStrictEqual(game.addDefenderMilitary(1), {
+        leftMilitaryUnit: 0,
+        dice: 1
+      });
+    });
+  });
+
+  context('isValidDefender', () => {
+    let game;
+    let india;
+    let china;
+    beforeEach(() => {
+      china = new Territory('china', ['india'], 'China');
+      india = new Territory('india', ['china'], 'India');
+      game = new Game({india, china}, 2);
+      game.addPlayer('Player1');
+      game.addPlayer('Player2');
+      game.claim('india');
+      game.claim('china');
+      game.deployMilitaryTo(india, 10);
+      game.initiateAttack('india');
+      game.addDefender('china');
+    });
+    it('should give true if the the defender is valid', () => {
+      assert.isTrue(game.isValidDefender(2));
+    });
+    it('should give false if the the defender is not valid', () => {
+      assert.isFalse(game.isValidDefender(1));
     });
   });
 });
