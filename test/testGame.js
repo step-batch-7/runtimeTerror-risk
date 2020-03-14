@@ -1,5 +1,6 @@
 const {assert} = require('chai');
 const Game = require('../src/game');
+const Territory = require('../src/territory');
 const generateTerritories = require('../src/territories');
 
 describe('Game', function() {
@@ -164,6 +165,73 @@ describe('Game', function() {
       game.addPlayer('Player1');
       assert.deepStrictEqual(game.getPlayersDetails(), {
         1: {leftMilitaryCount: 45, name: 'Player1', territories: []}
+      });
+    });
+  });
+
+  context('InitiateAttack', () => {
+    let game;
+    let india;
+    let china;
+    beforeEach(() => {
+      india = new Territory('india', ['china'], 'India');
+      china = new Territory('china', ['india'], 'China');
+      game = new Game({india, china}, 2);
+      game.addPlayer('Player1');
+      game.addPlayer('Player2');
+      game.claim('india');
+      game.claim('china');
+    });
+
+    it('Should initiate attack if territory is of current player', () => {
+      game.deployMilitaryTo(india, 10);
+      assert.deepStrictEqual(game.initiateAttack('india'), {
+        status: true,
+        error: '',
+        neighbors: ['china']
+      });
+    });
+    it('Should not initiate attack if military units is equal to one', () => {
+      assert.deepStrictEqual(game.initiateAttack('india'), {
+        status: false,
+        error: 'You don’t have enough military units'
+      });
+    });
+
+    it('Should not initiate attack if territory is not of current player', () => {
+      assert.deepStrictEqual(game.initiateAttack('china'), {
+        status: false,
+        error: 'Invalid Territory for Attack'
+      });
+    });
+  });
+
+  context('AddDefenderToAttack', () => {
+    let game;
+    let india;
+    let china;
+    beforeEach(() => {
+      india = new Territory('india', ['china'], 'India');
+      china = new Territory('china', ['india'], 'China');
+      game = new Game({india, china}, 2);
+      game.addPlayer('Player1');
+      game.addPlayer('Player2');
+      game.claim('india');
+      game.claim('china');
+      game.deployMilitaryTo(india, 10);
+      game.initiateAttack('india');
+    });
+
+    it('Should not add defender if attacking, defending territories are same player', () => {
+      assert.deepStrictEqual(game.addDefenderToAttack('india'), {
+        status: false,
+        error: "You can't attack this territory"
+      });
+    });
+    it('Should add defender to attack for valid defender', () => {
+      assert.deepStrictEqual(game.addDefenderToAttack('china'), {
+        status: true,
+        error: ''
       });
     });
   });

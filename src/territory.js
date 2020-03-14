@@ -12,6 +12,10 @@ class Territory {
     this.#militaryUnits = 0;
   }
 
+  get neighbors() {
+    return this.#neighbors;
+  }
+
   isOccupiedBy(playerId) {
     return this.#occupiedBy === playerId;
   }

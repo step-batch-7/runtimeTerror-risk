@@ -4,23 +4,30 @@ const Controller = require('./controller');
 
 const {
   serveGameStatus,
-  serveGameDetails,
   performClaim,
   performReinforcement,
   hasFields,
   findGame,
   hostGame,
   joinGame,
+  serveGameDetails,
   servePlayersDetails,
   authorizeGame,
   hasGameStarted,
-  updatePhase
+  updatePhase,
+  initiateAttack,
+  noAttackIsOn,
+  attackIsOn,
+  selectDefender,
+  validateDefender,
+  selectDefenderMilitary,
+  defenderRollDice
 } = require('./handlers');
 const app = express();
 
 app.locals.controller = new Controller();
 
-app.use(express.json({ limit: '100kb' }));
+app.use(express.json({limit: '100kb'}));
 app.use(cookieParser());
 
 app.get('/game.html', findGame, hasGameStarted);
@@ -31,6 +38,16 @@ app.use(findGame);
 app.get('/playersDetails', servePlayersDetails);
 app.get('/gameDetails', serveGameDetails);
 app.get('/gameStatus', serveGameStatus);
+
+app.post(
+  '/selectDefenderMilitary',
+  attackIsOn,
+  validateDefender,
+  hasFields('militaryUnit'),
+  selectDefenderMilitary
+);
+app.get('/defenderRollDice', attackIsOn, validateDefender, defenderRollDice);
+
 app.use(authorizeGame);
 app.post(
   '/reinforcement',
@@ -40,4 +57,14 @@ app.post(
 app.post('/performClaim', hasFields('territory'), performClaim);
 app.get('/updatePhase', updatePhase);
 
-module.exports = { app };
+app.post(
+  '/initiateAttack',
+  hasFields('attackFrom'),
+  noAttackIsOn,
+  initiateAttack
+);
+
+app.use(attackIsOn);
+app.post('/selectDefender', hasFields('defender'), selectDefender);
+
+module.exports = {app};

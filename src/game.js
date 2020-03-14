@@ -1,6 +1,7 @@
 const Player = require('./player');
+const Attack = require('./attack');
 
-const stageNames = { 1: 'Claim', 2: 'Reinforcement', 3: 'Playing' };
+const stageNames = {1: 'Claim', 2: 'Reinforcement', 3: 'Playing'};
 
 const hasDeployedAllMilitary = player => player.status.leftMilitaryCount < 1;
 
@@ -14,6 +15,7 @@ class Game {
   #isStarted;
   #currentPhase;
   #lastPlayerId;
+  #attack;
   constructor(territories, numOfPlayers) {
     this.#territories = territories;
     this.#players = {};
@@ -24,6 +26,7 @@ class Game {
     this.#isStarted = false;
     this.#currentPhase = 1;
     this.#lastPlayerId = 0;
+    this.#attack = '';
   }
 
   get status() {
@@ -65,12 +68,13 @@ class Game {
   }
 
   addActivity(msg) {
-    this.#activities.unshift({ msg });
+    this.#activities.unshift({msg});
   }
 
   addPlayer(name) {
     const initialMilitaryCount = 20 + (6 - +this.#numOfPlayers) * 5;
-    this.#players[++this.#lastPlayerId] = new Player(name, initialMilitaryCount);
+    const playerId = ++this.#lastPlayerId;
+    this.#players[playerId] = new Player(name, initialMilitaryCount, playerId);
     this.#isStarted = this.#numOfPlayers === Object.keys(this.#players).length;
     this.addActivity(`${name} has joined.`);
     return this.#lastPlayerId;
@@ -100,25 +104,25 @@ class Game {
     selectedTerritory.deployMilitary(1);
     this.currentPlayer.addTerritory(territoryId);
     this.currentPlayer.removeMilitary(1);
-    const { name, leftMilitaryCount } = this.currentPlayer.status;
+    const {name, leftMilitaryCount} = this.currentPlayer.status;
     this.addActivity(`${name} has claimed ${selectedTerritory.status.name}`);
     this.changeTurn();
-    return { leftMilitaryCount };
+    return {leftMilitaryCount};
   }
 
   claim(territoryName) {
     if (this.#currentStage != 1) {
-      return { isDone: false, error: 'wrong stage' };
+      return {isDone: false, error: 'wrong stage'};
     }
     if (this.#territories[territoryName].isOccupied()) {
-      return { isDone: false, error: 'Territory already claimed' };
+      return {isDone: false, error: 'Territory already claimed'};
     }
-    const { leftMilitaryCount } = this.assignOwnerTo(territoryName);
+    const {leftMilitaryCount} = this.assignOwnerTo(territoryName);
     const territories = Object.values(this.#territories);
     if (territories.every(territory => territory.isOccupied())) {
       this.updateStage();
     }
-    return { isDone: true, leftMilitaryCount };
+    return {isDone: true, leftMilitaryCount};
   }
 
   changeTurnToNextDeployer() {
@@ -136,20 +140,77 @@ class Game {
 
   reinforce(territoryName, militaryCount) {
     if (this.#currentStage !== 2) {
-      return { isDone: false, error: 'Wrong stage or phase' };
+      return {isDone: false, error: 'Wrong stage or phase'};
     }
 
     const selectedTerritory = this.#territories[territoryName];
     if (!selectedTerritory.isOccupiedBy(this.#currentPlayerId)) {
-      return { isDone: false, error: 'This is not your territory' };
+      return {isDone: false, error: 'This is not your territory'};
     }
 
     this.deployMilitaryTo(selectedTerritory, militaryCount);
-    Object.values(this.#players).every(hasDeployedAllMilitary) && this.updateStage();
-    const { leftMilitaryCount } = this.currentPlayer.status;
+    Object.values(this.#players).every(hasDeployedAllMilitary) &&
+      this.updateStage();
+    const {leftMilitaryCount} = this.currentPlayer.status;
     const territoryMilitaryCount = selectedTerritory.status.militaryUnits;
     this.#currentStage === 2 && this.changeTurnToNextDeployer();
-    return { isDone: true, leftMilitaryCount, territoryMilitaryCount };
+    return {isDone: true, leftMilitaryCount, territoryMilitaryCount};
+  }
+
+  getTerritory(territoryId) {
+    return this.#territories[territoryId];
+  }
+
+  isMine(territoryId) {
+    const territory = this.getTerritory(territoryId);
+    return territory.isOccupiedBy(this.#currentPlayerId);
+  }
+
+  isAttackGoingOn() {
+    return this.#attack instanceof Attack;
+  }
+  initiateAttack(attackFrom) {
+    const territory = this.getTerritory(attackFrom);
+    const neighbors = territory.neighbors.filter(neighbor => {
+      return !this.isMine(neighbor);
+    });
+    if (!this.isMine(attackFrom) || !neighbors.length) {
+      return {status: false, error: 'Invalid Territory for Attack'};
+    }
+    if (territory.status.militaryUnits > 1) {
+      this.#attack = new Attack(territory, this.currentPlayer);
+      return {status: true, error: '', neighbors};
+    }
+    return {status: false, error: 'You don’t have enough military units'};
+  }
+  addDefenderToAttack(defendFrom) {
+    const attackerTerritory = this.#attack.attackerTerritory;
+    const isNeighbor = attackerTerritory.neighbors.includes(defendFrom);
+    if (isNeighbor && !this.isMine(defendFrom)) {
+      const defenderTerritory = this.getTerritory(defendFrom);
+      const defenderId = defenderTerritory.status.occupiedBy;
+      const defender = this.#players[defenderId];
+      this.#attack.addDefender(defenderTerritory, defender);
+      return {status: true, error: ''};
+    }
+    this.#attack = '';
+    return {status: false, error: "You can't attack this territory"};
+  }
+  addAttackerMilitary(militaryUnit) {
+    const leftMilitaryUnit = this.#attack.addAttackerMilitary(militaryUnit);
+    return {leftMilitaryUnit, dice: militaryUnit};
+  }
+  addDefenderMilitary(militaryUnit) {
+    const leftMilitaryUnit = this.#attack.addDefenderMilitary(militaryUnit);
+    return {leftMilitaryUnit, dice: militaryUnit};
+  }
+
+  isValidDefender(playerId) {
+    return playerId === this.#attack.getDefender.playerId;
+  }
+
+  rollDefenderDice() {
+    this.#attack.rollDefenderDice();
   }
 }
 

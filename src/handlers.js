@@ -89,6 +89,52 @@ const updatePhase = function(req, res) {
   res.json({currentPhase});
 };
 
+const noAttackIsOn = function(req, res, next) {
+  if (!req.game.isAttackGoingOn()) {
+    return next();
+  }
+  res.status(406).json({error: 'Attack is going on'});
+};
+
+const attackIsOn = function(req, res, next) {
+  if (req.game.isAttackGoingOn()) {
+    return next();
+  }
+  res.status(406).json({error: 'No attack is going on'});
+};
+
+const initiateAttack = function(req, res) {
+  const {attackFrom} = req.body;
+  const attackResult = req.game.initiateAttack(attackFrom);
+  attackResult.attacker = attackFrom;
+  res.json(attackResult);
+};
+
+const selectDefender = function(req, res) {
+  const {defender} = req.body;
+  const defendingResult = req.game.addDefenderToAttack(defender);
+  defendingResult.defender = defender;
+  res.json(defendingResult);
+};
+
+const validateDefender = function(req, res, next) {
+  const {_playerId} = req.cookies;
+  if (req.game.isValidDefender(_playerId)) {
+    return next();
+  }
+  res.status(406).json({error: 'You are not allowed to defend'});
+};
+
+const selectDefenderMilitary = function(req, res) {
+  const {militaryUnit} = req.body;
+  const response = req.game.addDefenderMilitary(militaryUnit);
+  res.json(response);
+};
+
+const defenderRollDice = function(req, res) {
+  res.end();
+};
+
 module.exports = {
   serveGameStatus,
   performClaim,
@@ -101,5 +147,12 @@ module.exports = {
   servePlayersDetails,
   authorizeGame,
   hasGameStarted,
-  updatePhase
+  updatePhase,
+  initiateAttack,
+  noAttackIsOn,
+  attackIsOn,
+  selectDefender,
+  validateDefender,
+  selectDefenderMilitary,
+  defenderRollDice
 };

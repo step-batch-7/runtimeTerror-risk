@@ -2,10 +2,16 @@ class Player {
   #name;
   #territories;
   #leftMilitaryCount;
-  constructor(name, initialMilitaryCount) {
+  #playerId;
+  constructor(name, initialMilitaryCount, playerId) {
     this.#name = name;
     this.#territories = [];
     this.#leftMilitaryCount = initialMilitaryCount;
+    this.#playerId = playerId;
+  }
+
+  get playerId() {
+    return this.#playerId;
   }
 
   get status() {
