@@ -31,7 +31,6 @@ describe('Game', function() {
             id: 'india',
             name: 'India',
             occupiedBy: undefined,
-            neighborsName: ['siam', 'china', 'afghanistan', 'middleEast'],
             militaryUnits: 0
           }
         }

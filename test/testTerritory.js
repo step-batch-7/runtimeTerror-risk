@@ -55,8 +55,7 @@ describe('Territory', function() {
         id: 'india',
         name: 'India',
         occupiedBy: undefined,
-        militaryUnits: 0,
-        neighborsName: ['china']
+        militaryUnits: 0
       });
     });
   });

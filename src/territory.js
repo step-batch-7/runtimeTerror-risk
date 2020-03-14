@@ -42,7 +42,6 @@ class Territory {
     status.id = this.#id;
     status.name = this.#name;
     status.occupiedBy = this.#occupiedBy;
-    status.neighborsName = this.#neighbors.slice();
     status.militaryUnits = this.#militaryUnits;
     return status;
   }
