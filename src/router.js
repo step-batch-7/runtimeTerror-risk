@@ -46,6 +46,7 @@ app.post(
   hasFields('militaryUnit'),
   selectDefenderMilitary
 );
+
 app.get('/defenderRollDice', attackIsOn, validateDefender, defenderRollDice);
 
 app.use(validateGameAction);

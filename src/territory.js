@@ -13,7 +13,7 @@ class Territory {
   }
 
   get neighbors() {
-    return this.#neighbors;
+    return this.#neighbors.slice();
   }
 
   isOccupiedBy(playerId) {

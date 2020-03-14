@@ -112,14 +112,14 @@ const initiateAttack = function(req, res) {
 
 const selectDefender = function(req, res) {
   const {defender} = req.body;
-  const defendingResult = req.game.addDefenderToAttack(defender);
+  const defendingResult = req.game.addDefender(defender);
   defendingResult.defender = defender;
   res.json(defendingResult);
 };
 
 const validateDefender = function(req, res, next) {
   const {_playerId} = req.cookies;
-  if (req.game.isValidDefender(_playerId)) {
+  if (req.game.isValidDefender(+_playerId)) {
     return next();
   }
   res.status(406).json({error: 'You are not allowed to defend'});

@@ -294,4 +294,199 @@ describe('Handlers', () => {
         .expect({ currentPhase: 2 });
     });
   });
+
+  context('initiateAttack', () => {
+    let controller;
+    beforeEach(() => {
+      controller = new Controller();
+      controller.addGame(2);
+      controller.getGame(1000).addPlayer('player1');
+      controller.getGame(1000).addPlayer('player2');
+      controller.getGame(1000).claim('easternAustralia');
+      app.locals = {controller};
+    });
+
+    it('Should initiate attack if the country is acquired by current player in stage 3', done => {
+      controller.getGame(1000).updateStage();
+      controller.getGame(1000).reinforce('easternAustralia', 5);
+      controller.getGame(1000).updateStage();
+      request(app)
+        .post('/initiateAttack')
+        .set('Cookie', '_gameId=1000;_playerId=1')
+        .send({attackFrom: 'easternAustralia'})
+        .expect(200, done)
+        .expect({
+          attacker: 'easternAustralia',
+          error: '',
+          neighbors: ['westernAustralia', 'newGuinea'],
+          status: true
+        });
+    });
+
+    it('Should not initiate attack if the territory does not have enough military to attack', done => {
+      controller.getGame(1000).updateStage();
+      controller.getGame(1000).updateStage();
+      request(app)
+        .post('/initiateAttack')
+        .set('Cookie', '_gameId=1000;_playerId=1')
+        .send({attackFrom: 'easternAustralia'})
+        .expect(200, done)
+        .expect({
+          attacker: 'easternAustralia',
+          error: 'You don’t have enough military units',
+          status: false
+        });
+    });
+
+    it('Should not initiate attack if the territory is not of current player', done => {
+      controller.getGame(1000).updateStage();
+      request(app)
+        .post('/initiateAttack')
+        .set('Cookie', '_gameId=1000;_playerId=1')
+        .send({attackFrom: 'china'})
+        .expect(200, done)
+        .expect({
+          attacker: 'china',
+          error: 'Invalid Territory for Attack',
+          status: false
+        });
+    });
+
+    it('Should not initiate attack if the territory has all the neighbor acquired by current player', done => {
+      controller.getGame(1000).claim('india');
+      controller.getGame(1000).claim('westernAustralia');
+      controller.getGame(1000).claim('china');
+      controller.getGame(1000).claim('newGuinea');
+      controller.getGame(1000).updateStage();
+      controller.getGame(1000).reinforce('easternAustralia', 5);
+      controller.getGame(1000).updateStage();
+      request(app)
+        .post('/initiateAttack')
+        .set('Cookie', '_gameId=1000;_playerId=1')
+        .send({attackFrom: 'easternAustralia'})
+        .expect(200, done)
+        .expect({
+          status: false,
+          error: 'Invalid Territory for Attack',
+          attacker: 'easternAustralia'
+        });
+    });
+
+    it('Should give bad request if attack is already going on', done => {
+      controller.getGame(1000).updateStage();
+      controller.getGame(1000).reinforce('easternAustralia', 5);
+      controller.getGame(1000).updateStage();
+      controller.getGame(1000).initiateAttack('easternAustralia');
+      request(app)
+        .post('/initiateAttack')
+        .set('Cookie', '_gameId=1000;_playerId=1')
+        .send({attackFrom: 'easternAustralia'})
+        .expect(406, done);
+    });
+  });
+
+  context('/selectDefender', () => {
+    let controller;
+    beforeEach(() => {
+      controller = new Controller();
+      controller.addGame(2);
+      controller.getGame(1000).addPlayer('player1');
+      controller.getGame(1000).addPlayer('player2');
+
+      controller.getGame(1000).claim('easternAustralia');
+      controller.getGame(1000).claim('westernAustralia');
+      controller.getGame(1000).updateStage();
+
+      controller.getGame(1000).reinforce('easternAustralia', 5);
+      controller.getGame(1000).updateStage();
+      app.locals = {controller};
+    });
+
+    it('Should select defender when attack is going on', done => {
+      controller.getGame(1000).initiateAttack('easternAustralia');
+      request(app)
+        .post('/selectDefender')
+        .set('Cookie', '_gameId=1000;_playerId=1')
+        .send({defender: 'westernAustralia'})
+        .expect(200, done)
+        .expect({status: true, error: '', defender: 'westernAustralia'});
+    });
+
+    it('Should not select defender if the defender is not neighbor of attacking territory', done => {
+      controller.getGame(1000).initiateAttack('easternAustralia');
+      request(app)
+        .post('/selectDefender')
+        .set('Cookie', '_gameId=1000;_playerId=1')
+        .send({defender: 'india'})
+        .expect(200, done)
+        .expect({
+          status: false,
+          error: "You can't attack this territory",
+          defender: 'india'
+        });
+    });
+
+    it('should not select defender if the territory is of current player', done => {
+      controller.getGame(1000).initiateAttack('easternAustralia');
+      request(app)
+        .post('/selectDefender')
+        .set('Cookie', '_gameId=1000;_playerId=1')
+        .send({defender: 'easternAustralia'})
+        .expect(200, done)
+        .expect({
+          status: false,
+          error: "You can't attack this territory",
+          defender: 'easternAustralia'
+        });
+    });
+
+    it('Should give bad request if attack is not going on', done => {
+      controller.getGame(1000).updateStage();
+      controller.getGame(1000).reinforce('easternAustralia', 5);
+      controller.getGame(1000).updateStage();
+      request(app)
+        .post('/selectDefender')
+        .set('Cookie', '_gameId=1000;_playerId=1')
+        .send({defender: 'easternAustralia'})
+        .expect(406, done);
+    });
+  });
+
+  context('/selectDefenderMilitary', () => {
+    let controller;
+    beforeEach(() => {
+      controller = new Controller();
+      controller.addGame(2);
+      controller.getGame(1000).addPlayer('player1');
+      controller.getGame(1000).addPlayer('player2');
+
+      controller.getGame(1000).claim('easternAustralia');
+      controller.getGame(1000).claim('westernAustralia');
+      controller.getGame(1000).updateStage();
+
+      controller.getGame(1000).reinforce('easternAustralia', 5);
+      controller.getGame(1000).updateStage();
+      app.locals = {controller};
+    });
+    it('should select Defender military unit', done => {
+      controller.getGame(1000).initiateAttack('easternAustralia');
+      controller.getGame(1000).addDefender('westernAustralia');
+      request(app)
+        .post('/selectDefenderMilitary')
+        .set('Cookie', '_gameId=1000;_playerId=2')
+        .send({militaryUnit: 1})
+        .expect(200, done)
+        .expect({leftMilitaryUnit: 0, dice: 1});
+    });
+
+    it('should not select military unit if player is not defender', done => {
+      controller.getGame(1000).initiateAttack('easternAustralia');
+      controller.getGame(1000).addDefender('westernAustralia');
+      request(app)
+        .post('/selectDefenderMilitary')
+        .set('Cookie', '_gameId=1000;_playerId=1')
+        .send({militaryUnit: 1})
+        .expect(406, done);
+    });
+  });
 });
