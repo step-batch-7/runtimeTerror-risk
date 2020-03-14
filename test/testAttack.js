@@ -1,9 +1,34 @@
-const {assert} = require('chai');
+const { assert } = require('chai');
 const Attack = require('../src/attack');
 const Player = require('../src/player');
 const Territory = require('../src/territory');
 
 describe('Attack', () => {
+  context('status', () => {
+    it('Should give status of the attack with defender undefined', () => {
+      const attack = new Attack('india', 'player1');
+      const expected = {
+        from: 'india',
+        to: undefined,
+        attacker: 'player1',
+        defender: undefined
+      };
+      assert.deepStrictEqual(attack.status, expected);
+    });
+
+    it('Should give status of the attack', () => {
+      const attack = new Attack('india', 'player1');
+      attack.addDefender('china', 'player2');
+      const expected = {
+        from: 'india',
+        to: 'china',
+        attacker: 'player1',
+        defender: 'player2'
+      };
+      assert.deepStrictEqual(attack.status, expected);
+    });
+  });
+
   context('GetAttackerTerritory', () => {
     it('Should give attacker territory', () => {
       const attack = new Attack('india', 'player1');

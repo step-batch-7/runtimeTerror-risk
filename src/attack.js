@@ -14,6 +14,15 @@ class Attack {
     this.#defenderMilitary;
   }
 
+  get status() {
+    const status = {};
+    status.from = this.#from;
+    status.to = this.#to;
+    status.attacker = this.#attacker;
+    status.defender = this.#defender;
+    return status;
+  }
+
   get attackerTerritory() {
     return this.#from;
   }
