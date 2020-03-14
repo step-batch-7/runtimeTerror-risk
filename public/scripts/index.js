@@ -1,5 +1,5 @@
 const updatePhase = function(event) {
-  sendGETRequest('/updatePhase', ({currentPhase, error}) =>
+  sendGETRequest('/updatePhase', ({ currentPhase, error }) =>
     showPhases(currentPhase, error, event)
   );
 };
@@ -16,7 +16,7 @@ const mousePointerPopUp = function(event, msg) {
 };
 
 const showReinforcementStatus = function(response, event) {
-  const {leftMilitaryCount, territoryMilitaryCount, error} = response;
+  const { leftMilitaryCount, territoryMilitaryCount, error } = response;
   if (!response.isDone) {
     return mousePointerPopUp(event, error);
   }
@@ -26,7 +26,10 @@ const showReinforcementStatus = function(response, event) {
 };
 
 const sendReinforcementRequest = function(event, militaryCount = 1) {
-  const postData = JSON.stringify({territory: event.target.id, militaryCount});
+  const postData = JSON.stringify({
+    territory: event.target.id,
+    militaryCount
+  });
   const callback = response => showReinforcementStatus(response, event);
   sendPOSTRequest('/reinforcement', postData, callback);
 };
@@ -41,7 +44,7 @@ const updateTerritory = function(response, event) {
 };
 
 const sendClaimRequest = function(event) {
-  const postData = JSON.stringify({territory: event.target.id});
+  const postData = JSON.stringify({ territory: event.target.id });
   const callback = response => updateTerritory(response, event);
   sendPOSTRequest('/performClaim', postData, callback);
 };
@@ -54,7 +57,7 @@ const getPlayerNameTemplate = function([playerId, player]) {
           </div>`;
 };
 
-const displayPlayersDetails = function({playersDetails}) {
+const displayPlayersDetails = function({ playersDetails }) {
   const myPlayer = playersDetails[getPlayerId()];
   getElement('.player-name').innerText = myPlayer.name;
   getElement('.front').innerText = myPlayer.leftMilitaryCount;
@@ -66,8 +69,26 @@ const getPlayersDetails = function() {
   sendGETRequest('/playersDetails', displayPlayersDetails);
 };
 
+const sendAttackRequest = function (event) {
+  
+};
+
+const selectListenerForPlayStage = function() {
+  const listeners = {
+    1: () => {},
+    2: sendAttackRequest,
+    3: () => {}
+  };
+  const phase = localStorage.getItem('phase');
+  listeners[phase](event);
+};
+
 const selectListener = function() {
-  const listeners = {'1': sendClaimRequest, '2': sendReinforcementRequest};
+  const listeners = {
+    1: sendClaimRequest,
+    2: sendReinforcementRequest,
+    3: selectListenerForPlayStage
+  };
   const stage = localStorage.getItem('stage');
   listeners[stage](event);
 };

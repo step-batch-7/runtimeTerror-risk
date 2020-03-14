@@ -44,6 +44,7 @@ const showPhases = function(currentPhase, error, event) {
   const $previousPhase = getElement('.current-phase');
   $previousPhase && $previousPhase.classList.remove('current-phase');
   getElement(`.${phases[currentPhase]}`).classList.add('current-phase');
+  localStorage.setItem('phase', currentPhase);
 };
 
 const updateGameStage = function(currentStage) {
