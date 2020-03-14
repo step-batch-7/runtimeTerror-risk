@@ -22,6 +22,7 @@ class Territory {
 
   deployMilitary(militaryCount) {
     this.#militaryUnits += militaryCount;
+    return this.#militaryUnits;
   }
 
   removeMilitary(militaryUnits) {

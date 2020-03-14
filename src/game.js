@@ -132,11 +132,12 @@ class Game {
     } while (this.currentPlayer.status.leftMilitaryCount < 1);
   }
 
-  deployMilitaryTo(territory, militaryCount) {
-    territory.deployMilitary(militaryCount);
+  deployMilitary(territory, militaryCount) {
+    const remainingMilitary = territory.deployMilitary(militaryCount);
     this.currentPlayer.removeMilitary(militaryCount);
     const activityMsg = `${this.currentPlayer.status.name} placed ${militaryCount} soldier in ${territory.status.name}`;
     this.addActivity(activityMsg);
+    return remainingMilitary;
   }
 
   reinforce(territoryName, militaryCount) {
@@ -149,14 +150,14 @@ class Game {
       return { isDone: false, error: 'This is not your territory' };
     }
 
-    this.deployMilitaryTo(selectedTerritory, militaryCount);
+    this.deployMilitary(selectedTerritory, militaryCount);
     const allPlayers = Object.values(this.#players);
     allPlayers.every(player => player.hasDeployedAllMilitary()) &&
       this.updateStage();
     const { leftMilitaryCount } = this.currentPlayer.status;
     const territoryMilitaryCount = selectedTerritory.status.militaryUnits;
     this.#currentStage === 2 && this.changeTurnToNextDeployer();
-    return { isDone: true, leftMilitaryCount, territoryMilitaryCount };
+    return { isDone: true, territoryMilitaryCount, leftMilitaryCount };
   }
 
   getTerritory(territoryId) {
@@ -230,6 +231,18 @@ class Game {
     });
     const maxValidMilitaryUnits = selectedTerritory.status.militaryUnits - 1;
     return { isAccepted: true, validTerritories, maxValidMilitaryUnits };
+  }
+
+  fortify(selectedTerritoryId, targetTerritoryId, militaryUnits) {
+    const selectedTerritory = this.#territories[selectedTerritoryId];
+    const selectedTerritoryMilitary = selectedTerritory.removeMilitary(
+      militaryUnits
+    );
+    const targetTerritory = this.#territories[targetTerritoryId];
+    const targetTerritoryMilitary = targetTerritory.deployMilitary(
+      militaryUnits
+    );
+    return { selectedTerritoryMilitary, targetTerritoryMilitary };
   }
 }
 

@@ -33,13 +33,13 @@ const mousePointerPopUp = function(event, msg) {
 };
 
 const showReinforcementStatus = function(response, event) {
-  const { leftMilitaryCount, territoryMilitaryCount, error } = response;
+  const { leftMilitary, territoryMilitaryCount, error } = response;
   if (!response.isDone) {
     return mousePointerPopUp(event, error);
   }
   const $textElement = getElement(`#${event.target.id} + .unit`);
   $textElement.innerHTML = `${territoryMilitaryCount}`.padStart(2, ' ');
-  updateMilitaryCount(leftMilitaryCount);
+  updateMilitaryCount(leftMilitary);
 };
 
 const sendReinforcementRequest = function(event, militaryCount = 1) {

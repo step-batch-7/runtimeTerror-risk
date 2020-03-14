@@ -6,7 +6,16 @@ const sinon = require('sinon');
 const generateTerritories = require('../src/territories');
 
 describe('Game', function() {
-  const { india, china, alberta, ontario, alaska } = generateTerritories();
+  const {
+    india,
+    china,
+    alberta,
+    ontario,
+    alaska,
+    brazil,
+    peru,
+    venezuela
+  } = generateTerritories();
 
   it('should give instance of game class', function() {
     const game = new Game({ india }, 3);
@@ -206,7 +215,7 @@ describe('Game', function() {
     });
 
     it('Should initiate attack if territory is of current player', () => {
-      game.deployMilitaryTo(india, 10);
+      game.deployMilitary(india, 10);
       assert.deepStrictEqual(game.initiateAttack('india'), {
         status: true,
         error: '',
@@ -240,7 +249,7 @@ describe('Game', function() {
       game.addPlayer('Player2');
       game.claim('india');
       game.claim('china');
-      game.deployMilitaryTo(india, 10);
+      game.deployMilitary(india, 10);
       game.initiateAttack('india');
     });
 
@@ -272,7 +281,7 @@ describe('Game', function() {
       game.claim('china');
     });
     it('should give true if attack is going on', () => {
-      game.deployMilitaryTo(india, 10);
+      game.deployMilitary(india, 10);
       game.initiateAttack('india');
       assert.isTrue(game.isAttackGoingOn());
     });
@@ -293,7 +302,7 @@ describe('Game', function() {
       game.addPlayer('Player2');
       game.claim('india');
       game.claim('china');
-      game.deployMilitaryTo(india, 10);
+      game.deployMilitary(india, 10);
       game.initiateAttack('india');
     });
     it('should add military unit to attacker military ', () => {
@@ -316,7 +325,7 @@ describe('Game', function() {
       game.addPlayer('Player2');
       game.claim('india');
       game.claim('china');
-      game.deployMilitaryTo(india, 10);
+      game.deployMilitary(india, 10);
       game.initiateAttack('india');
       game.addDefender('china');
     });
@@ -340,7 +349,7 @@ describe('Game', function() {
       game.addPlayer('Player2');
       game.claim('india');
       game.claim('china');
-      game.deployMilitaryTo(india, 10);
+      game.deployMilitary(india, 10);
       game.initiateAttack('india');
       game.addDefender('china');
     });
@@ -404,6 +413,34 @@ describe('Game', function() {
       const expectedValue = {
         isAccepted: false,
         error: 'Wrong stage or phase'
+      };
+      assert.deepStrictEqual(actualValue, expectedValue);
+    });
+  });
+
+  context('getTerritoriesToFortify', function() {
+    let game;
+    this.beforeAll(function() {
+      game = new Game({ brazil, peru, venezuela }, 2);
+      sinon.stub(Player.prototype, 'hasDeployedAllMilitary').returns(true);
+      game.addPlayer('player1');
+      game.addPlayer('player2');
+      game.claim('brazil');
+      game.claim('peru');
+      game.claim('venezuela');
+      game.reinforce('brazil', 1);
+      game.updatePhase();
+      game.updatePhase();
+    });
+    this.afterAll(function() {
+      sinon.restore();
+    });
+
+    it('should move militaries from selected to target territory', () => {
+      const actualValue = game.fortify('brazil', 'venezuela', 1);
+      const expectedValue = {
+        selectedTerritoryMilitary: 1,
+        targetTerritoryMilitary: 2
       };
       assert.deepStrictEqual(actualValue, expectedValue);
     });
