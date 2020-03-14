@@ -1,5 +1,22 @@
+const getTerritory = id => document.querySelector(`#${id}`);
+const getTerritories = () => Array.from(document.querySelectorAll('.area'));
+
+const makeTerritoriesInteractive = (territories, listener) => {
+  territories.forEach(territory => {
+    territory.addEventListener('click', listener);
+    territory.classList.add('highlight');
+  });
+};
+
+const makeTerritoriesNonInteractive = (territories, listener) => {
+  territories.forEach(territory => {
+    territory.removeEventListener('click', listener);
+    territory.classList.remove('highlight');
+  });
+};
+
 const updatePhase = function(event) {
-  sendGETRequest('/updatePhase', ({currentPhase, error}) =>
+  sendGETRequest('/updatePhase', ({ currentPhase, error }) =>
     showPhases(currentPhase, error, event)
   );
 };
@@ -16,7 +33,7 @@ const mousePointerPopUp = function(event, msg) {
 };
 
 const showReinforcementStatus = function(response, event) {
-  const {leftMilitaryCount, territoryMilitaryCount, error} = response;
+  const { leftMilitaryCount, territoryMilitaryCount, error } = response;
   if (!response.isDone) {
     return mousePointerPopUp(event, error);
   }
@@ -44,7 +61,7 @@ const updateTerritory = function(response, event) {
 };
 
 const sendClaimRequest = function(event) {
-  const postData = JSON.stringify({territory: event.target.id});
+  const postData = JSON.stringify({ territory: event.target.id });
   const callback = response => updateTerritory(response, event);
   sendPOSTRequest('/performClaim', postData, callback);
 };
@@ -57,7 +74,7 @@ const getPlayerNameTemplate = function([playerId, player]) {
           </div>`;
 };
 
-const displayPlayersDetails = function({playersDetails}) {
+const displayPlayersDetails = function({ playersDetails }) {
   const myPlayer = playersDetails[getPlayerId()];
   getElement('.player-name').innerText = myPlayer.name;
   getElement('.front').innerText = myPlayer.leftMilitaryCount;
@@ -71,11 +88,30 @@ const getPlayersDetails = function() {
 
 const sendAttackRequest = function(event) {};
 
+const fortify = () => {};
+
+const sendFortifyRequest = function(event) {
+  makeTerritoriesNonInteractive(getTerritories(), selectListener);
+  const selectedTerritoryId = event.target.id;
+  sendPOSTRequest(
+    '/initiateFortify',
+    JSON.stringify({ selectedTerritoryId }),
+    fortifyStatus => {
+      if (!fortifyStatus.isAccepted) {
+        mousePointerPopUp(event, fortifyStatus.error);
+        return makeTerritoriesInteractive(getTerritories(), selectListener);
+      }
+      const validTerritories = fortifyStatus.validTerritories.map(getTerritory);
+      makeTerritoriesInteractive(validTerritories, fortify);
+    }
+  );
+};
+
 const selectListenerForPlayStage = function() {
   const listeners = {
     1: () => {},
     2: sendAttackRequest,
-    3: () => {}
+    3: sendFortifyRequest
   };
   const phase = localStorage.getItem('phase');
   listeners[phase](event);
@@ -91,17 +127,10 @@ const selectListener = function() {
   listeners[stage](event);
 };
 
-const attachListenerToTerritories = () => {
-  const countries = Array.from(document.querySelectorAll('.area'));
-  countries.forEach(territory => {
-    territory.addEventListener('click', selectListener);
-  });
-};
-
 const main = function() {
   renderMap();
   getPlayersDetails();
-  attachListenerToTerritories();
+  makeTerritoriesInteractive(getTerritories(), selectListener);
   sendSyncReq();
   setInterval(sendSyncReq, 1000);
 };

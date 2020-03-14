@@ -30,6 +30,7 @@
   fill: rgba(221, 221, 221, 0.7);
   stroke-width: 1.2px;
   cursor: pointer;
+  opacity: 0.2;
 }
 .territory-name {
   font-size: 8px;
@@ -67,4 +68,7 @@
 }
 .africa {
   stroke: brown;
+}
+.highlight {
+  opacity: 1;
 }
