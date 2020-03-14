@@ -10,10 +10,9 @@ const getPlayerColor = function(playerId) {
   return playerColors[playerId - 1];
 };
 
-const showGameDetails = function(response) {
+const showGameDetails = function({ gameId, numOfPlayers }) {
   const $gameId = document.querySelector('#gameId');
   const $totalPlayers = document.querySelector('#totalPlayers');
-  const {gameId, numOfPlayers} = response;
   $gameId.innerHTML = `Game Id: ${gameId}`;
   $totalPlayers.innerHTML = numOfPlayers;
 };
@@ -22,17 +21,17 @@ const sendReqForGameDetails = function() {
   sendGETRequest('gameDetails', showGameDetails);
 };
 
-const getPlayerTemplate = function([playerId, player]) {
+const getPlayerHTML = function([playerId, player]) {
   const playerColor = getPlayerColor(playerId);
   return `<div class="player" style="background-color: ${playerColor};">
             <p>${player.name}</p>
           </div>`;
 };
 
-const showJoinedPlayers = function({hasGameStarted, playersDetails}) {
+const showJoinedPlayers = function({ hasGameStarted, playersDetails }) {
   const $joinedPlayers = document.querySelector('#joinedPlayers');
   $joinedPlayers.innerHTML = Object.keys(playersDetails).length;
-  const playersTemplate = Object.entries(playersDetails).map(getPlayerTemplate);
+  const playersTemplate = Object.entries(playersDetails).map(getPlayerHTML);
   document.querySelector('#name-area').innerHTML = playersTemplate.join('');
   if (hasGameStarted) {
     setTimeout(() => {

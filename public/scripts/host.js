@@ -3,8 +3,7 @@ const getElement = selector => document.querySelector(selector);
 const getInputValues = function() {
   const playerName = getElement('#playerName').value;
   const numOfPlayers = getElement('#playerCount').value;
-  const $box = getElement('.box');
-  $box.classList.add('hidden');
+  getElement('.box').add('hidden');
   return { playerName, numOfPlayers };
 };
 

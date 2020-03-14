@@ -1,5 +1,5 @@
 const updatePhase = function(event) {
-  sendGETRequest('/updatePhase', ({currentPhase, error}) =>
+  sendGETRequest('/updatePhase', ({ currentPhase, error }) =>
     showPhases(currentPhase, error, event)
   );
 };
@@ -16,40 +16,39 @@ const mousePointerPopUp = function(event, msg) {
 };
 
 const showReinforcementStatus = function(response, event) {
-  const {leftMilitaryCount, territoryMilitaryCount, error} = response;
-  if (response.isDone) {
-    const $textElement = getElement(`#${event.target.id} + .unit`);
-    $textElement.innerHTML = `${territoryMilitaryCount}`.padStart(2, ' ');
-    return updateMilitaryCount(leftMilitaryCount);
+  const { leftMilitaryCount, territoryMilitaryCount, error } = response;
+  if (!response.isDone) {
+    return mousePointerPopUp(event, error);
   }
-  mousePointerPopUp(event, error);
+  const $textElement = getElement(`#${event.target.id} + .unit`);
+  $textElement.innerHTML = `${territoryMilitaryCount}`.padStart(2, ' ');
+  updateMilitaryCount(leftMilitaryCount);
 };
 
 const sendReinforcementRequest = function(event, militaryCount = 1) {
   const requestOptions = {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({territory: event.target.id, militaryCount})
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ territory: event.target.id, militaryCount })
   };
   const callback = response => showReinforcementStatus(response, event);
   sendPOSTRequest('/reinforcement', requestOptions, callback);
 };
 
 const updateTerritory = function(response, event) {
-  if (response.isDone) {
-    event.target.style.fill = getPlayerColor(getPlayerId());
-    getElement(`#${event.target.id} + .unit`).innerHTML = ' 1';
-    updateMilitaryCount(response.leftMilitaryCount);
-    return;
+  if (!response.isDone) {
+    return mousePointerPopUp(event, response.error);
   }
-  mousePointerPopUp(event, response.error);
+  event.target.style.fill = getPlayerColor(getPlayerId());
+  getElement(`#${event.target.id} + .unit`).innerHTML = ' 1';
+  updateMilitaryCount(response.leftMilitaryCount);
 };
 
 const sendClaimRequest = function(event) {
   const requestOptions = {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({territory: event.target.id})
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ territory: event.target.id })
   };
   const callback = response => updateTerritory(response, event);
   sendPOSTRequest('/performClaim', requestOptions, callback);
@@ -63,7 +62,7 @@ const getPlayerNameTemplate = function([playerId, player]) {
           </div>`;
 };
 
-const displayPlayersDetails = function({playersDetails}) {
+const displayPlayersDetails = function({ playersDetails }) {
   const myPlayer = playersDetails[getPlayerId()];
   getElement('.player-name').innerText = myPlayer.name;
   getElement('.front').innerText = myPlayer.leftMilitaryCount;
@@ -76,7 +75,7 @@ const getPlayersDetails = function() {
 };
 
 const selectListener = function() {
-  const listeners = {'1': sendClaimRequest, '2': sendReinforcementRequest};
+  const listeners = { '1': sendClaimRequest, '2': sendReinforcementRequest };
   const stage = localStorage.getItem('stage');
   listeners[stage](event);
 };
