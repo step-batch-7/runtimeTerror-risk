@@ -22,7 +22,8 @@ const {
   validateDefender,
   selectDefenderMilitary,
   defenderRollDice,
-  serveFortifyPossibilities
+  serveFortifyPossibilities,
+  performFortify
 } = require('./handlers');
 const app = express();
 
@@ -66,6 +67,7 @@ app.post(
   initiateAttack
 );
 app.post('/initiateFortify', serveFortifyPossibilities);
+app.post('/fortify', performFortify);
 
 app.use(attackIsOn);
 app.post('/selectDefender', hasFields('defender'), selectDefender);

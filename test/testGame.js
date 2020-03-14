@@ -439,8 +439,18 @@ describe('Game', function() {
     it('should move militaries from selected to target territory', () => {
       const actualValue = game.fortify('brazil', 'venezuela', 1);
       const expectedValue = {
+        isDone: true,
         selectedTerritoryMilitary: 1,
         targetTerritoryMilitary: 2
+      };
+      assert.deepStrictEqual(actualValue, expectedValue);
+    });
+
+    it('should give error if wrong territory is selected as target territory', () => {
+      const actualValue = game.fortify('brazil', 'peru', 1);
+      const expectedValue = {
+        isDone: false,
+        error: 'Invalid selection'
       };
       assert.deepStrictEqual(actualValue, expectedValue);
     });

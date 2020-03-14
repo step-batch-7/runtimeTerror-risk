@@ -234,6 +234,9 @@ class Game {
   }
 
   fortify(selectedTerritoryId, targetTerritoryId, militaryUnits) {
+    if (!this.currentPlayer.rulingTerritories.includes(targetTerritoryId)) {
+      return { isDone: false, error: 'Invalid selection' };
+    }
     const selectedTerritory = this.#territories[selectedTerritoryId];
     const selectedTerritoryMilitary = selectedTerritory.removeMilitary(
       militaryUnits
@@ -242,7 +245,7 @@ class Game {
     const targetTerritoryMilitary = targetTerritory.deployMilitary(
       militaryUnits
     );
-    return { selectedTerritoryMilitary, targetTerritoryMilitary };
+    return { isDone: true, selectedTerritoryMilitary, targetTerritoryMilitary };
   }
 }
 

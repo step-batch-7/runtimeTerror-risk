@@ -506,4 +506,21 @@ describe('Handlers', () => {
         .expect('{"isAccepted":false,"error":"Wrong stage or phase"}', done);
     });
   });
+
+  context('/fortify', () => {
+    it('should give error message if target Territory does not belong to current player', function(done) {
+      const gameId = app.locals.controller.addGame(1);
+      const playerId = app.locals.controller
+        .getGame(gameId)
+        .addPlayer('Player1');
+      app.locals.controller.getGame(gameId).claim('india');
+      request(app)
+        .post('/fortify')
+        .set('Cookie', `_gameId=${gameId};_playerId=${playerId}`)
+        .send({ selectedTerritoryId: 'india', targetTerritoryId: 'china' })
+        .expect(200)
+        .expect('Content-Length', '44')
+        .expect('{"isDone":false,"error":"Invalid selection"}', done);
+    });
+  });
 });

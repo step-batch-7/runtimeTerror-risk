@@ -140,6 +140,13 @@ const serveFortifyPossibilities = function(req, res) {
   res.json(req.game.getFortifyPossibilities(selectedTerritoryId));
 };
 
+const performFortify = function(req, res) {
+  const { selectedTerritoryId, targetTerritoryId, militaryUnits } = req.body;
+  res.json(
+    req.game.fortify(selectedTerritoryId, targetTerritoryId, militaryUnits)
+  );
+};
+
 module.exports = {
   serveGameStatus,
   performClaim,
@@ -160,5 +167,6 @@ module.exports = {
   validateDefender,
   selectDefenderMilitary,
   defenderRollDice,
-  serveFortifyPossibilities
+  serveFortifyPossibilities,
+  performFortify
 };
