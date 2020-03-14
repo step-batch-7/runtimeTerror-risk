@@ -1,3 +1,8 @@
+const generateDiceValues = function(dices) {
+  const dice = new Array(dices);
+  return dice.map(() => Math.ceil(Math.random() * 6));
+};
+
 class Attack {
   #from;
   #to;

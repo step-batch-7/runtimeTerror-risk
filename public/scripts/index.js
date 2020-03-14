@@ -1,5 +1,5 @@
 const updatePhase = function(event) {
-  sendGETRequest('/updatePhase', ({ currentPhase, error }) =>
+  sendGETRequest('/updatePhase', ({currentPhase, error}) =>
     showPhases(currentPhase, error, event)
   );
 };
@@ -16,7 +16,7 @@ const mousePointerPopUp = function(event, msg) {
 };
 
 const showReinforcementStatus = function(response, event) {
-  const { leftMilitaryCount, territoryMilitaryCount, error } = response;
+  const {leftMilitaryCount, territoryMilitaryCount, error} = response;
   if (!response.isDone) {
     return mousePointerPopUp(event, error);
   }
@@ -44,7 +44,7 @@ const updateTerritory = function(response, event) {
 };
 
 const sendClaimRequest = function(event) {
-  const postData = JSON.stringify({ territory: event.target.id });
+  const postData = JSON.stringify({territory: event.target.id});
   const callback = response => updateTerritory(response, event);
   sendPOSTRequest('/performClaim', postData, callback);
 };
@@ -57,7 +57,7 @@ const getPlayerNameTemplate = function([playerId, player]) {
           </div>`;
 };
 
-const displayPlayersDetails = function({ playersDetails }) {
+const displayPlayersDetails = function({playersDetails}) {
   const myPlayer = playersDetails[getPlayerId()];
   getElement('.player-name').innerText = myPlayer.name;
   getElement('.front').innerText = myPlayer.leftMilitaryCount;
@@ -69,9 +69,7 @@ const getPlayersDetails = function() {
   sendGETRequest('/playersDetails', displayPlayersDetails);
 };
 
-const sendAttackRequest = function (event) {
-  
-};
+const sendAttackRequest = function(event) {};
 
 const selectListenerForPlayStage = function() {
   const listeners = {
