@@ -1,5 +1,5 @@
 const updatePhase = function(event) {
-  sendGETRequest('/updatePhase', ({ currentPhase, error }) =>
+  sendGETRequest('/updatePhase', ({currentPhase, error}) =>
     showPhases(currentPhase, error, event)
   );
 };
@@ -16,7 +16,7 @@ const mousePointerPopUp = function(event, msg) {
 };
 
 const showReinforcementStatus = function(response, event) {
-  const { leftMilitaryCount, territoryMilitaryCount, error } = response;
+  const {leftMilitaryCount, territoryMilitaryCount, error} = response;
   if (!response.isDone) {
     return mousePointerPopUp(event, error);
   }
@@ -26,13 +26,9 @@ const showReinforcementStatus = function(response, event) {
 };
 
 const sendReinforcementRequest = function(event, militaryCount = 1) {
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ territory: event.target.id, militaryCount })
-  };
+  const postData = JSON.stringify({territory: event.target.id, militaryCount});
   const callback = response => showReinforcementStatus(response, event);
-  sendPOSTRequest('/reinforcement', requestOptions, callback);
+  sendPOSTRequest('/reinforcement', postData, callback);
 };
 
 const updateTerritory = function(response, event) {
@@ -45,13 +41,9 @@ const updateTerritory = function(response, event) {
 };
 
 const sendClaimRequest = function(event) {
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ territory: event.target.id })
-  };
+  const postData = JSON.stringify({territory: event.target.id});
   const callback = response => updateTerritory(response, event);
-  sendPOSTRequest('/performClaim', requestOptions, callback);
+  sendPOSTRequest('/performClaim', postData, callback);
 };
 
 const getPlayerNameTemplate = function([playerId, player]) {
@@ -62,7 +54,7 @@ const getPlayerNameTemplate = function([playerId, player]) {
           </div>`;
 };
 
-const displayPlayersDetails = function({ playersDetails }) {
+const displayPlayersDetails = function({playersDetails}) {
   const myPlayer = playersDetails[getPlayerId()];
   getElement('.player-name').innerText = myPlayer.name;
   getElement('.front').innerText = myPlayer.leftMilitaryCount;
@@ -75,7 +67,7 @@ const getPlayersDetails = function() {
 };
 
 const selectListener = function() {
-  const listeners = { '1': sendClaimRequest, '2': sendReinforcementRequest };
+  const listeners = {'1': sendClaimRequest, '2': sendReinforcementRequest};
   const stage = localStorage.getItem('stage');
   listeners[stage](event);
 };

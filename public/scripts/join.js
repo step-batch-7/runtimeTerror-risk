@@ -3,7 +3,7 @@ const getElement = selector => document.querySelector(selector);
 const getInputValues = function() {
   const playerName = getElement('#playerName').value;
   const gameId = getElement('#gameId').value;
-  return { playerName, gameId };
+  return {playerName, gameId};
 };
 
 const renderErrorMsg = function(errorMsg) {
@@ -12,20 +12,16 @@ const renderErrorMsg = function(errorMsg) {
 };
 
 const requestForJoinGame = function(event) {
-  const options = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(getInputValues())
-  };
+  const postData = JSON.stringify(getInputValues());
   event.preventDefault();
   const callback = response => {
     if (response.joinStatus) {
-      return (document.location = 'waiting.html');
+      document.location = 'waiting.html';
+      return;
     }
     renderErrorMsg(response.errorMsg);
   };
-
-  sendPOSTRequest('/joinGame', options, callback);
+  sendPOSTRequest('/joinGame', postData, callback);
 };
 
 const main = function() {

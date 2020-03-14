@@ -12,7 +12,7 @@ const {
   joinGame,
   serveGameDetails,
   servePlayersDetails,
-  authorizeGame,
+  validateGameAction,
   hasGameStarted,
   updatePhase,
   initiateAttack,
@@ -48,7 +48,7 @@ app.post(
 );
 app.get('/defenderRollDice', attackIsOn, validateDefender, defenderRollDice);
 
-app.use(authorizeGame);
+app.use(validateGameAction);
 app.post(
   '/reinforcement',
   hasFields('territory', 'militaryCount'),

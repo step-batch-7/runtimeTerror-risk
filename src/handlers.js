@@ -56,7 +56,7 @@ const findGame = function(req, res, next) {
   res.status(400).json({error: 'Game not found'});
 };
 
-const authorizeGame = function(req, res, next) {
+const validateGameAction = function(req, res, next) {
   const isActionValid = req.game.isActionValidBy(+req.cookies._playerId);
   if (isActionValid) {
     return next();
@@ -145,7 +145,7 @@ module.exports = {
   joinGame,
   serveGameDetails,
   servePlayersDetails,
-  authorizeGame,
+  validateGameAction,
   hasGameStarted,
   updatePhase,
   initiateAttack,

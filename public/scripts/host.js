@@ -3,14 +3,14 @@ const getElement = selector => document.querySelector(selector);
 const getInputValues = function() {
   const playerName = getElement('#playerName').value;
   const numOfPlayers = getElement('#playerCount').value;
-  getElement('.box').add('hidden');
-  return { playerName, numOfPlayers };
+  getElement('.box').classList.add('hidden');
+  return {playerName, numOfPlayers};
 };
 
 const requestForHostGame = function(event) {
   const options = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(getInputValues())
   };
   event.preventDefault();
