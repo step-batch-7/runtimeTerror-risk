@@ -18,8 +18,11 @@ class Player {
     const status = {};
     status.name = this.#name;
     status.leftMilitaryCount = this.#leftMilitaryCount;
-    status.territories = this.#territories.slice();
     return status;
+  }
+
+  get rulingTerritories() {
+    return this.#territories.slice();
   }
 
   removeMilitary(count) {
@@ -28,6 +31,10 @@ class Player {
 
   addTerritory(territory) {
     this.#territories.push(territory);
+  }
+
+  hasDeployedAllMilitary() {
+    return this.#leftMilitaryCount < 1;
   }
 }
 

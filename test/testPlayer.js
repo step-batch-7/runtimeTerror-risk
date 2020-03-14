@@ -12,8 +12,7 @@ describe('Player', function() {
       const player = new Player('Player1', 30);
       assert.deepStrictEqual(player.status, {
         leftMilitaryCount: 30,
-        name: 'Player1',
-        territories: []
+        name: 'Player1'
       });
     });
   });
@@ -26,11 +25,30 @@ describe('Player', function() {
     });
   });
 
+  context('rulingTerritories', () => {
+    it('should give ruling territories Ids of the player', function() {
+      const player = new Player('Player1', 30);
+      player.addTerritory('india');
+      assert.deepStrictEqual(player.rulingTerritories, ['india']);
+    });
+  });
+
   context('addTerritory', () => {
     it('should add territory to territories list of player', () => {
       const player = new Player('Player1', 30);
       player.addTerritory('india');
-      assert.isTrue(player.status.territories.includes('india'));
+      assert.isTrue(player.rulingTerritories.includes('india'));
+    });
+  });
+  context('hasDeployedAllMilitary', () => {
+    it('should give true if no military left', function() {
+      const player = new Player('player1', 0);
+      assert.isOk(player.hasDeployedAllMilitary());
+    });
+
+    it('should give false if any military left', function() {
+      const player = new Player('player1', 2);
+      assert.isNotOk(player.hasDeployedAllMilitary());
     });
   });
 });

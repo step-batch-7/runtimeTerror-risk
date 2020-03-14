@@ -1,5 +1,5 @@
 const request = require('supertest');
-const {app} = require('../src/router');
+const { app } = require('../src/router');
 const Controller = require('../src/controller');
 
 describe('Handlers', () => {
@@ -26,7 +26,7 @@ describe('Handlers', () => {
       const controller = new Controller();
       controller.addGame(2);
       controller.getGame(1000).addPlayer('player1');
-      app.locals = {controller};
+      app.locals = { controller };
     });
     it('Should give remainingMilitaryCount in game status', done => {
       request(app)
@@ -43,16 +43,14 @@ describe('Handlers', () => {
         .set('Cookie', '_gameId=1000;_playerId=1')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect(
-          /{"currentPlayer":{"name":"player1","leftMilitaryCount":40,"territories":\[\]/
-        );
+        .expect(/{"currentPlayer":{"name":"player1","leftMilitaryCount":40/);
     });
 
     it('Should tell bad request if cookie is not present', done => {
       request(app)
         .get('/gameStatus')
         .expect(400, done)
-        .expect({error: 'Game not found'});
+        .expect({ error: 'Game not found' });
     });
 
     it('Should tell bad request if invalid game id in cookie', done => {
@@ -60,7 +58,7 @@ describe('Handlers', () => {
         .get('/gameStatus')
         .set('Cookie', '_gameId=123')
         .expect(400, done)
-        .expect({error: 'Game not found'});
+        .expect({ error: 'Game not found' });
     });
   });
 
@@ -70,23 +68,23 @@ describe('Handlers', () => {
       controller.addGame(2);
       controller.getGame(1000).addPlayer('player1');
       controller.getGame(1000).addPlayer('player2');
-      app.locals = {controller};
+      app.locals = { controller };
     });
     it('Should claim the given territory if the fields are valid', done => {
       request(app)
         .post('/performClaim')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({territory: 'india'})
+        .send({ territory: 'india' })
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect({isDone: true, leftMilitaryCount: 39});
+        .expect({ isDone: true, leftMilitaryCount: 39 });
     });
 
     it('Should respond with "Bad Request" if the fields are invalid', done => {
       request(app)
         .post('/performClaim')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({country: 'india'})
+        .send({ country: 'india' })
         .expect(400, done);
     });
   });
@@ -98,14 +96,14 @@ describe('Handlers', () => {
       controller.getGame(1000).addPlayer('player1');
       controller.getGame(1000).claim('india');
       controller.getGame(1000).updateStage();
-      app.locals = {controller};
+      app.locals = { controller };
     });
 
     it('Should reinforce the given territory if the reinforcement is valid', done => {
       request(app)
         .post('/reinforcement')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({territory: 'india', militaryCount: 1})
+        .send({ territory: 'india', militaryCount: 1 })
         .expect(200, done)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect({
@@ -119,7 +117,7 @@ describe('Handlers', () => {
       request(app)
         .post('/reinforcement')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({country: 'india'})
+        .send({ country: 'india' })
         .expect(400, done);
     });
   });
@@ -129,46 +127,46 @@ describe('Handlers', () => {
       const controller = new Controller();
       controller.addGame(2);
       controller.getGame(1000).addPlayer('player1');
-      app.locals = {controller};
+      app.locals = { controller };
     });
     it('Should join the game for valid gameId', done => {
       request(app)
         .post('/joinGame')
-        .send({playerName: 'india', gameId: 1000})
+        .send({ playerName: 'india', gameId: 1000 })
         .expect(202)
         .expect('Set-Cookie', '_gameId=1000; Path=/,_playerId=2; Path=/')
-        .expect({joinStatus: true}, done);
+        .expect({ joinStatus: true }, done);
     });
 
     it('Should not join the game for invalid gameId', done => {
       request(app)
         .post('/joinGame')
-        .send({playerName: 'india', gameId: 3})
+        .send({ playerName: 'india', gameId: 3 })
         .expect(200)
-        .expect({joinStatus: false, errorMsg: 'Invalid Game Id(3)'}, done);
+        .expect({ joinStatus: false, errorMsg: 'Invalid Game Id(3)' }, done);
     });
     it('Should not join the game for invalid gameId', done => {
       app.locals.controller.join(1000, 'player2');
       request(app)
         .post('/joinGame')
-        .send({playerName: 'india', gameId: 1000})
+        .send({ playerName: 'india', gameId: 1000 })
         .expect(200)
-        .expect({joinStatus: false, errorMsg: 'Game already started'}, done);
+        .expect({ joinStatus: false, errorMsg: 'Game already started' }, done);
     });
   });
 
   context('HostGame', () => {
     beforeEach(() => {
       const controller = new Controller();
-      app.locals = {controller};
+      app.locals = { controller };
     });
     it('Should host a new game', done => {
       request(app)
         .post('/hostGame')
-        .send({playerName: 'india', numOfPlayers: 2})
+        .send({ playerName: 'india', numOfPlayers: 2 })
         .expect(202)
         .expect('Set-Cookie', '_gameId=1000; Path=/,_playerId=1; Path=/')
-        .expect({gameId: 1000}, done);
+        .expect({ gameId: 1000 }, done);
     });
   });
 
@@ -177,7 +175,7 @@ describe('Handlers', () => {
       const controller = new Controller();
       controller.addGame(2);
       controller.getGame(1000).addPlayer('player1');
-      app.locals = {controller};
+      app.locals = { controller };
     });
     it('Should give the gameId and number of players of a perticular game', done => {
       request(app)
@@ -185,7 +183,7 @@ describe('Handlers', () => {
         .set('Cookie', '_gameId=1000;')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect({gameId: '1000', numOfPlayers: 2});
+        .expect({ gameId: '1000', numOfPlayers: 2 });
     });
   });
 
@@ -194,7 +192,7 @@ describe('Handlers', () => {
       const controller = new Controller();
       controller.addGame(2);
       controller.getGame(1000).addPlayer('player1');
-      app.locals = {controller};
+      app.locals = { controller };
     });
     it('Should give the number of joined players and status about starting of a perticular game', done => {
       request(app)
@@ -207,8 +205,7 @@ describe('Handlers', () => {
           playersDetails: {
             1: {
               name: 'player1',
-              leftMilitaryCount: 40,
-              territories: []
+              leftMilitaryCount: 40
             }
           }
         });
@@ -220,7 +217,7 @@ describe('Handlers', () => {
       const controller = new Controller();
       controller.addGame(2);
       controller.getGame(1000).addPlayer('player1');
-      app.locals = {controller};
+      app.locals = { controller };
     });
 
     it('Should claim the given territory if the requested player is current player', done => {
@@ -228,30 +225,30 @@ describe('Handlers', () => {
       request(app)
         .post('/performClaim')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({territory: 'india'})
+        .send({ territory: 'india' })
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect({isDone: true, leftMilitaryCount: 39});
+        .expect({ isDone: true, leftMilitaryCount: 39 });
     });
 
     it('Should give 406 when game is not started', done => {
       request(app)
         .post('/performClaim')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({territory: 'india'})
+        .send({ territory: 'india' })
         .expect(406)
         .expect('Content-Type', 'application/json; charset=utf-8', done)
-        .expect({error: 'This is not your turn'});
+        .expect({ error: 'This is not your turn' });
     });
 
     it('Should give 406 when the requested player is not the current player', done => {
       request(app)
         .post('/reinforcement')
         .set('Cookie', '_gameId=1000;_playerId=2')
-        .send({territory: 'india', militaryCount: 1})
+        .send({ territory: 'india', militaryCount: 1 })
         .expect(406, done)
         .expect('Content-Type', 'application/json; charset=utf-8')
-        .expect({error: 'This is not your turn'});
+        .expect({ error: 'This is not your turn' });
     });
   });
 
@@ -260,7 +257,7 @@ describe('Handlers', () => {
       const controller = new Controller();
       controller.addGame(2);
       controller.getGame(1000).addPlayer('player1');
-      app.locals = {controller};
+      app.locals = { controller };
     });
 
     it('Should redirect to the waiting page when the game is not started', done => {
@@ -286,7 +283,7 @@ describe('Handlers', () => {
       controller.getGame(1000).addPlayer('player1');
       controller.getGame(1000).updateStage();
       controller.getGame(1000).updateStage();
-      app.locals = {controller};
+      app.locals = { controller };
     });
 
     it('Should update the current phase of the game', done => {
@@ -294,7 +291,7 @@ describe('Handlers', () => {
         .get('/updatePhase')
         .set('Cookie', '_gameId=1000;_playerId=1')
         .expect(200, done)
-        .expect({currentPhase: 2});
+        .expect({ currentPhase: 2 });
     });
   });
 });
