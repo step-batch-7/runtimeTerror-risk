@@ -303,7 +303,7 @@ describe('Handlers', () => {
       controller.getGame(1000).addPlayer('player1');
       controller.getGame(1000).addPlayer('player2');
       controller.getGame(1000).claim('easternAustralia');
-      app.locals = {controller};
+      app.locals = { controller };
     });
 
     it('Should initiate attack if the country is acquired by current player in stage 3', done => {
@@ -313,7 +313,7 @@ describe('Handlers', () => {
       request(app)
         .post('/initiateAttack')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({attackFrom: 'easternAustralia'})
+        .send({ attackFrom: 'easternAustralia' })
         .expect(200, done)
         .expect({
           attacker: 'easternAustralia',
@@ -329,7 +329,7 @@ describe('Handlers', () => {
       request(app)
         .post('/initiateAttack')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({attackFrom: 'easternAustralia'})
+        .send({ attackFrom: 'easternAustralia' })
         .expect(200, done)
         .expect({
           attacker: 'easternAustralia',
@@ -343,7 +343,7 @@ describe('Handlers', () => {
       request(app)
         .post('/initiateAttack')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({attackFrom: 'china'})
+        .send({ attackFrom: 'china' })
         .expect(200, done)
         .expect({
           attacker: 'china',
@@ -363,7 +363,7 @@ describe('Handlers', () => {
       request(app)
         .post('/initiateAttack')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({attackFrom: 'easternAustralia'})
+        .send({ attackFrom: 'easternAustralia' })
         .expect(200, done)
         .expect({
           status: false,
@@ -380,7 +380,7 @@ describe('Handlers', () => {
       request(app)
         .post('/initiateAttack')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({attackFrom: 'easternAustralia'})
+        .send({ attackFrom: 'easternAustralia' })
         .expect(406, done);
     });
   });
@@ -399,7 +399,7 @@ describe('Handlers', () => {
 
       controller.getGame(1000).reinforce('easternAustralia', 5);
       controller.getGame(1000).updateStage();
-      app.locals = {controller};
+      app.locals = { controller };
     });
 
     it('Should select defender when attack is going on', done => {
@@ -407,9 +407,9 @@ describe('Handlers', () => {
       request(app)
         .post('/selectDefender')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({defender: 'westernAustralia'})
+        .send({ defender: 'westernAustralia' })
         .expect(200, done)
-        .expect({status: true, error: '', defender: 'westernAustralia'});
+        .expect({ status: true, error: '', defender: 'westernAustralia' });
     });
 
     it('Should not select defender if the defender is not neighbor of attacking territory', done => {
@@ -417,7 +417,7 @@ describe('Handlers', () => {
       request(app)
         .post('/selectDefender')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({defender: 'india'})
+        .send({ defender: 'india' })
         .expect(200, done)
         .expect({
           status: false,
@@ -431,7 +431,7 @@ describe('Handlers', () => {
       request(app)
         .post('/selectDefender')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({defender: 'easternAustralia'})
+        .send({ defender: 'easternAustralia' })
         .expect(200, done)
         .expect({
           status: false,
@@ -447,7 +447,7 @@ describe('Handlers', () => {
       request(app)
         .post('/selectDefender')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({defender: 'easternAustralia'})
+        .send({ defender: 'easternAustralia' })
         .expect(406, done);
     });
   });
@@ -466,7 +466,7 @@ describe('Handlers', () => {
 
       controller.getGame(1000).reinforce('easternAustralia', 5);
       controller.getGame(1000).updateStage();
-      app.locals = {controller};
+      app.locals = { controller };
     });
     it('should select Defender military unit', done => {
       controller.getGame(1000).initiateAttack('easternAustralia');
@@ -474,9 +474,9 @@ describe('Handlers', () => {
       request(app)
         .post('/selectDefenderMilitary')
         .set('Cookie', '_gameId=1000;_playerId=2')
-        .send({militaryUnit: 1})
+        .send({ militaryUnit: 1 })
         .expect(200, done)
-        .expect({leftMilitaryUnit: 0, dice: 1});
+        .expect({ leftMilitaryUnit: 0, dice: 1 });
     });
 
     it('should not select military unit if player is not defender', done => {
@@ -485,8 +485,25 @@ describe('Handlers', () => {
       request(app)
         .post('/selectDefenderMilitary')
         .set('Cookie', '_gameId=1000;_playerId=1')
-        .send({militaryUnit: 1})
+        .send({ militaryUnit: 1 })
         .expect(406, done);
+    });
+  });
+
+  context('/serveFortifyPossibilities', () => {
+    it('should give error message if player is in wrong stage', function(done) {
+      const gameId = app.locals.controller.addGame(2);
+      const playerId = app.locals.controller
+        .getGame(gameId)
+        .addPlayer('Player1');
+      app.locals.controller.getGame(gameId).addPlayer('Player2');
+      request(app)
+        .post('/initiateFortify')
+        .set('Cookie', `_gameId=${gameId};_playerId=${playerId}`)
+        .send({ selectedTerritoryId: 'india' })
+        .expect(200)
+        .expect('Content-Length', '51')
+        .expect('{"isAccepted":false,"error":"Wrong stage or phase"}', done);
     });
   });
 });

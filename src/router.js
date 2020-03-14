@@ -21,13 +21,14 @@ const {
   selectDefender,
   validateDefender,
   selectDefenderMilitary,
-  defenderRollDice
+  defenderRollDice,
+  serveFortifyPossibilities
 } = require('./handlers');
 const app = express();
 
 app.locals.controller = new Controller();
 
-app.use(express.json({limit: '100kb'}));
+app.use(express.json({ limit: '100kb' }));
 app.use(cookieParser());
 
 app.get('/game.html', findGame, hasGameStarted);
@@ -64,8 +65,9 @@ app.post(
   noAttackIsOn,
   initiateAttack
 );
+app.post('/initiateFortify', serveFortifyPossibilities);
 
 app.use(attackIsOn);
 app.post('/selectDefender', hasFields('defender'), selectDefender);
 
-module.exports = {app};
+module.exports = { app };

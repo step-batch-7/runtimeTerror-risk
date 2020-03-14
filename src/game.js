@@ -1,7 +1,7 @@
 const Player = require('./player');
 const Attack = require('./attack');
 
-const stageNames = {1: 'Claim', 2: 'Reinforcement', 3: 'Playing'};
+const stageNames = { 1: 'Claim', 2: 'Reinforcement', 3: 'Playing' };
 
 class Game {
   #territories;
@@ -69,7 +69,7 @@ class Game {
   }
 
   addActivity(msg) {
-    this.#activities.unshift({msg});
+    this.#activities.unshift({ msg });
   }
 
   addPlayer(name) {
@@ -105,25 +105,25 @@ class Game {
     selectedTerritory.deployMilitary(1);
     this.currentPlayer.addTerritory(territoryId);
     this.currentPlayer.removeMilitary(1);
-    const {name, leftMilitaryCount} = this.currentPlayer.status;
+    const { name, leftMilitaryCount } = this.currentPlayer.status;
     this.addActivity(`${name} has claimed ${selectedTerritory.status.name}`);
     this.changeTurn();
-    return {leftMilitaryCount};
+    return { leftMilitaryCount };
   }
 
   claim(territoryName) {
     if (this.#currentStage != 1) {
-      return {isDone: false, error: 'wrong stage'};
+      return { isDone: false, error: 'wrong stage' };
     }
     if (this.#territories[territoryName].isOccupied()) {
-      return {isDone: false, error: 'Territory already claimed'};
+      return { isDone: false, error: 'Territory already claimed' };
     }
-    const {leftMilitaryCount} = this.assignOwnerTo(territoryName);
+    const { leftMilitaryCount } = this.assignOwnerTo(territoryName);
     const territories = Object.values(this.#territories);
     if (territories.every(territory => territory.isOccupied())) {
       this.updateStage();
     }
-    return {isDone: true, leftMilitaryCount};
+    return { isDone: true, leftMilitaryCount };
   }
 
   changeTurnToNextDeployer() {
@@ -141,22 +141,22 @@ class Game {
 
   reinforce(territoryName, militaryCount) {
     if (this.#currentStage !== 2) {
-      return {isDone: false, error: 'Wrong stage or phase'};
+      return { isDone: false, error: 'Wrong stage or phase' };
     }
 
     const selectedTerritory = this.#territories[territoryName];
     if (!selectedTerritory.isOccupiedBy(this.#currentPlayerId)) {
-      return {isDone: false, error: 'This is not your territory'};
+      return { isDone: false, error: 'This is not your territory' };
     }
 
     this.deployMilitaryTo(selectedTerritory, militaryCount);
     const allPlayers = Object.values(this.#players);
     allPlayers.every(player => player.hasDeployedAllMilitary()) &&
       this.updateStage();
-    const {leftMilitaryCount} = this.currentPlayer.status;
+    const { leftMilitaryCount } = this.currentPlayer.status;
     const territoryMilitaryCount = selectedTerritory.status.militaryUnits;
     this.#currentStage === 2 && this.changeTurnToNextDeployer();
-    return {isDone: true, leftMilitaryCount, territoryMilitaryCount};
+    return { isDone: true, leftMilitaryCount, territoryMilitaryCount };
   }
 
   getTerritory(territoryId) {
@@ -164,9 +164,7 @@ class Game {
   }
 
   isMine(territoryId) {
-    console.log(territoryId);
     const territory = this.getTerritory(territoryId);
-    console.log(territory);
     return territory.isOccupiedBy(this.#currentPlayerId);
   }
 
@@ -175,18 +173,17 @@ class Game {
   }
   initiateAttack(attackFrom) {
     const territory = this.getTerritory(attackFrom);
-    console.log(territory.neighbors);
     const neighbors = territory.neighbors.filter(neighbor => {
       return !this.isMine(neighbor);
     });
     if (!this.isMine(attackFrom) || !neighbors.length) {
-      return {status: false, error: 'Invalid Territory for Attack'};
+      return { status: false, error: 'Invalid Territory for Attack' };
     }
     if (territory.status.militaryUnits > 1) {
       this.#attack = new Attack(territory, this.currentPlayer);
-      return {status: true, error: '', neighbors};
+      return { status: true, error: '', neighbors };
     }
-    return {status: false, error: 'You don’t have enough military units'};
+    return { status: false, error: 'You don’t have enough military units' };
   }
   addDefender(defendFrom) {
     const attackerTerritory = this.#attack.attackerTerritory;
@@ -196,18 +193,18 @@ class Game {
       const defenderId = defenderTerritory.status.occupiedBy;
       const defender = this.#players[defenderId];
       this.#attack.addDefender(defenderTerritory, defender);
-      return {status: true, error: ''};
+      return { status: true, error: '' };
     }
     this.#attack = '';
-    return {status: false, error: "You can't attack this territory"};
+    return { status: false, error: "You can't attack this territory" };
   }
   addAttackerMilitary(militaryUnit) {
     const leftMilitaryUnit = this.#attack.addAttackerMilitary(militaryUnit);
-    return {leftMilitaryUnit, dice: militaryUnit};
+    return { leftMilitaryUnit, dice: militaryUnit };
   }
   addDefenderMilitary(militaryUnit) {
     const leftMilitaryUnit = this.#attack.addDefenderMilitary(militaryUnit);
-    return {leftMilitaryUnit, dice: militaryUnit};
+    return { leftMilitaryUnit, dice: militaryUnit };
   }
   isValidDefender(playerId) {
     return this.#attack.isValidDefender(playerId);
@@ -217,19 +214,22 @@ class Game {
   }
 
   getFortifyPossibilities(selectedTerritoryId) {
+    if (this.#currentStage !== 3 || this.#currentPhase !== 3) {
+      return { isAccepted: false, error: 'Wrong stage or phase' };
+    }
     const selectedTerritory = this.#territories[selectedTerritoryId];
     if (!selectedTerritory.isOccupiedBy(this.#currentPlayerId)) {
-      return {isAccepted: false, error: 'This is not your territory'};
+      return { isAccepted: false, error: 'This is not your territory' };
     }
     if (selectedTerritory.status.militaryUnits === 1) {
-      return {isAccepted: false, error: 'Only 1 military in this territory'};
+      return { isAccepted: false, error: 'Only 1 military in this territory' };
     }
     const currPlayerTerritories = this.currentPlayer.rulingTerritories;
     const validTerritories = currPlayerTerritories.filter(territoryId => {
       return territoryId != selectedTerritoryId;
     });
     const maxValidMilitaryUnits = selectedTerritory.status.militaryUnits - 1;
-    return {validTerritories, maxValidMilitaryUnits};
+    return { isAccepted: true, validTerritories, maxValidMilitaryUnits };
   }
 }
 

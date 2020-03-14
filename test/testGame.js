@@ -369,9 +369,11 @@ describe('Game', function() {
     this.afterAll(function() {
       sinon.restore();
     });
+
     it('should give possible territoryIds and maxValidMilitary count to move', () => {
       const actualValue = game.getFortifyPossibilities('alberta');
       const expectedValue = {
+        isAccepted: true,
         validTerritories: ['alaska'],
         maxValidMilitaryUnits: 1
       };
@@ -392,6 +394,16 @@ describe('Game', function() {
       const expectedValue = {
         isAccepted: false,
         error: 'Only 1 military in this territory'
+      };
+      assert.deepStrictEqual(actualValue, expectedValue);
+    });
+
+    it('should give possible territoryIds and maxValidMilitary count to move', () => {
+      game.updatePhase();
+      const actualValue = game.getFortifyPossibilities('alberta');
+      const expectedValue = {
+        isAccepted: false,
+        error: 'Wrong stage or phase'
       };
       assert.deepStrictEqual(actualValue, expectedValue);
     });
