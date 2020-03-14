@@ -38,6 +38,10 @@ class Game {
     Object.entries(this.#territories).forEach(([territoryId, territory]) => {
       status.territories[territoryId] = territory.status;
     });
+    if (this.#attack) {
+      console.log('came');
+      status.attackDetail = this.#attack.status;
+    }
     return status;
   }
 
@@ -161,7 +165,9 @@ class Game {
   }
 
   isMine(territoryId) {
+    console.log(territoryId);
     const territory = this.getTerritory(territoryId);
+    console.log(territory);
     return territory.isOccupiedBy(this.#currentPlayerId);
   }
 
@@ -170,6 +176,7 @@ class Game {
   }
   initiateAttack(attackFrom) {
     const territory = this.getTerritory(attackFrom);
+    console.log(territory.neighbors);
     const neighbors = territory.neighbors.filter(neighbor => {
       return !this.isMine(neighbor);
     });

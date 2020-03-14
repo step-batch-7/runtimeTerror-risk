@@ -7,6 +7,7 @@ const generateTerritories = require('../src/territories');
 
 describe('Game', function() {
   const { india, china, alberta, ontario, alaska } = generateTerritories();
+
   it('should give instance of game class', function() {
     const game = new Game({ india }, 3);
     assert.instanceOf(game, Game);

@@ -15,8 +15,10 @@ describe('Attack', () => {
       };
       assert.deepStrictEqual(attack.status, expected);
     });
+  });
 
-    it('Should give status of the attack', () => {
+  context('addDefender', () => {
+    it('Should add defender', () => {
       const attack = new Attack('india', 'player1');
       attack.addDefender('china', 'player2');
       const expected = {

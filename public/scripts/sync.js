@@ -28,7 +28,7 @@ const updateMilitaryCount = function(remainingMilitaryCount) {
 
 const updateMap = function(territories) {
   Object.entries(territories).forEach(([territoryId, territory]) => {
-    const {occupiedBy, militaryUnits} = territory;
+    const { occupiedBy, militaryUnits } = territory;
     getElement(`#${territoryId}`).style.fill = getPlayerColor(occupiedBy);
     const $textElement = getElement(`#${territoryId} + .unit`);
     $textElement.innerHTML = `${militaryUnits}`.padStart(2, ' ');
@@ -39,7 +39,7 @@ const showPhases = function(currentPhase, error, event) {
   if (error) {
     return mousePointerPopUp(event, error);
   }
-  const phases = {1: 'reinforcement', 2: 'attack', 3: 'fortify'};
+  const phases = { 1: 'reinforcement', 2: 'attack', 3: 'fortify' };
   getElement('.phase-block').classList.remove('hide');
   const $previousPhase = getElement('.current-phase');
   $previousPhase && $previousPhase.classList.remove('current-phase');
@@ -57,7 +57,7 @@ const updateGameStage = function(currentStage) {
 };
 
 const updateActivities = function(activities) {
-  const activityHTML = activities.map(({msg}) => {
+  const activityHTML = activities.map(({ msg }) => {
     return `<div class="activity-details">
     <span class="activity-message">${msg}</span>
     </div>`;
@@ -71,6 +71,19 @@ const highLightPlayer = function(playerId) {
   getElement(`[id="${playerId}"]`).classList.add('current-player');
 };
 
+const popUpForChoosingMilitaryCount = function(attackDetails) {
+  console.log(attackDetails);
+  console.log(document.cookie);
+};
+
+const notifyDefender = function(attackDetails) {
+  if (localStorage.getItem('attackStatus')) {
+    return;
+  }
+  localStorage.setItem('attackStatus', true);
+  popUpForChoosingMilitaryCount(attackDetails);
+};
+
 const updateGameView = function(gameStatus) {
   updateGameStage(gameStatus.currentStage);
   updateMap(gameStatus.territories);
@@ -80,6 +93,10 @@ const updateGameView = function(gameStatus) {
     updateMilitaryCount(gameStatus.currentPlayer.leftMilitaryCount);
   }
   gameStatus.currentStage === 3 && showPhases(gameStatus.currentPhase);
+  if (!gameStatus.attackDetails) {
+    return localStorage.setItem('attackStatus', false);
+  }
+  notifyDefender(gameStatus.attackDetails);
 };
 
 const sendSyncReq = function() {
