@@ -90,6 +90,7 @@ class Game {
 
   updatePhase() {
     if (this.#currentStage === 3) {
+      this.#currentPhase === 3 && this.changeTurn();
       this.#currentPhase = (this.#currentPhase % 3) + 1;
     }
     return this.#currentPhase;
@@ -247,6 +248,7 @@ class Game {
     );
     const msg = `${this.currentPlayer.status.name} has moved ${militaryUnits} military unit(s) from ${selectedTerritory.status.name} to ${targetTerritory.status.name}`;
     this.addActivity(msg);
+    this.updatePhase();
     return { isDone: true, selectedTerritoryMilitary, targetTerritoryMilitary };
   }
 }

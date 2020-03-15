@@ -418,7 +418,7 @@ describe('Game', function() {
     });
   });
 
-  context('getTerritoriesToFortify', function() {
+  context('fortify', function() {
     let game;
     this.beforeAll(function() {
       game = new Game({ brazil, peru, venezuela }, 2);
@@ -447,7 +447,7 @@ describe('Game', function() {
     });
 
     it('should give error if wrong territory is selected as target territory', () => {
-      const actualValue = game.fortify('brazil', 'peru', 1);
+      const actualValue = game.fortify('brazil', 'venezuela', 1);
       const expectedValue = {
         isDone: false,
         error: 'Invalid selection'
