@@ -245,6 +245,8 @@ class Game {
     const targetTerritoryMilitary = targetTerritory.deployMilitary(
       militaryUnits
     );
+    const msg = `${this.currentPlayer.status.name} has moved ${militaryUnits} military unit(s) from ${selectedTerritory.status.name} to ${targetTerritory.status.name}`;
+    this.addActivity(msg);
     return { isDone: true, selectedTerritoryMilitary, targetTerritoryMilitary };
   }
 }
