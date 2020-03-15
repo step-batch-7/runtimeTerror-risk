@@ -3,14 +3,14 @@ const getTerritories = () => Array.from(document.querySelectorAll('.area'));
 
 const makeTerritoriesInteractive = (territories, listener) => {
   territories.forEach(territory => {
-    territory.addEventListener('click', listener);
+    territory.onclick = listener;
     territory.classList.add('highlight');
   });
 };
 
-const makeTerritoriesNonInteractive = (territories, listener) => {
+const makeTerritoriesNonInteractive = territories => {
   territories.forEach(territory => {
-    territory.removeEventListener('click', listener);
+    territory.onclick = () => {};
     territory.classList.remove('highlight');
   });
 };
@@ -88,10 +88,32 @@ const getPlayersDetails = function() {
 
 const sendAttackRequest = function(event) {};
 
-const fortify = () => {};
+const fortify = (selectedTerritoryId, event) => {
+  const targetTerritoryId = event.target.id;
+  const fortifyData = {
+    selectedTerritoryId,
+    targetTerritoryId,
+    militaryUnits: 1
+  };
+  sendPOSTRequest('/fortify', JSON.stringify(fortifyData), fortifyStatus => {
+    if (!fortifyStatus.isDone) return;
+    const {
+      selectedTerritoryMilitary,
+      targetTerritoryMilitary
+    } = fortifyStatus;
+    document.querySelector(
+      `#${selectedTerritoryId} + .unit`
+    ).innerHTML = `${selectedTerritoryMilitary}`.padStart(2, ' ');
+    document.querySelector(
+      `#${targetTerritoryId} + .unit`
+    ).innerHTML = `${targetTerritoryMilitary}`.padStart(2, ' ');
+    makeTerritoriesNonInteractive(getTerritories());
+    makeTerritoriesInteractive(getTerritories(), selectListener);
+  });
+};
 
 const sendFortifyRequest = function(event) {
-  makeTerritoriesNonInteractive(getTerritories(), selectListener);
+  makeTerritoriesNonInteractive(getTerritories());
   const selectedTerritoryId = event.target.id;
   sendPOSTRequest(
     '/initiateFortify',
@@ -102,7 +124,10 @@ const sendFortifyRequest = function(event) {
         return makeTerritoriesInteractive(getTerritories(), selectListener);
       }
       const validTerritories = fortifyStatus.validTerritories.map(getTerritory);
-      makeTerritoriesInteractive(validTerritories, fortify);
+      makeTerritoriesInteractive(
+        validTerritories,
+        fortify.bind(null, selectedTerritoryId)
+      );
     }
   );
 };
@@ -117,7 +142,7 @@ const selectListenerForPlayStage = function() {
   listeners[phase](event);
 };
 
-const selectListener = function() {
+const selectListener = function(event) {
   const listeners = {
     1: sendClaimRequest,
     2: sendReinforcementRequest,
