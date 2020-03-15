@@ -1,6 +1,30 @@
 const getTerritory = id => document.querySelector(`#${id}`);
 const getTerritories = () => Array.from(document.querySelectorAll('.area'));
 
+const range = function(start, end) {
+  if (start === end) return [start];
+  if (start < end) return [start, ...range(start + 1, end)];
+  return [start, ...range(start - 1, end)];
+};
+
+const askMilitaryCount = (event, maxCount, callback) => {
+  const optionsHtml = range(1, maxCount)
+    .map(option => {
+      return `<option value="${option}">${option}</option>`;
+    })
+    .join('\n');
+  const $selectionPopUp = getElement('.military-unit-pop-up');
+  $selectionPopUp.children[1].innerHTML = optionsHtml;
+  $selectionPopUp.children[2].onclick = () => {
+    $selectionPopUp.classList.add('hidden');
+    callback(+getElement('#militaryUnit').value);
+  };
+  $selectionPopUp.style.top = `${event.clientY + 20}px`;
+  $selectionPopUp.style.left = `${event.clientX}px`;
+  $selectionPopUp.classList.remove('hidden');
+  console.log(getElement('#militaryUnit').value);
+};
+
 const makeTerritoriesInteractive = (territories, listener) => {
   territories.forEach(territory => {
     territory.onclick = listener;
@@ -88,31 +112,33 @@ const getPlayersDetails = function() {
 
 const sendAttackRequest = function(event) {};
 
-const fortify = (selectedTerritoryId, event) => {
+const fortify = (selectedTerritoryId, maxCount, event) => {
   const targetTerritoryId = event.target.id;
-  const fortifyData = {
-    selectedTerritoryId,
-    targetTerritoryId,
-    militaryUnits: 1
-  };
-  sendPOSTRequest('/fortify', JSON.stringify(fortifyData), fortifyStatus => {
-    if (!fortifyStatus.isDone) return;
-    const {
-      selectedTerritoryMilitary,
-      targetTerritoryMilitary
-    } = fortifyStatus;
-    document.querySelector(
-      `#${selectedTerritoryId} + .unit`
-    ).innerHTML = `${selectedTerritoryMilitary}`.padStart(2, ' ');
-    document.querySelector(
-      `#${targetTerritoryId} + .unit`
-    ).innerHTML = `${targetTerritoryMilitary}`.padStart(2, ' ');
-    makeTerritoriesNonInteractive(getTerritories());
-    makeTerritoriesInteractive(getTerritories(), selectListener);
+  askMilitaryCount(event, maxCount, selectedCount => {
+    const fortifyData = {
+      selectedTerritoryId,
+      targetTerritoryId,
+      militaryUnits: selectedCount
+    };
+    sendPOSTRequest('/fortify', JSON.stringify(fortifyData), fortifyStatus => {
+      if (!fortifyStatus.isDone) return;
+      const {
+        selectedTerritoryMilitary,
+        targetTerritoryMilitary
+      } = fortifyStatus;
+      document.querySelector(
+        `#${selectedTerritoryId} + .unit`
+      ).innerHTML = `${selectedTerritoryMilitary}`.padStart(2, ' ');
+      document.querySelector(
+        `#${targetTerritoryId} + .unit`
+      ).innerHTML = `${targetTerritoryMilitary}`.padStart(2, ' ');
+      makeTerritoriesNonInteractive(getTerritories());
+      makeTerritoriesInteractive(getTerritories(), selectListener);
+    });
   });
 };
 
-const sendFortifyRequest = function(event) {
+const initiateFortify = function(event) {
   makeTerritoriesNonInteractive(getTerritories());
   const selectedTerritoryId = event.target.id;
   sendPOSTRequest(
@@ -123,20 +149,21 @@ const sendFortifyRequest = function(event) {
         mousePointerPopUp(event, fortifyStatus.error);
         return makeTerritoriesInteractive(getTerritories(), selectListener);
       }
-      const validTerritories = fortifyStatus.validTerritories.map(getTerritory);
+      const { validTerritoryIds, maxValidMilitaryUnits } = fortifyStatus;
+      const validTerritories = validTerritoryIds.map(getTerritory);
       makeTerritoriesInteractive(
         validTerritories,
-        fortify.bind(null, selectedTerritoryId)
+        fortify.bind(null, selectedTerritoryId, maxValidMilitaryUnits)
       );
     }
   );
 };
 
-const selectListenerForPlayStage = function() {
+const selectListenerForPlayStage = function(event) {
   const listeners = {
     1: () => {},
     2: sendAttackRequest,
-    3: sendFortifyRequest
+    3: initiateFortify
   };
   const phase = localStorage.getItem('phase');
   listeners[phase](event);

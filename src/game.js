@@ -226,11 +226,11 @@ class Game {
       return { isAccepted: false, error: 'Only 1 military in this territory' };
     }
     const currPlayerTerritories = this.currentPlayer.rulingTerritories;
-    const validTerritories = currPlayerTerritories.filter(territoryId => {
+    const validTerritoryIds = currPlayerTerritories.filter(territoryId => {
       return territoryId != selectedTerritoryId;
     });
     const maxValidMilitaryUnits = selectedTerritory.status.militaryUnits - 1;
-    return { isAccepted: true, validTerritories, maxValidMilitaryUnits };
+    return { isAccepted: true, validTerritoryIds, maxValidMilitaryUnits };
   }
 
   fortify(selectedTerritoryId, targetTerritoryId, militaryUnits) {

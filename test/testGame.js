@@ -383,7 +383,7 @@ describe('Game', function() {
       const actualValue = game.getFortifyPossibilities('alberta');
       const expectedValue = {
         isAccepted: true,
-        validTerritories: ['alaska'],
+        validTerritoryIds: ['alaska'],
         maxValidMilitaryUnits: 1
       };
       assert.deepStrictEqual(actualValue, expectedValue);
